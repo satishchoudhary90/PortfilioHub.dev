@@ -1,0 +1,190 @@
+"use client";
+
+import { motion } from "framer-motion";
+import { FadeInView, StaggerContainer, StaggerItem } from "@/components/shared/motion-wrapper";
+import { formatDate } from "@/lib/utils";
+import { Github, Linkedin, Twitter, Globe, Mail, ExternalLink } from "lucide-react";
+import { useState } from "react";
+
+const socialIcons: Record<string, any> = { github: Github, linkedin: Linkedin, twitter: Twitter, website: Globe, email: Mail };
+
+export default function NeonCyberTemplate({ data }: { data: { user: any } }) {
+  const { user } = data;
+  const [contactForm, setContactForm] = useState({ name: "", email: "", subject: "", message: "" });
+  const [sending, setSending] = useState(false);
+  const [sent, setSent] = useState(false);
+
+  async function handleContact(e: React.FormEvent) {
+    e.preventDefault();
+    setSending(true);
+    await fetch("/api/contact", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ ...contactForm, userId: user.id }) });
+    setSending(false);
+    setSent(true);
+    setContactForm({ name: "", email: "", subject: "", message: "" });
+  }
+
+  return (
+    <div className="min-h-screen bg-[#0a0a0f] text-white font-mono">
+      <div className="fixed inset-0 pointer-events-none">
+        <div className="absolute inset-0 bg-[linear-gradient(rgba(0,255,255,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(0,255,255,0.03)_1px,transparent_1px)] bg-[size:60px_60px]" />
+      </div>
+
+      <section className="min-h-screen flex items-center justify-center relative px-6">
+        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 1 }} className="text-center z-10">
+          {user.image && (
+            <motion.img src={user.image} alt={user.name}
+              className="w-32 h-32 rounded-full mx-auto mb-8 border-2 border-cyan-400 shadow-[0_0_30px_rgba(0,255,255,0.3)] object-cover"
+              animate={{ boxShadow: ["0 0 20px rgba(0,255,255,0.2)", "0 0 40px rgba(0,255,255,0.4)", "0 0 20px rgba(0,255,255,0.2)"] }}
+              transition={{ duration: 3, repeat: Infinity }}
+            />
+          )}
+          <h1 className="text-5xl md:text-7xl font-black text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-blue-400 to-purple-400 tracking-tight">
+            {user.name}
+          </h1>
+          {user.headline && (
+            <p className="text-cyan-300/70 text-lg mt-4 tracking-wider uppercase">&gt; {user.headline}</p>
+          )}
+          <div className="flex justify-center gap-4 mt-8">
+            {user.socialLinks?.map((link: any) => {
+              const Icon = socialIcons[link.platform] || Globe;
+              return (
+                <a key={link.id} href={link.url} target="_blank" rel="noopener noreferrer"
+                  className="p-3 border border-cyan-500/30 rounded-lg hover:bg-cyan-500/10 hover:shadow-[0_0_15px_rgba(0,255,255,0.2)] transition-all">
+                  <Icon className="h-5 w-5 text-cyan-400" />
+                </a>
+              );
+            })}
+          </div>
+        </motion.div>
+      </section>
+
+      {user.bio && (
+        <section className="py-20 px-6">
+          <FadeInView>
+            <div className="max-w-4xl mx-auto border border-cyan-500/20 rounded-xl p-8 bg-cyan-500/[0.03]">
+              <h2 className="text-cyan-400 text-xs uppercase tracking-[0.3em] mb-4">// about</h2>
+              <p className="text-gray-300 leading-relaxed text-lg">{user.bio}</p>
+            </div>
+          </FadeInView>
+        </section>
+      )}
+
+      {user.skills?.length > 0 && (
+        <section className="py-20 px-6">
+          <div className="max-w-5xl mx-auto">
+            <FadeInView><h2 className="text-cyan-400 text-xs uppercase tracking-[0.3em] mb-10">// skills</h2></FadeInView>
+            <StaggerContainer className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+              {user.skills.map((skill: any) => (
+                <StaggerItem key={skill.id}>
+                  <div className="border border-cyan-500/20 rounded-lg p-4 bg-cyan-500/[0.02] hover:border-cyan-400/50 hover:shadow-[0_0_15px_rgba(0,255,255,0.1)] transition-all">
+                    <p className="text-white font-medium">{skill.name}</p>
+                    {skill.level && (
+                      <div className="mt-2 h-1 bg-gray-800 rounded-full overflow-hidden">
+                        <motion.div className="h-full bg-gradient-to-r from-cyan-400 to-blue-500 rounded-full" initial={{ width: 0 }} whileInView={{ width: `${skill.level}%` }} transition={{ duration: 1, delay: 0.2 }} />
+                      </div>
+                    )}
+                  </div>
+                </StaggerItem>
+              ))}
+            </StaggerContainer>
+          </div>
+        </section>
+      )}
+
+      {user.projects?.length > 0 && (
+        <section className="py-20 px-6">
+          <div className="max-w-6xl mx-auto">
+            <FadeInView><h2 className="text-cyan-400 text-xs uppercase tracking-[0.3em] mb-10">// projects</h2></FadeInView>
+            <div className="grid md:grid-cols-2 gap-6">
+              {user.projects.map((project: any) => (
+                <FadeInView key={project.id}>
+                  <div className="border border-cyan-500/20 rounded-xl p-6 bg-gradient-to-br from-cyan-500/[0.03] to-transparent hover:border-cyan-400/40 transition-all group">
+                    {project.imageUrl && <img src={project.imageUrl} alt={project.title} className="w-full h-44 object-cover rounded-lg mb-4 border border-cyan-500/10" />}
+                    <h3 className="text-xl font-bold text-white">{project.title}</h3>
+                    {project.description && <p className="text-gray-400 mt-2 text-sm">{project.description}</p>}
+                    {project.techStack?.length > 0 && (
+                      <div className="flex flex-wrap gap-2 mt-3">
+                        {project.techStack.map((tech: string, i: number) => (
+                          <span key={i} className="text-xs px-2 py-1 border border-cyan-500/20 rounded text-cyan-300">{tech}</span>
+                        ))}
+                      </div>
+                    )}
+                    <div className="flex gap-4 mt-4">
+                      {project.githubUrl && <a href={project.githubUrl} target="_blank" rel="noopener noreferrer" className="text-sm text-gray-500 hover:text-cyan-400 flex items-center gap-1"><Github className="h-4 w-4" /> Code</a>}
+                      {project.liveUrl && <a href={project.liveUrl} target="_blank" rel="noopener noreferrer" className="text-sm text-gray-500 hover:text-cyan-400 flex items-center gap-1"><ExternalLink className="h-4 w-4" /> Live</a>}
+                    </div>
+                  </div>
+                </FadeInView>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
+
+      {user.experiences?.length > 0 && (
+        <section className="py-20 px-6">
+          <div className="max-w-4xl mx-auto">
+            <FadeInView><h2 className="text-cyan-400 text-xs uppercase tracking-[0.3em] mb-10">// experience</h2></FadeInView>
+            <div className="space-y-6">
+              {user.experiences.map((exp: any) => (
+                <FadeInView key={exp.id}>
+                  <div className="border border-cyan-500/20 rounded-lg p-6 bg-cyan-500/[0.02]">
+                    <div className="flex justify-between items-start flex-wrap gap-2">
+                      <div>
+                        <h3 className="font-bold text-lg">{exp.position}</h3>
+                        <p className="text-cyan-400 text-sm">@ {exp.company}</p>
+                      </div>
+                      <span className="text-xs text-gray-500 font-mono">{formatDate(exp.startDate)} → {exp.current ? "now" : exp.endDate ? formatDate(exp.endDate) : ""}</span>
+                    </div>
+                    {exp.description && <p className="text-gray-400 mt-3 text-sm">{exp.description}</p>}
+                  </div>
+                </FadeInView>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
+
+      {user.educations?.length > 0 && (
+        <section className="py-20 px-6">
+          <div className="max-w-4xl mx-auto">
+            <FadeInView><h2 className="text-cyan-400 text-xs uppercase tracking-[0.3em] mb-10">// education</h2></FadeInView>
+            <div className="space-y-4">
+              {user.educations.map((edu: any) => (
+                <FadeInView key={edu.id}>
+                  <div className="border border-cyan-500/20 rounded-lg p-5 bg-cyan-500/[0.02]">
+                    <h3 className="font-bold">{edu.degree}{edu.field ? ` — ${edu.field}` : ""}</h3>
+                    <p className="text-cyan-400 text-sm">{edu.institution}</p>
+                    <p className="text-xs text-gray-500 mt-1">{formatDate(edu.startDate)} → {edu.current ? "now" : edu.endDate ? formatDate(edu.endDate) : ""}</p>
+                  </div>
+                </FadeInView>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
+
+      <section className="py-20 px-6">
+        <div className="max-w-lg mx-auto">
+          <FadeInView>
+            <h2 className="text-cyan-400 text-xs uppercase tracking-[0.3em] mb-8 text-center">// contact</h2>
+            {sent ? (
+              <div className="text-center py-12 text-cyan-400">Message transmitted successfully.</div>
+            ) : (
+              <form onSubmit={handleContact} className="space-y-4">
+                <input value={contactForm.name} onChange={(e) => setContactForm(p => ({ ...p, name: e.target.value }))} placeholder="Name" required className="w-full p-3 rounded-lg bg-transparent border border-cyan-500/20 text-white placeholder-gray-600 focus:border-cyan-400 outline-none font-mono" />
+                <input value={contactForm.email} onChange={(e) => setContactForm(p => ({ ...p, email: e.target.value }))} placeholder="Email" type="email" required className="w-full p-3 rounded-lg bg-transparent border border-cyan-500/20 text-white placeholder-gray-600 focus:border-cyan-400 outline-none font-mono" />
+                <textarea value={contactForm.message} onChange={(e) => setContactForm(p => ({ ...p, message: e.target.value }))} placeholder="Message" rows={4} required className="w-full p-3 rounded-lg bg-transparent border border-cyan-500/20 text-white placeholder-gray-600 focus:border-cyan-400 outline-none resize-none font-mono" />
+                <button type="submit" disabled={sending} className="w-full py-3 rounded-lg border border-cyan-400 text-cyan-400 hover:bg-cyan-400/10 transition-all font-mono">{sending ? "Transmitting..." : "Transmit"}</button>
+              </form>
+            )}
+          </FadeInView>
+        </div>
+      </section>
+
+      <footer className="py-6 text-center text-gray-700 text-xs font-mono border-t border-cyan-500/10">
+        &lt;/&gt; {user.name} © {new Date().getFullYear()}
+      </footer>
+    </div>
+  );
+}
