@@ -1,6 +1,38 @@
 import { NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
+import { GoogleGenerativeAI } from "@google/generative-ai";
+
+const FALLBACKS: Record<string, string> = {
+  bio: "Passionate developer with expertise in building modern web applications. Dedicated to writing clean, maintainable code and creating exceptional user experiences.",
+  headline: "Full Stack Developer",
+  project: "A well-crafted application built with modern technologies, featuring responsive design and intuitive user interface.",
+  experience: "Led development initiatives, collaborated with cross-functional teams, and delivered high-quality software solutions on schedule.",
+  "skill-suggest": '["TypeScript","React","Node.js","PostgreSQL","Docker","Git"]',
+  "resume-summary": "Results-driven software developer with a strong foundation in full-stack development. Passionate about building scalable applications and delivering outstanding user experiences.",
+  "portfolio-review": "Your portfolio is off to a great start! Consider adding more projects to showcase your range, writing a detailed bio, and including links to live demos.",
+};
+
+function buildPrompt(type: string, context: string): string {
+  switch (type) {
+    case "bio":
+      return `Generate a professional developer bio based on: ${context}. Keep it concise (2-3 sentences), professional, and engaging. Only return the bio text, no quotes.`;
+    case "headline":
+      return `Generate a short professional headline/title for a developer named: ${context}. It should be 3-6 words like "Senior Full Stack Engineer" or "Frontend Developer & UI Designer". Only return the headline, no quotes.`;
+    case "project":
+      return `Generate a compelling project description based on: ${context}. Keep it concise (2-3 sentences) and highlight the technical aspects and impact. Only return the description, no quotes.`;
+    case "experience":
+      return `Generate 2-3 professional bullet points describing responsibilities and achievements for this role: ${context}. Keep each point concise and impactful. Return only the description text.`;
+    case "skill-suggest":
+      return `Based on these projects and tech stacks: ${context}, suggest 6-8 additional skills this developer should consider adding to their portfolio. Return ONLY a valid JSON array of strings like ["Skill1","Skill2"]. No explanation.`;
+    case "resume-summary":
+      return `Write a professional 2-3 sentence resume summary/objective for a developer with this background: ${context}. Make it compelling for recruiters. Only return the summary, no quotes.`;
+    case "portfolio-review":
+      return `Review this developer portfolio data and provide 4-5 specific, actionable suggestions to improve it. Portfolio data: ${context}. Format each suggestion as a single clear sentence. Separate suggestions with newlines. Be constructive and specific.`;
+    default:
+      return context;
+  }
+}
 
 export async function POST(req: Request) {
   try {
@@ -11,43 +43,28 @@ export async function POST(req: Request) {
 
     const { type, context } = await req.json();
 
-    const prompts: Record<string, string> = {
-      bio: `Generate a professional developer bio based on: ${context}. Keep it concise (2-3 sentences), professional, and engaging. Only return the bio text.`,
-      project: `Generate a compelling project description based on: ${context}. Keep it concise (2-3 sentences) and highlight the technical aspects. Only return the description text.`,
-    };
+    if (!type || !context) {
+      return NextResponse.json({ error: "Missing type or context" }, { status: 400 });
+    }
 
-    const prompt = prompts[type];
-    if (!prompt) {
+    if (!FALLBACKS[type]) {
       return NextResponse.json({ error: "Invalid generation type" }, { status: 400 });
     }
 
-    if (!process.env.OPENAI_API_KEY) {
-      const fallbacks: Record<string, string> = {
-        bio: `Passionate developer with expertise in building modern web applications. Dedicated to writing clean, maintainable code and creating exceptional user experiences.`,
-        project: `A well-crafted application built with modern technologies, featuring responsive design and intuitive user interface.`,
-      };
-      return NextResponse.json({ text: fallbacks[type] });
+    if (!process.env.GEMINI_API_KEY) {
+      return NextResponse.json({ text: FALLBACKS[type] });
     }
 
-    const response = await fetch("https://api.openai.com/v1/chat/completions", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${process.env.OPENAI_API_KEY}`,
-      },
-      body: JSON.stringify({
-        model: "gpt-3.5-turbo",
-        messages: [{ role: "user", content: prompt }],
-        max_tokens: 200,
-        temperature: 0.7,
-      }),
-    });
+    const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
+    const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash" });
 
-    const data = await response.json();
-    const text = data.choices?.[0]?.message?.content?.trim() || "";
+    const prompt = buildPrompt(type, context);
+    const result = await model.generateContent(prompt);
+    const text = result.response.text().trim();
 
     return NextResponse.json({ text });
   } catch (error) {
+    console.error("AI generation error:", error);
     return NextResponse.json({ error: "AI generation failed" }, { status: 500 });
   }
 }

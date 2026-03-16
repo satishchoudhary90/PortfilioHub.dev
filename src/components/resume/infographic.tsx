@@ -83,7 +83,7 @@ export default function InfographicResume({ data, editable, onEdit }: ResumeProp
     : 0;
   const skillsCount = data.skills?.length ?? 0;
 
-  const accents = { emerald: "#059669", amber: "#d97706", blue: "#2563eb" };
+  const accents = { emerald: "#059669", amber: "#d97706", blue: "#2563eb", violet: "#7c3aed" };
 
   return (
     <div className="w-[794px] min-h-[1123px] mx-auto shadow-2xl bg-white p-8">

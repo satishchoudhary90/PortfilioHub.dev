@@ -17,6 +17,7 @@ export default function ProfilePage() {
   const { addToast } = useToast();
   const [isLoading, setIsLoading] = useState(false);
   const [isGenerating, setIsGenerating] = useState(false);
+  const [isGeneratingHeadline, setIsGeneratingHeadline] = useState(false);
 
   const { register, handleSubmit, formState: { errors }, reset, watch, setValue } = useForm<ProfileInput>({
     resolver: zodResolver(profileSchema),
@@ -58,6 +59,26 @@ export default function ProfilePage() {
       addToast({ title: "Something went wrong", variant: "error" });
     }
     setIsLoading(false);
+  }
+
+  async function generateHeadline() {
+    setIsGeneratingHeadline(true);
+    try {
+      const name = watch("name");
+      const res = await fetch("/api/ai", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ type: "headline", context: name || "a software developer" }),
+      });
+      const data = await res.json();
+      if (data.text) {
+        setValue("headline", data.text);
+        addToast({ title: "Headline generated!", variant: "success" });
+      }
+    } catch {
+      addToast({ title: "Failed to generate headline", variant: "error" });
+    }
+    setIsGeneratingHeadline(false);
   }
 
   async function generateBio() {
@@ -112,7 +133,13 @@ export default function ProfilePage() {
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="headline">Headline</Label>
+                <div className="flex items-center justify-between">
+                  <Label htmlFor="headline">Headline</Label>
+                  <Button type="button" variant="ghost" size="sm" onClick={generateHeadline} disabled={isGeneratingHeadline}>
+                    <Sparkles className="h-4 w-4 mr-1" />
+                    {isGeneratingHeadline ? "Generating..." : "AI Generate"}
+                  </Button>
+                </div>
                 <Input id="headline" placeholder="Full Stack Developer" {...register("headline")} />
               </div>
 

@@ -48,6 +48,8 @@ import {
   Twitter,
   Globe,
   Mail,
+  Sparkles,
+  Loader2,
 } from "lucide-react";
 import { formatDate } from "@/lib/utils";
 
@@ -94,6 +96,8 @@ export default function PortfolioBuilderPage() {
   const [editingItem, setEditingItem] = useState<{ section: SectionKey; id: string | null } | null>(null);
   const [formData, setFormData] = useState<any>({});
   const [loading, setLoading] = useState(true);
+  const [aiGenerating, setAiGenerating] = useState<string | null>(null);
+  const [suggestedSkills, setSuggestedSkills] = useState<string[]>([]);
 
   const sensors = useSensors(
     useSensor(PointerSensor, { activationConstraint: { distance: 8 } }),
@@ -221,6 +225,78 @@ export default function PortfolioBuilderPage() {
     setFormData((p: any) => ({ ...p, techStack: p.techStack.filter((t: string) => t !== tag) }));
   }
 
+  async function aiGenerate(type: string, context: string) {
+    setAiGenerating(type);
+    try {
+      const res = await fetch("/api/ai", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ type, context }),
+      });
+      const data = await res.json();
+      if (data.text) return data.text;
+    } catch {}
+    setAiGenerating(null);
+    return null;
+  }
+
+  async function aiGenerateProjectDesc() {
+    const title = formData.title || "";
+    const tech = formData.techStack?.join(", ") || "";
+    const text = await aiGenerate("project", `Title: ${title}, Tech: ${tech}`);
+    if (text) {
+      setFormData((p: any) => ({ ...p, description: text }));
+      addToast({ title: "Description generated!", variant: "success" });
+    }
+    setAiGenerating(null);
+  }
+
+  async function aiGenerateExpDesc() {
+    const position = formData.position || "";
+    const company = formData.company || "";
+    const text = await aiGenerate("experience", `Position: ${position} at ${company}`);
+    if (text) {
+      setFormData((p: any) => ({ ...p, description: text }));
+      addToast({ title: "Description generated!", variant: "success" });
+    }
+    setAiGenerating(null);
+  }
+
+  async function aiSuggestSkills() {
+    const projectContext = projects.map(p => `${p.title} (${p.techStack?.join(", ")})`).join("; ");
+    const existingSkills = skills.map(s => s.name).join(", ");
+    const text = await aiGenerate("skill-suggest", `Projects: ${projectContext}. Existing skills: ${existingSkills}`);
+    if (text) {
+      try {
+        const parsed = JSON.parse(text);
+        if (Array.isArray(parsed)) {
+          const existing = new Set(skills.map(s => s.name.toLowerCase()));
+          setSuggestedSkills(parsed.filter((s: string) => !existing.has(s.toLowerCase())));
+        }
+      } catch {
+        addToast({ title: "Could not parse skill suggestions", variant: "error" });
+      }
+    }
+    setAiGenerating(null);
+  }
+
+  async function addSuggestedSkill(name: string) {
+    try {
+      const res = await fetch("/api/skills", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name, category: "general", level: 70 }),
+      });
+      if (res.ok) {
+        setSuggestedSkills(prev => prev.filter(s => s !== name));
+        fetchAll();
+        addToast({ title: `"${name}" added!`, variant: "success" });
+      }
+    } catch {
+      addToast({ title: "Failed to add skill", variant: "error" });
+    }
+  }
+
   function getItems(section: SectionKey): any[] {
     return { projects, skills, experience: experiences, education: educations, socialLinks }[section];
   }
@@ -234,7 +310,21 @@ export default function PortfolioBuilderPage() {
               <div><Label className="text-xs">Title *</Label><Input value={formData.title || ""} onChange={e => setFormData((p: any) => ({ ...p, title: e.target.value }))} placeholder="Project name" /></div>
               <div><Label className="text-xs">Image URL</Label><Input value={formData.imageUrl || ""} onChange={e => setFormData((p: any) => ({ ...p, imageUrl: e.target.value }))} placeholder="https://..." /></div>
             </div>
-            <div><Label className="text-xs">Description</Label><Textarea value={formData.description || ""} onChange={e => setFormData((p: any) => ({ ...p, description: e.target.value }))} placeholder="What does this project do?" rows={2} /></div>
+            <div>
+              <div className="flex items-center justify-between">
+                <Label className="text-xs">Description</Label>
+                <button
+                  type="button"
+                  onClick={aiGenerateProjectDesc}
+                  disabled={aiGenerating === "project"}
+                  className="flex items-center gap-1 text-[11px] text-indigo-400 hover:text-indigo-300 disabled:opacity-50 transition-colors"
+                >
+                  {aiGenerating === "project" ? <Loader2 className="h-3 w-3 animate-spin" /> : <Sparkles className="h-3 w-3" />}
+                  AI Generate
+                </button>
+              </div>
+              <Textarea value={formData.description || ""} onChange={e => setFormData((p: any) => ({ ...p, description: e.target.value }))} placeholder="What does this project do?" rows={2} />
+            </div>
             <div className="grid grid-cols-2 gap-3">
               <div><Label className="text-xs">GitHub URL</Label><Input value={formData.githubUrl || ""} onChange={e => setFormData((p: any) => ({ ...p, githubUrl: e.target.value }))} placeholder="https://github.com/..." /></div>
               <div><Label className="text-xs">Live URL</Label><Input value={formData.liveUrl || ""} onChange={e => setFormData((p: any) => ({ ...p, liveUrl: e.target.value }))} placeholder="https://..." /></div>
@@ -287,7 +377,21 @@ export default function PortfolioBuilderPage() {
               <div className="flex items-end pb-2 gap-2"><Switch checked={formData.current || false} onCheckedChange={v => setFormData((p: any) => ({ ...p, current: v, endDate: v ? "" : p.endDate }))} /><Label className="text-xs">Current</Label></div>
             </div>
             <div><Label className="text-xs">Location</Label><Input value={formData.location || ""} onChange={e => setFormData((p: any) => ({ ...p, location: e.target.value }))} placeholder="City, Country" /></div>
-            <div><Label className="text-xs">Description</Label><Textarea value={formData.description || ""} onChange={e => setFormData((p: any) => ({ ...p, description: e.target.value }))} rows={2} placeholder="What did you do?" /></div>
+            <div>
+              <div className="flex items-center justify-between">
+                <Label className="text-xs">Description</Label>
+                <button
+                  type="button"
+                  onClick={aiGenerateExpDesc}
+                  disabled={aiGenerating === "experience"}
+                  className="flex items-center gap-1 text-[11px] text-indigo-400 hover:text-indigo-300 disabled:opacity-50 transition-colors"
+                >
+                  {aiGenerating === "experience" ? <Loader2 className="h-3 w-3 animate-spin" /> : <Sparkles className="h-3 w-3" />}
+                  AI Generate
+                </button>
+              </div>
+              <Textarea value={formData.description || ""} onChange={e => setFormData((p: any) => ({ ...p, description: e.target.value }))} rows={2} placeholder="What did you do?" />
+            </div>
           </div>
         );
       case "education":
@@ -418,6 +522,18 @@ export default function PortfolioBuilderPage() {
                     <Badge variant="secondary" className="ml-1 text-[10px]">{items.length}</Badge>
                   </CardTitle>
                   <div className="flex items-center gap-2">
+                    {section.key === "skills" && (
+                      <Button
+                        size="sm"
+                        variant="ghost"
+                        onClick={(e) => { e.stopPropagation(); aiSuggestSkills(); }}
+                        disabled={aiGenerating === "skill-suggest"}
+                        className="text-indigo-400 hover:text-indigo-300"
+                      >
+                        {aiGenerating === "skill-suggest" ? <Loader2 className="h-3.5 w-3.5 mr-1 animate-spin" /> : <Sparkles className="h-3.5 w-3.5 mr-1" />}
+                        AI Suggest
+                      </Button>
+                    )}
                     <Button
                       size="sm"
                       variant="secondary"
@@ -444,6 +560,22 @@ export default function PortfolioBuilderPage() {
                             </div>
                           </div>
                           {renderForm(section.key)}
+                        </motion.div>
+                      )}
+
+                      {section.key === "skills" && suggestedSkills.length > 0 && (
+                        <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} className="p-3 rounded-xl bg-indigo-500/5 border border-indigo-500/20">
+                          <p className="text-xs text-indigo-400 mb-2 flex items-center gap-1"><Sparkles className="h-3 w-3" /> AI Suggested Skills — click to add</p>
+                          <div className="flex flex-wrap gap-1.5">
+                            {suggestedSkills.map(skill => (
+                              <button key={skill} onClick={() => addSuggestedSkill(skill)} className="px-2.5 py-1 text-xs rounded-full bg-indigo-500/10 text-indigo-300 border border-indigo-500/20 hover:bg-indigo-500/20 hover:border-indigo-500/40 transition-all">
+                                + {skill}
+                              </button>
+                            ))}
+                            <button onClick={() => setSuggestedSkills([])} className="px-2 py-1 text-xs text-gray-500 hover:text-gray-300 transition-colors">
+                              Dismiss
+                            </button>
+                          </div>
                         </motion.div>
                       )}
 

@@ -2,10 +2,11 @@
 
 import { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
 import { FadeIn, StaggerContainer, StaggerItem } from "@/components/shared/motion-wrapper";
-import { Eye, MousePointerClick, FolderKanban, Zap, Briefcase, Users, Layers } from "lucide-react";
+import { Eye, MousePointerClick, FolderKanban, Zap, Briefcase, Users, Layers, Sparkles, Loader2, X, CheckCircle2, AlertTriangle, Lightbulb } from "lucide-react";
 
 export default function DashboardPage() {
   const { data: session } = useSession();
@@ -16,6 +17,9 @@ export default function DashboardPage() {
     views: 0,
     clicks: 0,
   });
+  const [reviewOpen, setReviewOpen] = useState(false);
+  const [reviewLoading, setReviewLoading] = useState(false);
+  const [reviewText, setReviewText] = useState("");
 
   useEffect(() => {
     async function fetchStats() {
@@ -39,6 +43,44 @@ export default function DashboardPage() {
     fetchStats();
   }, []);
 
+  async function runAiReview() {
+    setReviewOpen(true);
+    setReviewLoading(true);
+    setReviewText("");
+    try {
+      const [profile, projects, skills, experiences, educations] = await Promise.all([
+        fetch("/api/profile").then(r => r.json()).catch(() => ({})),
+        fetch("/api/projects").then(r => r.json()).catch(() => []),
+        fetch("/api/skills").then(r => r.json()).catch(() => []),
+        fetch("/api/experience").then(r => r.json()).catch(() => []),
+        fetch("/api/education").then(r => r.json()).catch(() => []),
+      ]);
+
+      const context = [
+        `Name: ${profile.name || "not set"}`,
+        `Headline: ${profile.headline || "not set"}`,
+        `Bio: ${profile.bio || "not set"}`,
+        `Location: ${profile.location || "not set"}`,
+        `Website: ${profile.website || "not set"}`,
+        `Projects (${Array.isArray(projects) ? projects.length : 0}): ${Array.isArray(projects) ? projects.map((p: any) => `${p.title} [${p.techStack?.join(",")}]`).join("; ") : "none"}`,
+        `Skills (${Array.isArray(skills) ? skills.length : 0}): ${Array.isArray(skills) ? skills.map((s: any) => s.name).join(", ") : "none"}`,
+        `Experience (${Array.isArray(experiences) ? experiences.length : 0}): ${Array.isArray(experiences) ? experiences.map((e: any) => `${e.position} at ${e.company}`).join("; ") : "none"}`,
+        `Education (${Array.isArray(educations) ? educations.length : 0}): ${Array.isArray(educations) ? educations.map((e: any) => `${e.degree} at ${e.institution}`).join("; ") : "none"}`,
+      ].join(". ");
+
+      const res = await fetch("/api/ai", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ type: "portfolio-review", context }),
+      });
+      const data = await res.json();
+      setReviewText(data.text || "Could not generate review at this time.");
+    } catch {
+      setReviewText("Failed to generate portfolio review. Please try again.");
+    }
+    setReviewLoading(false);
+  }
+
   const statCards = [
     { title: "Portfolio Views", value: stats.views, icon: Eye, color: "from-blue-500 to-cyan-500" },
     { title: "Project Clicks", value: stats.clicks, icon: MousePointerClick, color: "from-purple-500 to-pink-500" },
@@ -47,16 +89,86 @@ export default function DashboardPage() {
     { title: "Experience", value: stats.experiences, icon: Briefcase, color: "from-emerald-500 to-teal-500" },
   ];
 
+  const reviewLines = reviewText.split("\n").filter(l => l.trim());
+
   return (
     <div className="space-y-8">
       <FadeIn>
-        <div>
-          <h1 className="text-3xl font-bold text-white">
-            Welcome back, {session?.user?.name?.split(" ")[0] || "Developer"}
-          </h1>
-          <p className="text-gray-400 mt-1">Here&apos;s an overview of your portfolio</p>
+        <div className="flex items-center justify-between">
+          <div>
+            <h1 className="text-3xl font-bold text-white">
+              Welcome back, {session?.user?.name?.split(" ")[0] || "Developer"}
+            </h1>
+            <p className="text-gray-400 mt-1">Here&apos;s an overview of your portfolio</p>
+          </div>
+          <Button
+            onClick={runAiReview}
+            disabled={reviewLoading}
+            className="bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500 border-0 shadow-lg shadow-indigo-500/20"
+          >
+            {reviewLoading ? <Loader2 className="h-4 w-4 mr-2 animate-spin" /> : <Sparkles className="h-4 w-4 mr-2" />}
+            AI Portfolio Review
+          </Button>
         </div>
       </FadeIn>
+
+      {/* AI Review Modal */}
+      <AnimatePresence>
+        {reviewOpen && (
+          <motion.div
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            transition={{ duration: 0.3 }}
+          >
+            <Card className="border-indigo-500/20 bg-indigo-500/5 backdrop-blur-xl">
+              <CardHeader className="pb-3">
+                <div className="flex items-center justify-between">
+                  <CardTitle className="flex items-center gap-2 text-lg">
+                    <Sparkles className="h-5 w-5 text-indigo-400" />
+                    AI Portfolio Review
+                  </CardTitle>
+                  <button onClick={() => setReviewOpen(false)} className="p-1.5 rounded-lg hover:bg-white/10 text-gray-400 hover:text-white transition-colors">
+                    <X className="h-4 w-4" />
+                  </button>
+                </div>
+              </CardHeader>
+              <CardContent>
+                {reviewLoading ? (
+                  <div className="flex items-center gap-3 py-8 justify-center text-gray-400">
+                    <Loader2 className="h-5 w-5 animate-spin text-indigo-400" />
+                    <span>Analyzing your portfolio...</span>
+                  </div>
+                ) : (
+                  <div className="space-y-3">
+                    {reviewLines.map((line, i) => {
+                      const cleaned = line.replace(/^[\d\-\.\*]+\s*/, "").trim();
+                      if (!cleaned) return null;
+                      return (
+                        <motion.div
+                          key={i}
+                          initial={{ opacity: 0, x: -10 }}
+                          animate={{ opacity: 1, x: 0 }}
+                          transition={{ delay: i * 0.1 }}
+                          className="flex items-start gap-3 p-3 rounded-lg bg-white/[0.03] border border-white/[0.06]"
+                        >
+                          <Lightbulb className="h-4 w-4 text-amber-400 shrink-0 mt-0.5" />
+                          <p className="text-sm text-gray-300 leading-relaxed">{cleaned}</p>
+                        </motion.div>
+                      );
+                    })}
+                    <div className="flex justify-end pt-2">
+                      <Button size="sm" variant="ghost" onClick={runAiReview} disabled={reviewLoading}>
+                        <Sparkles className="h-3.5 w-3.5 mr-1" /> Regenerate
+                      </Button>
+                    </div>
+                  </div>
+                )}
+              </CardContent>
+            </Card>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       <StaggerContainer className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4">
         {statCards.map((stat) => (

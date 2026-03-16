@@ -9,7 +9,7 @@ import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
 import { useToast } from "@/components/ui/toast";
 import { FadeIn } from "@/components/shared/motion-wrapper";
-import { Download, FileText, Check, Pencil, Save } from "lucide-react";
+import { Download, FileText, Check, Pencil, Save, Sparkles, Loader2 } from "lucide-react";
 import { formatDate, cn } from "@/lib/utils";
 import jsPDF from "jspdf";
 
@@ -78,6 +78,7 @@ export default function ResumePage() {
   const [editMode, setEditMode] = useState(false);
   const [activeCategory, setActiveCategory] = useState("all");
   const [editedData, setEditedData] = useState<any>(null);
+  const [aiSummaryLoading, setAiSummaryLoading] = useState(false);
 
   useEffect(() => {
     fetch("/api/resume")
@@ -118,6 +119,35 @@ export default function ResumePage() {
     } catch {
       addToast({ title: "Failed to save", variant: "error" });
     }
+  }
+
+  async function aiGenerateSummary() {
+    if (!displayData) return;
+    setAiSummaryLoading(true);
+    try {
+      const context = [
+        `Name: ${displayData.name}`,
+        `Headline: ${displayData.headline || ""}`,
+        `Skills: ${displayData.skills?.map((s: any) => s.name).join(", ") || ""}`,
+        `Experience: ${displayData.experiences?.map((e: any) => `${e.position} at ${e.company}`).join("; ") || ""}`,
+        `Projects: ${displayData.projects?.map((p: any) => p.title).join(", ") || ""}`,
+      ].join(". ");
+
+      const res = await fetch("/api/ai", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ type: "resume-summary", context }),
+      });
+      const data = await res.json();
+      if (data.text) {
+        setEditedData((prev: any) => ({ ...prev, bio: data.text }));
+        if (!editMode) setEditMode(true);
+        addToast({ title: "Resume summary generated! Review and save.", variant: "success" });
+      }
+    } catch {
+      addToast({ title: "Failed to generate summary", variant: "error" });
+    }
+    setAiSummaryLoading(false);
   }
 
   const displayData = editMode ? editedData : userData;
@@ -357,6 +387,15 @@ export default function ResumePage() {
             </p>
           </div>
           <div className="flex items-center gap-3">
+            <Button
+              variant="ghost"
+              onClick={aiGenerateSummary}
+              disabled={aiSummaryLoading || !userData}
+              className="text-indigo-400 hover:text-indigo-300"
+            >
+              {aiSummaryLoading ? <Loader2 className="h-4 w-4 mr-2 animate-spin" /> : <Sparkles className="h-4 w-4 mr-2" />}
+              AI Summary
+            </Button>
             {editMode && (
               <Button variant="secondary" onClick={saveEdits}>
                 <Save className="h-4 w-4 mr-2" />
