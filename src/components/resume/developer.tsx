@@ -71,17 +71,17 @@ export default function DeveloperResume({ data, editable, onEdit }: ResumeProps)
             <span style={{ color: NAME_COLOR }}>const </span>
             <span style={{ color: "#c0caf5" }}>name</span>
             <span style={{ color: "#9ece6a" }}> = </span>
-            <span style={{ color: "#e0af68" }}>"</span>
+            <span style={{ color: "#e0af68" }}>{'"'}</span>
             <EditableText value={data.name} field="name" editable={editable} onEdit={onEdit} tag="span" />
-            <span style={{ color: "#e0af68" }}>"</span>
+            <span style={{ color: "#e0af68" }}>{'"'}</span>
             <span style={{ color: "#9ece6a" }}>;</span>
           </div>
           <div className="mt-1">
             <span style={{ color: "#c0caf5" }}>headline</span>
             <span style={{ color: "#9ece6a" }}> = </span>
-            <span style={{ color: "#e0af68" }}>"</span>
+            <span style={{ color: "#e0af68" }}>{'"'}</span>
             <EditableText value={data.headline} field="headline" editable={editable} onEdit={onEdit} tag="span" />
-            <span style={{ color: "#e0af68" }}>"</span>
+            <span style={{ color: "#e0af68" }}>{'"'}</span>
             <span style={{ color: "#9ece6a" }}>;</span>
           </div>
         </div>
@@ -119,7 +119,7 @@ export default function DeveloperResume({ data, editable, onEdit }: ResumeProps)
                   <span style={{ color: "#c0caf5" }}>{skill.name}</span>
                   <span style={{ color: "#9ece6a" }}> {"}"}</span>
                   <span style={{ color: "#7aa2f7" }}> from </span>
-                  <span style={{ color: "#e0af68" }}>"{skill.category || "stack"}"</span>
+                  <span style={{ color: "#e0af68" }}>{`"${skill.category || "stack"}"`}</span>
                   <span style={{ color: "#9ece6a" }}>;</span>
                 </div>
               ))}
