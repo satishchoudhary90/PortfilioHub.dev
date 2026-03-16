@@ -51,20 +51,26 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: "Invalid generation type" }, { status: 400 });
     }
 
-    if (!process.env.GEMINI_API_KEY) {
+    const apiKey = process.env.GEMINI_API_KEY;
+    if (!apiKey || apiKey === "your-gemini-api-key" || apiKey.length < 10) {
       return NextResponse.json({ text: FALLBACKS[type] });
     }
 
-    const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
-    const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash" });
+    try {
+      const genAI = new GoogleGenerativeAI(apiKey);
+      const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash" });
 
-    const prompt = buildPrompt(type, context);
-    const result = await model.generateContent(prompt);
-    const text = result.response.text().trim();
+      const prompt = buildPrompt(type, context);
+      const result = await model.generateContent(prompt);
+      const text = result.response.text().trim();
 
-    return NextResponse.json({ text });
+      return NextResponse.json({ text });
+    } catch (aiError) {
+      console.error("Gemini API error, returning fallback:", aiError);
+      return NextResponse.json({ text: FALLBACKS[type] });
+    }
   } catch (error) {
-    console.error("AI generation error:", error);
+    console.error("AI route error:", error);
     return NextResponse.json({ error: "AI generation failed" }, { status: 500 });
   }
 }
