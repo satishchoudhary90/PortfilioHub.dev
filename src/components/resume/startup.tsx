@@ -49,25 +49,30 @@ export default function StartupResume({
     <div className="w-[794px] min-h-[1123px] mx-auto shadow-2xl bg-white text-gray-900 overflow-hidden rounded-lg">
       {/* Gradient header */}
       <div className="bg-gradient-to-r from-violet-600 to-fuchsia-500 text-white px-10 py-8">
-        <h1 className="text-2xl font-bold">
-          <EditableText
-            value={data.name}
-            field="name"
-            editable={editable}
-            onEdit={onEdit}
-            tag="span"
-          />
-        </h1>
-        <p className="text-white/90 mt-1">
-          <EditableText
-            value={data.headline}
-            field="headline"
-            editable={editable}
-            onEdit={onEdit}
-            tag="span"
-          />
-        </p>
-        <div className="flex flex-wrap gap-2 mt-4">
+        <div className="flex items-center gap-4">
+          {data.image && (
+            <img src={data.image} alt="" className="w-14 h-14 rounded-full object-cover ring-2 ring-white/40 shrink-0" />
+          )}
+          <div>
+            <h1 className="text-2xl font-bold">
+              <EditableText
+                value={data.name}
+                field="name"
+                editable={editable}
+                onEdit={onEdit}
+                tag="span"
+              />
+            </h1>
+            <p className="text-white/90 mt-1">
+              <EditableText
+                value={data.headline}
+                field="headline"
+                editable={editable}
+                onEdit={onEdit}
+                tag="span"
+              />
+            </p>
+            <div className="flex flex-wrap gap-2 mt-4">
           {data.email && (
             <span className="px-3 py-1 rounded-full bg-white/20 text-sm">
               {data.email}
@@ -78,16 +83,18 @@ export default function StartupResume({
               {data.phone}
             </span>
           )}
-          {data.location && (
-            <span className="px-3 py-1 rounded-full bg-white/20 text-sm">
-              {data.location}
-            </span>
-          )}
-          {data.website && (
-            <span className="px-3 py-1 rounded-full bg-white/20 text-sm">
-              {data.website}
-            </span>
-          )}
+            {data.location && (
+              <span className="px-3 py-1 rounded-full bg-white/20 text-sm">
+                {data.location}
+              </span>
+            )}
+            {data.website && (
+              <span className="px-3 py-1 rounded-full bg-white/20 text-sm">
+                {data.website}
+              </span>
+            )}
+            </div>
+          </div>
         </div>
       </div>
 

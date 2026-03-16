@@ -33,9 +33,16 @@ export default function CreativeResume({ data, editable, onEdit }: ResumeProps) 
     <div className="bg-white text-gray-900 flex w-[794px] min-h-[1123px] mx-auto shadow-2xl font-sans">
       {/* Left sidebar */}
       <div className="w-1/3 bg-indigo-900 text-white p-6 space-y-6">
-        {/* Avatar placeholder */}
-        <div className="w-20 h-20 rounded-full bg-indigo-700 flex items-center justify-center text-2xl font-bold mx-auto">
-          {(data.name || "D").split(" ").map((n: string) => n[0]).join("").slice(0, 2)}
+        {/* Avatar / Photo */}
+        <div className="flex justify-center">
+          {data.image && (
+            <img src={data.image} alt="" className="w-20 h-20 rounded-full object-cover ring-2 ring-indigo-400/50 mx-auto" />
+          )}
+          {!data.image && (
+            <div className="w-20 h-20 rounded-full bg-indigo-700 flex items-center justify-center text-2xl font-bold mx-auto">
+              {(data.name || "D").split(" ").map((n: string) => n[0]).join("").slice(0, 2)}
+            </div>
+          )}
         </div>
 
         <div className="text-center">

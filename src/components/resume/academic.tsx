@@ -52,29 +52,34 @@ export default function AcademicResume({
     >
       {/* Contact */}
       <div className="text-center mb-8">
-        <h1 className="text-2xl font-bold">
-          <EditableText
-            value={data.name}
-            field="name"
-            editable={editable}
-            onEdit={onEdit}
-            tag="span"
-          />
-        </h1>
-        <p className="mt-1 text-base">
-          <EditableText
-            value={data.headline}
-            field="headline"
-            editable={editable}
-            onEdit={onEdit}
-            tag="span"
-          />
-        </p>
-        <div className="flex flex-wrap justify-center gap-4 mt-3 text-sm text-gray-600">
-          {data.email && <span>{data.email}</span>}
-          {data.phone && <span>{data.phone}</span>}
-          {data.location && <span>{data.location}</span>}
-          {data.website && <span>{data.website}</span>}
+        <div className="flex flex-col items-center gap-3">
+          {data.image && (
+            <img src={data.image} alt="" className="w-14 h-14 rounded-full object-cover border border-gray-200 shadow-sm" />
+          )}
+          <h1 className="text-2xl font-bold">
+            <EditableText
+              value={data.name}
+              field="name"
+              editable={editable}
+              onEdit={onEdit}
+              tag="span"
+            />
+          </h1>
+          <p className="mt-1 text-base">
+            <EditableText
+              value={data.headline}
+              field="headline"
+              editable={editable}
+              onEdit={onEdit}
+              tag="span"
+            />
+          </p>
+          <div className="flex flex-wrap justify-center gap-4 mt-3 text-sm text-gray-600">
+            {data.email && <span>{data.email}</span>}
+            {data.phone && <span>{data.phone}</span>}
+            {data.location && <span>{data.location}</span>}
+            {data.website && <span>{data.website}</span>}
+          </div>
         </div>
       </div>
 

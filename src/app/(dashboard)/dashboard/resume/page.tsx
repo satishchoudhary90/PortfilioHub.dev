@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -9,7 +9,7 @@ import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
 import { useToast } from "@/components/ui/toast";
 import { FadeIn } from "@/components/shared/motion-wrapper";
-import { Download, FileText, Check, Pencil, Save, Sparkles, Loader2 } from "lucide-react";
+import { Download, FileText, Check, Pencil, Save, Sparkles, Loader2, Camera, Upload, X, User } from "lucide-react";
 import { formatDate, cn } from "@/lib/utils";
 import jsPDF from "jspdf";
 
@@ -79,6 +79,12 @@ export default function ResumePage() {
   const [activeCategory, setActiveCategory] = useState("all");
   const [editedData, setEditedData] = useState<any>(null);
   const [aiSummaryLoading, setAiSummaryLoading] = useState(false);
+  const [cameraOpen, setCameraOpen] = useState(false);
+  const [photoSaving, setPhotoSaving] = useState(false);
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const streamRef = useRef<MediaStream | null>(null);
 
   useEffect(() => {
     fetch("/api/resume")
@@ -89,6 +95,121 @@ export default function ResumePage() {
       })
       .catch(() => {});
   }, []);
+
+  const stopCamera = useCallback(() => {
+    if (streamRef.current) {
+      streamRef.current.getTracks().forEach(t => t.stop());
+      streamRef.current = null;
+    }
+    setCameraOpen(false);
+  }, []);
+
+  async function startCamera() {
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({
+        video: { facingMode: "user", width: { ideal: 400 }, height: { ideal: 400 } },
+      });
+      streamRef.current = stream;
+      setCameraOpen(true);
+      setTimeout(() => {
+        if (videoRef.current) {
+          videoRef.current.srcObject = stream;
+          videoRef.current.play();
+        }
+      }, 100);
+    } catch {
+      addToast({ title: "Could not access camera. Please check permissions.", variant: "error" });
+    }
+  }
+
+  function capturePhoto() {
+    if (!videoRef.current || !canvasRef.current) return;
+    const video = videoRef.current;
+    const canvas = canvasRef.current;
+    const size = Math.min(video.videoWidth, video.videoHeight);
+    canvas.width = 300;
+    canvas.height = 300;
+    const ctx = canvas.getContext("2d")!;
+    const sx = (video.videoWidth - size) / 2;
+    const sy = (video.videoHeight - size) / 2;
+    ctx.drawImage(video, sx, sy, size, size, 0, 0, 300, 300);
+    const dataUrl = canvas.toDataURL("image/jpeg", 0.85);
+    stopCamera();
+    savePhoto(dataUrl);
+  }
+
+  function handleFileUpload(e: React.ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    if (!file.type.startsWith("image/")) {
+      addToast({ title: "Please select an image file", variant: "error" });
+      return;
+    }
+    if (file.size > 2 * 1024 * 1024) {
+      addToast({ title: "Image must be under 2MB", variant: "error" });
+      return;
+    }
+    const reader = new FileReader();
+    reader.onload = () => {
+      const img = new Image();
+      img.onload = () => {
+        const canvas = document.createElement("canvas");
+        canvas.width = 300;
+        canvas.height = 300;
+        const ctx = canvas.getContext("2d")!;
+        const size = Math.min(img.width, img.height);
+        const sx = (img.width - size) / 2;
+        const sy = (img.height - size) / 2;
+        ctx.drawImage(img, sx, sy, size, size, 0, 0, 300, 300);
+        const dataUrl = canvas.toDataURL("image/jpeg", 0.85);
+        savePhoto(dataUrl);
+      };
+      img.src = reader.result as string;
+    };
+    reader.readAsDataURL(file);
+    if (fileInputRef.current) fileInputRef.current.value = "";
+  }
+
+  async function savePhoto(dataUrl: string) {
+    setPhotoSaving(true);
+    try {
+      const res = await fetch("/api/profile/photo", {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ photo: dataUrl }),
+      });
+      if (res.ok) {
+        setUserData((prev: any) => ({ ...prev, image: dataUrl }));
+        setEditedData((prev: any) => ({ ...prev, image: dataUrl }));
+        addToast({ title: "Photo saved!", variant: "success" });
+      } else {
+        const json = await res.json();
+        addToast({ title: json.error || "Failed to save photo", variant: "error" });
+      }
+    } catch {
+      addToast({ title: "Failed to save photo", variant: "error" });
+    }
+    setPhotoSaving(false);
+  }
+
+  async function removePhoto() {
+    setPhotoSaving(true);
+    try {
+      const res = await fetch("/api/profile/photo", {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ photo: null }),
+      });
+      if (res.ok) {
+        setUserData((prev: any) => ({ ...prev, image: null }));
+        setEditedData((prev: any) => ({ ...prev, image: null }));
+        addToast({ title: "Photo removed", variant: "success" });
+      }
+    } catch {
+      addToast({ title: "Failed to remove photo", variant: "error" });
+    }
+    setPhotoSaving(false);
+  }
 
   function handleEdit(field: string, value: string) {
     setEditedData((prev: any) => ({ ...prev, [field]: value }));
@@ -178,8 +299,22 @@ export default function ResumePage() {
     const textX = isCreative ? 78 : 20;
     const maxW = isCreative ? 110 : 170;
 
+    // Add photo to PDF if available
+    if (data.image && typeof data.image === "string" && data.image.startsWith("data:image")) {
+      try {
+        if (isCreative) {
+          doc.addImage(data.image, "JPEG", 15, 10, 20, 20);
+        } else {
+          doc.addImage(data.image, "JPEG", textX, y - 5, 18, 18);
+        }
+      } catch {}
+    }
+
+    const hasPhoto = data.image && typeof data.image === "string" && data.image.startsWith("data:image");
+    const nameX = !isCreative && hasPhoto ? textX + 22 : textX;
+
     if (isCreative) {
-      let sy = 30;
+      let sy = hasPhoto ? 34 : 30;
       doc.setTextColor(255, 255, 255);
       doc.setFontSize(14);
       doc.setFont("helvetica", "bold");
@@ -222,25 +357,26 @@ export default function ResumePage() {
     const subColor: [number, number, number] = isDark ? [100, 100, 110] : [120, 120, 120];
 
     if (!isCreative) {
+      const headerY = hasPhoto ? y + 2 : y;
       doc.setTextColor(...nameColor);
       doc.setFontSize(22);
       doc.setFont(isDark ? "courier" : "helvetica", "bold");
-      doc.text(data.name || "Developer", textX, y);
-      y += 7;
+      doc.text(data.name || "Developer", nameX, headerY);
 
+      let hy = headerY + 7;
       if (data.headline) {
         doc.setFontSize(11);
         doc.setFont(isDark ? "courier" : "helvetica", "normal");
         doc.setTextColor(...headlineColor);
-        doc.text(data.headline, textX, y);
-        y += 6;
+        doc.text(data.headline, nameX, hy);
+        hy += 6;
       }
 
       doc.setFontSize(8);
       doc.setTextColor(...subColor);
       const contact = [data.email, data.phone, data.location, data.website].filter(Boolean).join("  |  ");
-      doc.text(contact, textX, y);
-      y += 8;
+      doc.text(contact, textX, hasPhoto ? Math.max(hy, y + 16) : hy);
+      y = (hasPhoto ? Math.max(hy, y + 16) : hy) + 8;
 
       if (!isDark) {
         doc.setDrawColor(200);
@@ -433,6 +569,82 @@ export default function ResumePage() {
             </button>
           ))}
         </div>
+      </FadeIn>
+
+      {/* Resume Photo */}
+      <FadeIn delay={0.08}>
+        <Card className="border-white/10 bg-white/5 backdrop-blur-xl">
+          <CardContent className="p-4 sm:p-6">
+            <div className="flex flex-col sm:flex-row items-center gap-4 sm:gap-6">
+              {/* Photo preview */}
+              <div className="relative group shrink-0">
+                <div className="w-24 h-24 sm:w-28 sm:h-28 rounded-full overflow-hidden border-2 border-white/10 bg-white/5 flex items-center justify-center">
+                  {displayData?.image ? (
+                    <img src={displayData.image} alt="Resume photo" className="w-full h-full object-cover" />
+                  ) : (
+                    <User className="h-10 w-10 text-gray-600" />
+                  )}
+                </div>
+                {displayData?.image && (
+                  <button
+                    onClick={removePhoto}
+                    disabled={photoSaving}
+                    className="absolute -top-1 -right-1 p-1 rounded-full bg-red-500/90 text-white opacity-0 group-hover:opacity-100 transition-opacity hover:bg-red-500"
+                    title="Remove photo"
+                  >
+                    <X className="h-3 w-3" />
+                  </button>
+                )}
+              </div>
+
+              {/* Camera / Upload controls */}
+              <div className="flex-1 text-center sm:text-left">
+                <h3 className="text-sm font-medium text-white mb-1">Resume Photo</h3>
+                <p className="text-xs text-gray-500 mb-3">Take a photo with your camera or upload one. It will appear on your resume.</p>
+                
+                <AnimatePresence mode="wait">
+                  {cameraOpen ? (
+                    <motion.div
+                      key="camera"
+                      initial={{ opacity: 0, height: 0 }}
+                      animate={{ opacity: 1, height: "auto" }}
+                      exit={{ opacity: 0, height: 0 }}
+                      className="space-y-3"
+                    >
+                      <div className="relative w-48 h-48 mx-auto sm:mx-0 rounded-xl overflow-hidden border border-white/10 bg-black">
+                        <video ref={videoRef} autoPlay playsInline muted className="w-full h-full object-cover mirror" style={{ transform: "scaleX(-1)" }} />
+                      </div>
+                      <div className="flex gap-2 justify-center sm:justify-start">
+                        <Button size="sm" onClick={capturePhoto}>
+                          <Camera className="h-3.5 w-3.5 mr-1.5" />
+                          Capture
+                        </Button>
+                        <Button size="sm" variant="secondary" onClick={stopCamera}>
+                          Cancel
+                        </Button>
+                      </div>
+                    </motion.div>
+                  ) : (
+                    <motion.div key="buttons" initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="flex gap-2 justify-center sm:justify-start">
+                      <Button size="sm" variant="secondary" onClick={startCamera} disabled={photoSaving}>
+                        <Camera className="h-3.5 w-3.5 mr-1.5" />
+                        Camera
+                      </Button>
+                      <Button size="sm" variant="secondary" onClick={() => fileInputRef.current?.click()} disabled={photoSaving}>
+                        {photoSaving ? <Loader2 className="h-3.5 w-3.5 mr-1.5 animate-spin" /> : <Upload className="h-3.5 w-3.5 mr-1.5" />}
+                        Upload
+                      </Button>
+                      <input ref={fileInputRef} type="file" accept="image/*" onChange={handleFileUpload} className="hidden" />
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
+
+              {/* Hidden canvas for capture */}
+              <canvas ref={canvasRef} className="hidden" />
+            </div>
+          </CardContent>
+        </Card>
       </FadeIn>
 
       {/* Template Selector */}

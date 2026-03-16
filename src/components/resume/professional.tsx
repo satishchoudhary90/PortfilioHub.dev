@@ -33,13 +33,20 @@ export default function ProfessionalResume({ data, editable, onEdit }: ResumePro
     <div className="bg-white text-gray-900 p-10 space-y-6 font-serif w-[794px] min-h-[1123px] mx-auto shadow-2xl">
       {/* Header */}
       <div className="border-b-2 border-gray-800 pb-4">
-        <EditableText value={data.name} field="name" editable={editable} onEdit={onEdit} className="text-3xl font-bold tracking-tight" tag="h1" />
-        <EditableText value={data.headline} field="headline" editable={editable} onEdit={onEdit} className="text-lg text-gray-600 mt-1 block" tag="p" />
-        <div className="flex flex-wrap gap-4 mt-3 text-sm text-gray-500">
-          {data.email && <span>{data.email}</span>}
-          {data.phone && <span>|&nbsp; {data.phone}</span>}
-          {data.location && <span>|&nbsp; {data.location}</span>}
-          {data.website && <span>|&nbsp; {data.website}</span>}
+        <div className="flex items-center gap-4">
+          {data.image && (
+            <img src={data.image} alt="" className="w-14 h-14 rounded-full object-cover border border-gray-200 shadow-sm shrink-0" />
+          )}
+          <div>
+            <EditableText value={data.name} field="name" editable={editable} onEdit={onEdit} className="text-3xl font-bold tracking-tight" tag="h1" />
+            <EditableText value={data.headline} field="headline" editable={editable} onEdit={onEdit} className="text-lg text-gray-600 mt-1 block" tag="p" />
+            <div className="flex flex-wrap gap-4 mt-3 text-sm text-gray-500">
+              {data.email && <span>{data.email}</span>}
+              {data.phone && <span>|&nbsp; {data.phone}</span>}
+              {data.location && <span>|&nbsp; {data.location}</span>}
+              {data.website && <span>|&nbsp; {data.website}</span>}
+            </div>
+          </div>
         </div>
       </div>
 

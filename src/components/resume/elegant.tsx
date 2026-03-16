@@ -53,6 +53,11 @@ export default function ElegantResume({
       <div className="space-y-12">
         {/* Header — large light-weight name */}
         <div>
+          <div className="flex items-center gap-5">
+            {data.image && (
+              <img src={data.image} alt="" className="w-14 h-14 rounded-full object-cover border border-gray-300 shadow-sm shrink-0" />
+            )}
+            <div>
           <h1 className="text-4xl font-light tracking-tight">
             <EditableText
               value={data.name}
@@ -80,6 +85,8 @@ export default function ElegantResume({
             {data.phone && <span>{data.phone}</span>}
             {data.location && <span>{data.location}</span>}
             {data.website && <span>{data.website}</span>}
+          </div>
+            </div>
           </div>
         </div>
 

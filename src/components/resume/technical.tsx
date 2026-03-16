@@ -46,9 +46,13 @@ export default function TechnicalResume({ data, editable, onEdit }: ResumeProps)
           <span className="w-2.5 h-2.5 rounded-full bg-green-500/70" />
           <span className="ml-2">resume.sh</span>
         </div>
-        <div className="text-sm space-y-1">
-          <p><span className="text-green-500">$</span> echo $NAME</p>
-          <EditableText value={data.name} field="name" editable={editable} onEdit={onEdit} className="text-white text-xl font-bold block" tag="p" />
+        <div className="flex items-start gap-4">
+          {data.image && (
+            <img src={data.image} alt="" className="w-12 h-12 rounded-full object-cover ring-2 ring-green-500/50 shrink-0" />
+          )}
+          <div className="text-sm space-y-1 flex-1">
+            <p><span className="text-green-500">$</span> echo $NAME</p>
+            <EditableText value={data.name} field="name" editable={editable} onEdit={onEdit} className="text-white text-xl font-bold block" tag="p" />
           {(data.headline || editable) && (
             <>
               <p><span className="text-green-500">$</span> cat role.txt</p>
@@ -64,6 +68,7 @@ export default function TechnicalResume({ data, editable, onEdit }: ResumeProps)
             {data.website && `, "website": "${data.website}"`}
             {" }"}
           </p>
+          </div>
         </div>
       </div>
 

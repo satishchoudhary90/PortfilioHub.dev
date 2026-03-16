@@ -48,6 +48,11 @@ export default function BoldResume({ data, editable, onEdit }: ResumeProps) {
         className="w-[30%] min-h-full p-8 text-white flex flex-col"
         style={{ backgroundColor: "#111" }}
       >
+        <div className="flex items-center gap-4">
+          {data.image && (
+            <img src={data.image} alt="" className="w-14 h-14 rounded-full object-cover ring-2 ring-white/30 shrink-0" />
+          )}
+          <div>
         <h1 className="text-xl font-bold leading-tight">
           <EditableText
             value={data.name}
@@ -66,6 +71,8 @@ export default function BoldResume({ data, editable, onEdit }: ResumeProps) {
             tag="span"
           />
         </p>
+          </div>
+        </div>
         <div className="mt-6 space-y-2 text-sm">
           {data.email && <div>{data.email}</div>}
           {data.phone && <div>{data.phone}</div>}

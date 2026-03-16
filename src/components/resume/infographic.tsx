@@ -109,12 +109,19 @@ export default function InfographicResume({ data, editable, onEdit }: ResumeProp
         </div>
       </div>
 
+      <div className="flex items-center gap-4 mb-6">
+        {data.image && (
+          <img src={data.image} alt="" className="w-14 h-14 rounded-full object-cover border border-gray-200 shadow-sm shrink-0" />
+        )}
+        <div>
       <h1 className="text-2xl font-bold text-gray-900 mb-1">
         <EditableText value={data.name} field="name" editable={editable} onEdit={onEdit} tag="span" />
       </h1>
-      <p className="text-gray-600 mb-6">
+      <p className="text-gray-600">
         <EditableText value={data.headline} field="headline" editable={editable} onEdit={onEdit} tag="span" />
       </p>
+        </div>
+      </div>
 
       {(data.bio || editable) && (
         <section className="mb-8">

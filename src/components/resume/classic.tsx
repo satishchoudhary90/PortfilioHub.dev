@@ -43,6 +43,10 @@ export default function ClassicResume({ data, editable, onEdit }: ResumeProps) {
     <div className="w-[794px] min-h-[1123px] mx-auto shadow-2xl bg-white text-black p-12 font-serif">
       {/* Name — centered, uppercase, wide letter-spacing */}
       <div className="text-center">
+        <div className="flex flex-col items-center gap-3">
+          {data.image && (
+            <img src={data.image} alt="" className="w-14 h-14 rounded-full object-cover border border-black/20 shadow-sm" />
+          )}
         <h1
           className="text-2xl font-bold uppercase tracking-[0.3em]"
           style={{ letterSpacing: "0.35em" }}
@@ -57,6 +61,7 @@ export default function ClassicResume({ data, editable, onEdit }: ResumeProps) {
         <p className="text-sm mt-3 text-black/80">
           <EditableText value={data.headline} field="headline" editable={editable} onEdit={onEdit} tag="span" />
         </p>
+        </div>
       </div>
 
       {/* Contact — centered below name */}

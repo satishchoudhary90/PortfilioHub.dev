@@ -55,33 +55,40 @@ export default function ExecutiveResume({
         className="px-12 py-10 text-white"
         style={{ backgroundColor: "#1e293b" }}
       >
-        <h1 className="text-3xl font-light tracking-wide">
-          <EditableText
-            value={data.name}
-            field="name"
-            editable={editable}
-            onEdit={onEdit}
-            tag="span"
-          />
-        </h1>
-        <div
-          className="h-px my-4"
-          style={{ backgroundColor: "#B8860B", width: "80px" }}
-        />
-        <p className="text-lg font-light text-white/90">
-          <EditableText
-            value={data.headline}
-            field="headline"
-            editable={editable}
-            onEdit={onEdit}
-            tag="span"
-          />
-        </p>
-        <div className="flex flex-wrap gap-6 mt-6 text-sm text-white/80">
-          {data.email && <span>{data.email}</span>}
-          {data.phone && <span>{data.phone}</span>}
-          {data.location && <span>{data.location}</span>}
-          {data.website && <span>{data.website}</span>}
+        <div className="flex items-center gap-5">
+          {data.image && (
+            <img src={data.image} alt="" className="w-14 h-14 rounded-full object-cover ring-2 ring-white/30 shrink-0" />
+          )}
+          <div>
+            <h1 className="text-3xl font-light tracking-wide">
+              <EditableText
+                value={data.name}
+                field="name"
+                editable={editable}
+                onEdit={onEdit}
+                tag="span"
+              />
+            </h1>
+            <div
+              className="h-px my-4"
+              style={{ backgroundColor: "#B8860B", width: "80px" }}
+            />
+            <p className="text-lg font-light text-white/90">
+              <EditableText
+                value={data.headline}
+                field="headline"
+                editable={editable}
+                onEdit={onEdit}
+                tag="span"
+              />
+            </p>
+            <div className="flex flex-wrap gap-6 mt-6 text-sm text-white/80">
+              {data.email && <span>{data.email}</span>}
+              {data.phone && <span>{data.phone}</span>}
+              {data.location && <span>{data.location}</span>}
+              {data.website && <span>{data.website}</span>}
+            </div>
+          </div>
         </div>
       </div>
 

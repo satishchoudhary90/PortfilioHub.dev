@@ -48,8 +48,14 @@ export default function ModernSplitResume({ data, editable, onEdit }: ResumeProp
         className="w-[35%] min-h-full p-6 flex flex-col text-white"
         style={{ backgroundColor: TEAL }}
       >
-        <div className="w-16 h-16 rounded-full bg-white/20 flex items-center justify-center text-xl font-bold mb-4">
-          {getInitials(data.name || "U")}
+        <div className="mb-4">
+          {data.image ? (
+            <img src={data.image} alt="" className="w-16 h-16 rounded-full object-cover ring-2 ring-white/40" />
+          ) : (
+            <div className="w-16 h-16 rounded-full bg-white/20 flex items-center justify-center text-xl font-bold">
+              {getInitials(data.name || "U")}
+            </div>
+          )}
         </div>
         <h1 className="text-lg font-bold leading-tight">
           <EditableText value={data.name} field="name" editable={editable} onEdit={onEdit} tag="span" />

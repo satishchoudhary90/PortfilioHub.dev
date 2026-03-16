@@ -33,7 +33,11 @@ export default function MinimalResume({ data, editable, onEdit }: ResumeProps) {
     <div className="bg-white text-gray-900 p-10 space-y-5 font-sans w-[794px] min-h-[1123px] mx-auto shadow-2xl">
       {/* Header — centered, clean */}
       <div className="text-center pb-4">
-        <EditableText value={data.name} field="name" editable={editable} onEdit={onEdit} className="text-2xl font-semibold block" tag="h1" />
+        <div className="flex flex-col items-center gap-3">
+          {data.image && (
+            <img src={data.image} alt="" className="w-14 h-14 rounded-full object-cover border border-gray-200 shadow-sm" />
+          )}
+          <EditableText value={data.name} field="name" editable={editable} onEdit={onEdit} className="text-2xl font-semibold block" tag="h1" />
         <EditableText value={data.headline} field="headline" editable={editable} onEdit={onEdit} className="text-gray-500 mt-0.5 block" tag="p" />
         <div className="flex flex-wrap justify-center gap-3 mt-2 text-xs text-gray-400">
           {data.email && <span>{data.email}</span>}
@@ -43,6 +47,7 @@ export default function MinimalResume({ data, editable, onEdit }: ResumeProps) {
           {data.location && <span>{data.location}</span>}
           {data.website && <span>·</span>}
           {data.website && <span>{data.website}</span>}
+        </div>
         </div>
       </div>
 

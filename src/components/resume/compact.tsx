@@ -43,12 +43,19 @@ export default function CompactResume({ data, editable, onEdit }: ResumeProps) {
     <div className="w-[794px] min-h-[1123px] mx-auto shadow-2xl bg-white p-6 text-xs">
       {/* Header: name, headline, two-column contact + skills */}
       <div className="border-b border-gray-300 pb-3 mb-3">
-        <h1 className="text-sm font-bold text-gray-900 leading-tight">
-          <EditableText value={data.name} field="name" editable={editable} onEdit={onEdit} tag="span" />
-        </h1>
-        <p className="text-gray-600 mt-0.5">
-          <EditableText value={data.headline} field="headline" editable={editable} onEdit={onEdit} tag="span" />
-        </p>
+        <div className="flex items-center gap-3">
+          {data.image && (
+            <img src={data.image} alt="" className="w-12 h-12 rounded-full object-cover border border-gray-200 shadow-sm shrink-0" />
+          )}
+          <div className="flex-1">
+            <h1 className="text-sm font-bold text-gray-900 leading-tight">
+              <EditableText value={data.name} field="name" editable={editable} onEdit={onEdit} tag="span" />
+            </h1>
+            <p className="text-gray-600 mt-0.5">
+              <EditableText value={data.headline} field="headline" editable={editable} onEdit={onEdit} tag="span" />
+            </p>
+          </div>
+        </div>
         <div className="grid grid-cols-2 gap-x-8 gap-y-1 mt-2">
           <div className="space-y-0.5">
             {data.email && <div className="text-gray-700">{data.email}</div>}

@@ -63,7 +63,11 @@ export default function DeveloperResume({ data, editable, onEdit }: ResumeProps)
 
       <div className="flex-1 py-6 pr-6 overflow-hidden">
         {/* Name & headline */}
-        <div className="mb-4">
+        <div className="mb-4 flex items-start gap-4">
+          {data.image && (
+            <img src={data.image} alt="" className="w-12 h-12 rounded-full object-cover ring-2 ring-green-500/50 shrink-0" />
+          )}
+          <div>
           <span style={{ color: COMMENT_COLOR }} className="italic">
             {"// "}resume.ts
           </span>
@@ -83,6 +87,7 @@ export default function DeveloperResume({ data, editable, onEdit }: ResumeProps)
             <EditableText value={data.headline} field="headline" editable={editable} onEdit={onEdit} tag="span" />
             <span style={{ color: "#e0af68" }}>{'"'}</span>
             <span style={{ color: "#9ece6a" }}>;</span>
+          </div>
           </div>
         </div>
 
