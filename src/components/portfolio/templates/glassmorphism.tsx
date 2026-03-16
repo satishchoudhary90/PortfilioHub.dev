@@ -59,7 +59,7 @@ export default function GlassmorphismTemplate({ data }: { data: { user: any } })
         </section>
 
         {user.bio && (
-          <section className="py-20 px-6">
+          <section id="about" className="py-20 px-6 scroll-mt-16">
             <FadeInView>
               <div className={`max-w-3xl mx-auto ${glass} rounded-2xl p-8`}>
                 <h2 className="text-sm uppercase tracking-widest text-purple-300/60 mb-4">About</h2>
@@ -70,7 +70,7 @@ export default function GlassmorphismTemplate({ data }: { data: { user: any } })
         )}
 
         {user.skills?.length > 0 && (
-          <section className="py-20 px-6">
+          <section id="skills" className="py-20 px-6 scroll-mt-16">
             <div className="max-w-5xl mx-auto">
               <FadeInView><h2 className="text-sm uppercase tracking-widest text-purple-300/60 mb-10 text-center">Skills</h2></FadeInView>
               <StaggerContainer className="flex flex-wrap justify-center gap-3">
@@ -88,7 +88,7 @@ export default function GlassmorphismTemplate({ data }: { data: { user: any } })
         )}
 
         {user.projects?.length > 0 && (
-          <section className="py-20 px-6">
+          <section id="projects" className="py-20 px-6 scroll-mt-16">
             <div className="max-w-6xl mx-auto">
               <FadeInView><h2 className="text-sm uppercase tracking-widest text-purple-300/60 mb-10 text-center">Projects</h2></FadeInView>
               <div className="grid md:grid-cols-2 gap-6">
@@ -118,7 +118,7 @@ export default function GlassmorphismTemplate({ data }: { data: { user: any } })
         )}
 
         {user.experiences?.length > 0 && (
-          <section className="py-20 px-6">
+          <section id="experience" className="py-20 px-6 scroll-mt-16">
             <div className="max-w-4xl mx-auto">
               <FadeInView><h2 className="text-sm uppercase tracking-widest text-purple-300/60 mb-10 text-center">Experience</h2></FadeInView>
               <div className="space-y-4">
@@ -142,7 +142,7 @@ export default function GlassmorphismTemplate({ data }: { data: { user: any } })
         )}
 
         {user.educations?.length > 0 && (
-          <section className="py-20 px-6">
+          <section id="education" className="py-20 px-6 scroll-mt-16">
             <div className="max-w-4xl mx-auto">
               <FadeInView><h2 className="text-sm uppercase tracking-widest text-purple-300/60 mb-10 text-center">Education</h2></FadeInView>
               <div className="space-y-4">
@@ -160,7 +160,7 @@ export default function GlassmorphismTemplate({ data }: { data: { user: any } })
           </section>
         )}
 
-        <section className="py-20 px-6">
+        <section id="contact" className="py-20 px-6 scroll-mt-16">
           <div className="max-w-lg mx-auto">
             <FadeInView>
               <div className={`${glass} rounded-2xl p-8`}>

@@ -53,7 +53,7 @@ export default function MonochromeTemplate({ data }: { data: { user: any } }) {
       </section>
 
       {user.bio && (
-        <section className="py-24 px-6 border-t border-gray-100">
+        <section id="about" className="py-24 px-6 border-t border-gray-100 scroll-mt-16">
           <FadeInView>
             <div className="max-w-4xl mx-auto">
               <p className="text-3xl font-light leading-relaxed text-gray-700">{user.bio}</p>
@@ -63,7 +63,7 @@ export default function MonochromeTemplate({ data }: { data: { user: any } }) {
       )}
 
       {user.skills?.length > 0 && (
-        <section className="py-24 px-6 border-t border-gray-100">
+        <section id="skills" className="py-24 px-6 border-t border-gray-100 scroll-mt-16">
           <div className="max-w-5xl mx-auto">
             <FadeInView><h2 className="text-xs uppercase tracking-[0.3em] text-gray-400 mb-12">Skills</h2></FadeInView>
             <div className="flex flex-wrap gap-4">
@@ -78,7 +78,7 @@ export default function MonochromeTemplate({ data }: { data: { user: any } }) {
       )}
 
       {user.projects?.length > 0 && (
-        <section className="py-24 px-6 border-t border-gray-100">
+        <section id="projects" className="py-24 px-6 border-t border-gray-100 scroll-mt-16">
           <div className="max-w-6xl mx-auto">
             <FadeInView><h2 className="text-xs uppercase tracking-[0.3em] text-gray-400 mb-12">Projects</h2></FadeInView>
             <div className="space-y-16">
@@ -113,7 +113,7 @@ export default function MonochromeTemplate({ data }: { data: { user: any } }) {
       )}
 
       {user.experiences?.length > 0 && (
-        <section className="py-24 px-6 border-t border-gray-100 bg-gray-50">
+        <section id="experience" className="py-24 px-6 border-t border-gray-100 bg-gray-50 scroll-mt-16">
           <div className="max-w-4xl mx-auto">
             <FadeInView><h2 className="text-xs uppercase tracking-[0.3em] text-gray-400 mb-12">Experience</h2></FadeInView>
             <div className="space-y-12">
@@ -137,7 +137,7 @@ export default function MonochromeTemplate({ data }: { data: { user: any } }) {
       )}
 
       {user.educations?.length > 0 && (
-        <section className="py-24 px-6 border-t border-gray-100">
+        <section id="education" className="py-24 px-6 border-t border-gray-100 scroll-mt-16">
           <div className="max-w-4xl mx-auto">
             <FadeInView><h2 className="text-xs uppercase tracking-[0.3em] text-gray-400 mb-12">Education</h2></FadeInView>
             <div className="space-y-8">
@@ -157,7 +157,7 @@ export default function MonochromeTemplate({ data }: { data: { user: any } }) {
         </section>
       )}
 
-      <section className="py-24 px-6 border-t border-gray-100 bg-black text-white">
+      <section id="contact" className="py-24 px-6 border-t border-gray-100 bg-black text-white scroll-mt-16">
         <div className="max-w-lg mx-auto">
           <FadeInView>
             <h2 className="text-xs uppercase tracking-[0.3em] text-gray-500 mb-10 text-center">Contact</h2>

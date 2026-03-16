@@ -81,7 +81,7 @@ export default function DarkHackerTemplate({ data }: { data: { user: any } }) {
 
       {/* About */}
       {user.bio && (
-        <section className="py-20 px-4 max-w-3xl mx-auto">
+        <section id="about" className="py-20 px-4 max-w-3xl mx-auto scroll-mt-16">
           <FadeInView>
             <div className="rounded-xl border border-green-500/20 bg-black/60 p-6">
               <p className="text-green-600 text-xs mb-3">{"/* about.md */"}</p>
@@ -94,7 +94,7 @@ export default function DarkHackerTemplate({ data }: { data: { user: any } }) {
 
       {/* Skills */}
       {user.skills?.length > 0 && (
-        <section className="py-20 px-4 max-w-3xl mx-auto">
+        <section id="skills" className="py-20 px-4 max-w-3xl mx-auto scroll-mt-16">
           <FadeInView>
             <h2 className="text-2xl font-bold text-green-300 mb-8"># Skills</h2>
           </FadeInView>
@@ -118,7 +118,7 @@ export default function DarkHackerTemplate({ data }: { data: { user: any } }) {
 
       {/* Projects */}
       {user.projects?.length > 0 && (
-        <section className="py-20 px-4 max-w-5xl mx-auto">
+        <section id="projects" className="py-20 px-4 max-w-5xl mx-auto scroll-mt-16">
           <FadeInView>
             <h2 className="text-2xl font-bold text-green-300 mb-8"># Projects</h2>
           </FadeInView>
@@ -150,7 +150,7 @@ export default function DarkHackerTemplate({ data }: { data: { user: any } }) {
 
       {/* Experience */}
       {user.experiences?.length > 0 && (
-        <section className="py-20 px-4 max-w-3xl mx-auto">
+        <section id="experience" className="py-20 px-4 max-w-3xl mx-auto scroll-mt-16">
           <FadeInView><h2 className="text-2xl font-bold text-green-300 mb-8"># Experience</h2></FadeInView>
           <div className="space-y-6">
             {user.experiences.map((exp: any, i: number) => (
@@ -168,7 +168,7 @@ export default function DarkHackerTemplate({ data }: { data: { user: any } }) {
       )}
 
       {/* Contact */}
-      <section className="py-20 px-4 max-w-2xl mx-auto">
+      <section id="contact" className="py-20 px-4 max-w-2xl mx-auto scroll-mt-16">
         <FadeInView>
           <h2 className="text-2xl font-bold text-green-300 mb-8 text-center"># Contact</h2>
           {sent ? (

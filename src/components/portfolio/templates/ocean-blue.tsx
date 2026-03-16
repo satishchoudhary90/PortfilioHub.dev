@@ -97,7 +97,7 @@ export default function OceanBlueTemplate({ data }: { data: { user: any } }) {
       </section>
 
       {user.bio && (
-        <section className="py-24 px-6">
+        <section id="about" className="py-24 px-6 scroll-mt-16">
           <FadeInView>
             <div className="max-w-4xl mx-auto">
               <h2 className="text-3xl font-bold mb-8 bg-gradient-to-r from-blue-400 to-cyan-300 bg-clip-text text-transparent">
@@ -110,7 +110,7 @@ export default function OceanBlueTemplate({ data }: { data: { user: any } }) {
       )}
 
       {user.skills?.length > 0 && (
-        <section className="py-24 px-6 bg-white/[0.02]">
+        <section id="skills" className="py-24 px-6 bg-white/[0.02] scroll-mt-16">
           <div className="max-w-5xl mx-auto">
             <FadeInView>
               <h2 className="text-3xl font-bold mb-12 bg-gradient-to-r from-sky-400 to-blue-400 bg-clip-text text-transparent">
@@ -134,7 +134,7 @@ export default function OceanBlueTemplate({ data }: { data: { user: any } }) {
       )}
 
       {user.projects?.length > 0 && (
-        <section className="py-24 px-6">
+        <section id="projects" className="py-24 px-6 scroll-mt-16">
           <div className="max-w-6xl mx-auto">
             <FadeInView>
               <h2 className="text-3xl font-bold mb-12 bg-gradient-to-r from-blue-400 to-cyan-300 bg-clip-text text-transparent">
@@ -199,7 +199,7 @@ export default function OceanBlueTemplate({ data }: { data: { user: any } }) {
       )}
 
       {user.experiences?.length > 0 && (
-        <section className="py-24 px-6 bg-white/[0.02]">
+        <section id="experience" className="py-24 px-6 bg-white/[0.02] scroll-mt-16">
           <div className="max-w-4xl mx-auto">
             <FadeInView>
               <h2 className="text-3xl font-bold mb-12 bg-gradient-to-r from-cyan-300 to-blue-400 bg-clip-text text-transparent">
@@ -228,7 +228,7 @@ export default function OceanBlueTemplate({ data }: { data: { user: any } }) {
       )}
 
       {user.educations?.length > 0 && (
-        <section className="py-24 px-6">
+        <section id="education" className="py-24 px-6 scroll-mt-16">
           <div className="max-w-4xl mx-auto">
             <FadeInView>
               <h2 className="text-3xl font-bold mb-12 bg-gradient-to-r from-sky-400 to-blue-400 bg-clip-text text-transparent">
@@ -255,7 +255,7 @@ export default function OceanBlueTemplate({ data }: { data: { user: any } }) {
         </section>
       )}
 
-      <section className="py-24 px-6 bg-white/[0.02]">
+      <section id="contact" className="py-24 px-6 bg-white/[0.02] scroll-mt-16">
         <div className="max-w-xl mx-auto">
           <FadeInView>
             <h2 className="text-3xl font-bold mb-8 bg-gradient-to-r from-blue-400 to-cyan-300 bg-clip-text text-transparent text-center">

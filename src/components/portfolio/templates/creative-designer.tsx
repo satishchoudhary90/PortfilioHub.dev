@@ -55,7 +55,7 @@ export default function CreativeDesignerTemplate({ data }: { data: { user: any }
 
       {/* About */}
       {user.bio && (
-        <section className="py-24 px-4">
+        <section id="about" className="py-24 px-4 scroll-mt-16">
           <div className="max-w-4xl mx-auto">
             <FadeInView>
               <div className="grid md:grid-cols-3 gap-8 items-start">
@@ -73,7 +73,7 @@ export default function CreativeDesignerTemplate({ data }: { data: { user: any }
 
       {/* Skills */}
       {user.skills?.length > 0 && (
-        <section className="py-24 px-4 bg-gray-900 text-white">
+        <section id="skills" className="py-24 px-4 bg-gray-900 text-white scroll-mt-16">
           <div className="max-w-5xl mx-auto">
             <FadeInView><h2 className="text-5xl font-black mb-16 text-center">What I Do</h2></FadeInView>
             <StaggerContainer className="flex flex-wrap justify-center gap-4">
@@ -94,7 +94,7 @@ export default function CreativeDesignerTemplate({ data }: { data: { user: any }
 
       {/* Projects */}
       {user.projects?.length > 0 && (
-        <section className="py-24 px-4">
+        <section id="projects" className="py-24 px-4 scroll-mt-16">
           <div className="max-w-6xl mx-auto">
             <FadeInView><h2 className="text-5xl font-black mb-16">Selected <span className="text-orange-500">Work</span></h2></FadeInView>
             <div className="space-y-16">
@@ -129,7 +129,7 @@ export default function CreativeDesignerTemplate({ data }: { data: { user: any }
 
       {/* Experience */}
       {user.experiences?.length > 0 && (
-        <section className="py-24 px-4 bg-orange-50">
+        <section id="experience" className="py-24 px-4 bg-orange-50 scroll-mt-16">
           <div className="max-w-4xl mx-auto">
             <FadeInView><h2 className="text-5xl font-black mb-16">Experience</h2></FadeInView>
             <div className="space-y-8">
@@ -155,7 +155,7 @@ export default function CreativeDesignerTemplate({ data }: { data: { user: any }
       )}
 
       {/* Contact */}
-      <section className="py-24 px-4">
+      <section id="contact" className="py-24 px-4 scroll-mt-16">
         <div className="max-w-2xl mx-auto text-center">
           <FadeInView>
             <h2 className="text-5xl font-black">Say <span className="text-orange-500">Hello</span></h2>

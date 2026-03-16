@@ -82,7 +82,7 @@ export default function NatureGreenTemplate({ data }: { data: { user: any } }) {
 
       {/* About */}
       {user.bio && (
-        <section className="py-24 px-4">
+        <section id="about" className="py-24 px-4 scroll-mt-16">
           <div className="max-w-4xl mx-auto">
             <FadeInView>
               <div className="rounded-3xl bg-white/60 backdrop-blur border border-emerald-100 p-10 shadow-sm">
@@ -96,7 +96,7 @@ export default function NatureGreenTemplate({ data }: { data: { user: any } }) {
 
       {/* Skills */}
       {user.skills?.length > 0 && (
-        <section className="py-24 px-4">
+        <section id="skills" className="py-24 px-4 scroll-mt-16">
           <div className="max-w-5xl mx-auto">
             <FadeInView>
               <h2 className="text-3xl font-bold text-emerald-600 mb-12">Skills</h2>
@@ -116,7 +116,7 @@ export default function NatureGreenTemplate({ data }: { data: { user: any } }) {
 
       {/* Projects */}
       {user.projects?.length > 0 && (
-        <section className="py-24 px-4 bg-white/30">
+        <section id="projects" className="py-24 px-4 bg-white/30 scroll-mt-16">
           <div className="max-w-6xl mx-auto">
             <FadeInView>
               <h2 className="text-3xl font-bold text-emerald-600 mb-12">Projects</h2>
@@ -166,7 +166,7 @@ export default function NatureGreenTemplate({ data }: { data: { user: any } }) {
 
       {/* Experience */}
       {user.experiences?.length > 0 && (
-        <section className="py-24 px-4">
+        <section id="experience" className="py-24 px-4 scroll-mt-16">
           <div className="max-w-4xl mx-auto">
             <FadeInView>
               <h2 className="text-3xl font-bold text-emerald-600 mb-12">Experience</h2>
@@ -199,7 +199,7 @@ export default function NatureGreenTemplate({ data }: { data: { user: any } }) {
 
       {/* Education */}
       {user.educations?.length > 0 && (
-        <section className="py-24 px-4 bg-white/30">
+        <section id="education" className="py-24 px-4 bg-white/30 scroll-mt-16">
           <div className="max-w-4xl mx-auto">
             <FadeInView>
               <h2 className="text-3xl font-bold text-emerald-600 mb-12">Education</h2>
@@ -225,7 +225,7 @@ export default function NatureGreenTemplate({ data }: { data: { user: any } }) {
       )}
 
       {/* Contact */}
-      <section className="py-24 px-4">
+      <section id="contact" className="py-24 px-4 scroll-mt-16">
         <div className="max-w-2xl mx-auto">
           <FadeInView>
             <h2 className="text-3xl font-bold text-emerald-600 mb-4">Get in Touch</h2>

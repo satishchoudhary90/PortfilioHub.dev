@@ -84,7 +84,7 @@ export default function RetroTerminalTemplate({ data }: { data: { user: any } })
 
       {/* About */}
       {user.bio && (
-        <section className="py-16 px-4 max-w-3xl mx-auto">
+        <section id="about" className="py-16 px-4 max-w-3xl mx-auto scroll-mt-16">
           <FadeInView>
             <div className="p-6 rounded border-2 border-[#00ff41]/30 shadow-[0_0_15px_rgba(0,255,65,0.1)] bg-black/80">
               <p className="text-[#33ff57]/70 text-xs mb-3">$ cat about.txt</p>
@@ -96,7 +96,7 @@ export default function RetroTerminalTemplate({ data }: { data: { user: any } })
 
       {/* Skills */}
       {user.skills?.length > 0 && (
-        <section className="py-16 px-4 max-w-3xl mx-auto">
+        <section id="skills" className="py-16 px-4 max-w-3xl mx-auto scroll-mt-16">
           <FadeInView>
             <div className="p-6 rounded border-2 border-[#00ff41]/30 shadow-[0_0_15px_rgba(0,255,65,0.1)] bg-black/80">
               <p className="text-[#33ff57]/70 text-xs mb-4">$ ls skills/</p>
@@ -115,7 +115,7 @@ export default function RetroTerminalTemplate({ data }: { data: { user: any } })
 
       {/* Projects */}
       {user.projects?.length > 0 && (
-        <section className="py-16 px-4 max-w-4xl mx-auto">
+        <section id="projects" className="py-16 px-4 max-w-4xl mx-auto scroll-mt-16">
           <FadeInView>
             <div className="p-6 rounded border-2 border-[#00ff41]/30 shadow-[0_0_15px_rgba(0,255,65,0.1)] bg-black/80">
               <p className="text-[#33ff57]/70 text-xs mb-4">$ ls -la projects/</p>
@@ -158,7 +158,7 @@ export default function RetroTerminalTemplate({ data }: { data: { user: any } })
 
       {/* Experience */}
       {user.experiences?.length > 0 && (
-        <section className="py-16 px-4 max-w-3xl mx-auto">
+        <section id="experience" className="py-16 px-4 max-w-3xl mx-auto scroll-mt-16">
           <FadeInView>
             <div className="p-6 rounded border-2 border-[#00ff41]/30 shadow-[0_0_15px_rgba(0,255,65,0.1)] bg-black/80">
               <p className="text-[#33ff57]/70 text-xs mb-4">$ cat experience.log</p>
@@ -181,7 +181,7 @@ export default function RetroTerminalTemplate({ data }: { data: { user: any } })
 
       {/* Education */}
       {user.educations?.length > 0 && (
-        <section className="py-16 px-4 max-w-3xl mx-auto">
+        <section id="education" className="py-16 px-4 max-w-3xl mx-auto scroll-mt-16">
           <FadeInView>
             <div className="p-6 rounded border-2 border-[#00ff41]/30 shadow-[0_0_15px_rgba(0,255,65,0.1)] bg-black/80">
               <p className="text-[#33ff57]/70 text-xs mb-4">$ cat education.log</p>
@@ -205,7 +205,7 @@ export default function RetroTerminalTemplate({ data }: { data: { user: any } })
       )}
 
       {/* Contact */}
-      <section className="py-16 px-4 max-w-xl mx-auto">
+      <section id="contact" className="py-16 px-4 max-w-xl mx-auto scroll-mt-16">
         <FadeInView>
           <div className="p-6 rounded border-2 border-[#00ff41]/30 shadow-[0_0_15px_rgba(0,255,65,0.1)] bg-black/80">
             <p className="text-[#33ff57]/70 text-xs mb-4">$ nano contact.txt</p>

@@ -59,7 +59,7 @@ export default function NeonCyberTemplate({ data }: { data: { user: any } }) {
       </section>
 
       {user.bio && (
-        <section className="py-20 px-6">
+        <section id="about" className="py-20 px-6 scroll-mt-16">
           <FadeInView>
             <div className="max-w-4xl mx-auto border border-cyan-500/20 rounded-xl p-8 bg-cyan-500/[0.03]">
               <h2 className="text-cyan-400 text-xs uppercase tracking-[0.3em] mb-4">// about</h2>
@@ -70,7 +70,7 @@ export default function NeonCyberTemplate({ data }: { data: { user: any } }) {
       )}
 
       {user.skills?.length > 0 && (
-        <section className="py-20 px-6">
+        <section id="skills" className="py-20 px-6 scroll-mt-16">
           <div className="max-w-5xl mx-auto">
             <FadeInView><h2 className="text-cyan-400 text-xs uppercase tracking-[0.3em] mb-10">// skills</h2></FadeInView>
             <StaggerContainer className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
@@ -92,7 +92,7 @@ export default function NeonCyberTemplate({ data }: { data: { user: any } }) {
       )}
 
       {user.projects?.length > 0 && (
-        <section className="py-20 px-6">
+        <section id="projects" className="py-20 px-6 scroll-mt-16">
           <div className="max-w-6xl mx-auto">
             <FadeInView><h2 className="text-cyan-400 text-xs uppercase tracking-[0.3em] mb-10">// projects</h2></FadeInView>
             <div className="grid md:grid-cols-2 gap-6">
@@ -122,7 +122,7 @@ export default function NeonCyberTemplate({ data }: { data: { user: any } }) {
       )}
 
       {user.experiences?.length > 0 && (
-        <section className="py-20 px-6">
+        <section id="experience" className="py-20 px-6 scroll-mt-16">
           <div className="max-w-4xl mx-auto">
             <FadeInView><h2 className="text-cyan-400 text-xs uppercase tracking-[0.3em] mb-10">// experience</h2></FadeInView>
             <div className="space-y-6">
@@ -146,7 +146,7 @@ export default function NeonCyberTemplate({ data }: { data: { user: any } }) {
       )}
 
       {user.educations?.length > 0 && (
-        <section className="py-20 px-6">
+        <section id="education" className="py-20 px-6 scroll-mt-16">
           <div className="max-w-4xl mx-auto">
             <FadeInView><h2 className="text-cyan-400 text-xs uppercase tracking-[0.3em] mb-10">// education</h2></FadeInView>
             <div className="space-y-4">
@@ -164,7 +164,7 @@ export default function NeonCyberTemplate({ data }: { data: { user: any } }) {
         </section>
       )}
 
-      <section className="py-20 px-6">
+      <section id="contact" className="py-20 px-6 scroll-mt-16">
         <div className="max-w-lg mx-auto">
           <FadeInView>
             <h2 className="text-cyan-400 text-xs uppercase tracking-[0.3em] mb-8 text-center">// contact</h2>

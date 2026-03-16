@@ -69,7 +69,7 @@ export default function ModernTechTemplate({ data }: { data: { user: any } }) {
 
       {/* About */}
       {user.bio && (
-        <section className="py-24 px-4 max-w-4xl mx-auto relative">
+        <section id="about" className="py-24 px-4 max-w-4xl mx-auto relative scroll-mt-16">
           <FadeInView>
             <div className="p-8 rounded-2xl bg-white/5 backdrop-blur-xl border border-white/10">
               <h2 className="text-3xl font-bold mb-4 bg-gradient-to-r from-cyan-400 to-purple-400 bg-clip-text text-transparent">About Me</h2>
@@ -81,7 +81,7 @@ export default function ModernTechTemplate({ data }: { data: { user: any } }) {
 
       {/* Skills */}
       {user.skills?.length > 0 && (
-        <section className="py-24 px-4 max-w-5xl mx-auto">
+        <section id="skills" className="py-24 px-4 max-w-5xl mx-auto scroll-mt-16">
           <FadeInView><h2 className="text-3xl font-bold mb-12 text-center">Tech Stack</h2></FadeInView>
           <StaggerContainer className="flex flex-wrap justify-center gap-3">
             {user.skills.map((skill: any) => (
@@ -97,7 +97,7 @@ export default function ModernTechTemplate({ data }: { data: { user: any } }) {
 
       {/* Projects */}
       {user.projects?.length > 0 && (
-        <section className="py-24 px-4 max-w-6xl mx-auto">
+        <section id="projects" className="py-24 px-4 max-w-6xl mx-auto scroll-mt-16">
           <FadeInView><h2 className="text-3xl font-bold mb-12 text-center">Featured Work</h2></FadeInView>
           <StaggerContainer className="grid grid-cols-1 md:grid-cols-2 gap-8">
             {user.projects.map((project: any) => (
@@ -132,7 +132,7 @@ export default function ModernTechTemplate({ data }: { data: { user: any } }) {
 
       {/* Experience */}
       {user.experiences?.length > 0 && (
-        <section className="py-24 px-4 max-w-4xl mx-auto">
+        <section id="experience" className="py-24 px-4 max-w-4xl mx-auto scroll-mt-16">
           <FadeInView><h2 className="text-3xl font-bold mb-12 text-center">Career Journey</h2></FadeInView>
           <div className="space-y-6">
             {user.experiences.map((exp: any, i: number) => (
@@ -156,7 +156,7 @@ export default function ModernTechTemplate({ data }: { data: { user: any } }) {
       )}
 
       {/* Contact */}
-      <section className="py-24 px-4 max-w-2xl mx-auto relative">
+      <section id="contact" className="py-24 px-4 max-w-2xl mx-auto relative scroll-mt-16">
         <FadeInView>
           <div className="text-center mb-12">
             <h2 className="text-4xl font-bold bg-gradient-to-r from-cyan-400 to-purple-400 bg-clip-text text-transparent">Let&apos;s Connect</h2>

@@ -59,7 +59,7 @@ export default function SunsetWarmTemplate({ data }: { data: { user: any } }) {
       </section>
 
       {user.bio && (
-        <section className="py-24 px-6">
+        <section id="about" className="py-24 px-6 scroll-mt-16">
           <FadeInView>
             <div className="max-w-4xl mx-auto">
               <h2 className="text-3xl font-bold mb-8 text-transparent bg-gradient-to-r from-orange-500 to-rose-500 bg-clip-text">About Me</h2>
@@ -70,7 +70,7 @@ export default function SunsetWarmTemplate({ data }: { data: { user: any } }) {
       )}
 
       {user.skills?.length > 0 && (
-        <section className="py-24 px-6 bg-white/40">
+        <section id="skills" className="py-24 px-6 bg-white/40 scroll-mt-16">
           <div className="max-w-5xl mx-auto">
             <FadeInView><h2 className="text-3xl font-bold mb-12 text-transparent bg-gradient-to-r from-rose-500 to-amber-600 bg-clip-text">Skills</h2></FadeInView>
             <StaggerContainer className="flex flex-wrap gap-3">
@@ -88,7 +88,7 @@ export default function SunsetWarmTemplate({ data }: { data: { user: any } }) {
       )}
 
       {user.projects?.length > 0 && (
-        <section className="py-24 px-6">
+        <section id="projects" className="py-24 px-6 scroll-mt-16">
           <div className="max-w-6xl mx-auto">
             <FadeInView><h2 className="text-3xl font-bold mb-12 text-transparent bg-gradient-to-r from-orange-500 to-amber-600 bg-clip-text">Projects</h2></FadeInView>
             <div className="grid md:grid-cols-2 gap-6">
@@ -118,7 +118,7 @@ export default function SunsetWarmTemplate({ data }: { data: { user: any } }) {
       )}
 
       {user.experiences?.length > 0 && (
-        <section className="py-24 px-6 bg-white/40">
+        <section id="experience" className="py-24 px-6 bg-white/40 scroll-mt-16">
           <div className="max-w-4xl mx-auto">
             <FadeInView><h2 className="text-3xl font-bold mb-12 text-transparent bg-gradient-to-r from-amber-600 to-orange-500 bg-clip-text">Experience</h2></FadeInView>
             <div className="space-y-8 relative before:absolute before:left-0 before:top-0 before:bottom-0 before:w-px before:bg-gradient-to-b before:from-orange-400 before:to-rose-400 pl-8">
@@ -139,7 +139,7 @@ export default function SunsetWarmTemplate({ data }: { data: { user: any } }) {
       )}
 
       {user.educations?.length > 0 && (
-        <section className="py-24 px-6">
+        <section id="education" className="py-24 px-6 scroll-mt-16">
           <div className="max-w-4xl mx-auto">
             <FadeInView><h2 className="text-3xl font-bold mb-12 text-transparent bg-gradient-to-r from-rose-500 to-orange-500 bg-clip-text">Education</h2></FadeInView>
             <div className="space-y-6">
@@ -157,7 +157,7 @@ export default function SunsetWarmTemplate({ data }: { data: { user: any } }) {
         </section>
       )}
 
-      <section className="py-24 px-6 bg-white/40">
+      <section id="contact" className="py-24 px-6 bg-white/40 scroll-mt-16">
         <div className="max-w-xl mx-auto">
           <FadeInView>
             <h2 className="text-3xl font-bold mb-8 text-transparent bg-gradient-to-r from-orange-500 to-rose-500 bg-clip-text text-center">Get in Touch</h2>

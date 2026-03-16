@@ -48,7 +48,7 @@ export default function ElegantSerifTemplate({ data }: { data: { user: any } }) 
       </section>
 
       {user.bio && (
-        <section className="py-20 px-6">
+        <section id="about" className="py-20 px-6 scroll-mt-16">
           <FadeInView>
             <div className="max-w-3xl mx-auto text-center">
               <h2 className="text-xs uppercase tracking-[0.4em] text-amber-700/50 mb-8">About</h2>
@@ -59,7 +59,7 @@ export default function ElegantSerifTemplate({ data }: { data: { user: any } }) 
       )}
 
       {user.skills?.length > 0 && (
-        <section className="py-20 px-6 bg-white/50">
+        <section id="skills" className="py-20 px-6 bg-white/50 scroll-mt-16">
           <div className="max-w-4xl mx-auto text-center">
             <FadeInView><h2 className="text-xs uppercase tracking-[0.4em] text-amber-700/50 mb-10">Expertise</h2></FadeInView>
             <div className="flex flex-wrap justify-center gap-x-8 gap-y-3">
@@ -76,7 +76,7 @@ export default function ElegantSerifTemplate({ data }: { data: { user: any } }) 
       )}
 
       {user.projects?.length > 0 && (
-        <section className="py-20 px-6">
+        <section id="projects" className="py-20 px-6 scroll-mt-16">
           <div className="max-w-5xl mx-auto">
             <FadeInView><h2 className="text-xs uppercase tracking-[0.4em] text-amber-700/50 mb-12 text-center">Selected Works</h2></FadeInView>
             <div className="grid md:grid-cols-2 gap-8">
@@ -102,7 +102,7 @@ export default function ElegantSerifTemplate({ data }: { data: { user: any } }) 
       )}
 
       {user.experiences?.length > 0 && (
-        <section className="py-20 px-6 bg-white/50">
+        <section id="experience" className="py-20 px-6 bg-white/50 scroll-mt-16">
           <div className="max-w-3xl mx-auto">
             <FadeInView><h2 className="text-xs uppercase tracking-[0.4em] text-amber-700/50 mb-12 text-center">Experience</h2></FadeInView>
             <div className="space-y-10">
@@ -122,7 +122,7 @@ export default function ElegantSerifTemplate({ data }: { data: { user: any } }) 
       )}
 
       {user.educations?.length > 0 && (
-        <section className="py-20 px-6">
+        <section id="education" className="py-20 px-6 scroll-mt-16">
           <div className="max-w-3xl mx-auto">
             <FadeInView><h2 className="text-xs uppercase tracking-[0.4em] text-amber-700/50 mb-12 text-center">Education</h2></FadeInView>
             <div className="space-y-8">
@@ -140,7 +140,7 @@ export default function ElegantSerifTemplate({ data }: { data: { user: any } }) 
         </section>
       )}
 
-      <section className="py-20 px-6 bg-white/50">
+      <section id="contact" className="py-20 px-6 bg-white/50 scroll-mt-16">
         <div className="max-w-lg mx-auto">
           <FadeInView>
             <h2 className="text-xs uppercase tracking-[0.4em] text-amber-700/50 mb-8 text-center">Correspondence</h2>

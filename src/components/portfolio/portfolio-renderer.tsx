@@ -15,6 +15,8 @@ import SunsetWarmTemplate from "./templates/sunset-warm";
 import OceanBlueTemplate from "./templates/ocean-blue";
 import MonochromeTemplate from "./templates/monochrome";
 import AuroraBorealisTemplate from "./templates/aurora-borealis";
+import { PortfolioNav } from "./portfolio-nav";
+import { PortfolioFooter } from "./portfolio-footer";
 
 interface Props {
   data: { user: any };
@@ -54,5 +56,14 @@ export default function PortfolioRenderer({ data }: Props) {
     }).catch(() => {});
   }, [data.user.id, data.user.username]);
 
-  return <Template data={data} />;
+  return (
+    <>
+      <PortfolioNav userName={data.user.name || data.user.username || "Portfolio"} />
+      <Template data={data} />
+      <PortfolioFooter
+        userName={data.user.name || data.user.username || "Developer"}
+        socialLinks={data.user.socialLinks}
+      />
+    </>
+  );
 }

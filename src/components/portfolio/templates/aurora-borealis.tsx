@@ -63,7 +63,7 @@ export default function AuroraBorealisTemplate({ data }: { data: { user: any } }
         </section>
 
         {user.bio && (
-          <section className="py-24 px-6">
+          <section id="about" className="py-24 px-6 scroll-mt-16">
             <FadeInView>
               <div className="max-w-3xl mx-auto text-center">
                 <h2 className="text-sm uppercase tracking-[0.3em] text-teal-300/50 mb-6">About</h2>
@@ -74,7 +74,7 @@ export default function AuroraBorealisTemplate({ data }: { data: { user: any } }
         )}
 
         {user.skills?.length > 0 && (
-          <section className="py-24 px-6">
+          <section id="skills" className="py-24 px-6 scroll-mt-16">
             <div className="max-w-5xl mx-auto">
               <FadeInView><h2 className="text-sm uppercase tracking-[0.3em] text-violet-300/50 mb-12 text-center">Skills</h2></FadeInView>
               <StaggerContainer className="flex flex-wrap justify-center gap-3">
@@ -91,7 +91,7 @@ export default function AuroraBorealisTemplate({ data }: { data: { user: any } }
         )}
 
         {user.projects?.length > 0 && (
-          <section className="py-24 px-6">
+          <section id="projects" className="py-24 px-6 scroll-mt-16">
             <div className="max-w-6xl mx-auto">
               <FadeInView><h2 className="text-sm uppercase tracking-[0.3em] text-pink-300/50 mb-12 text-center">Projects</h2></FadeInView>
               <div className="grid md:grid-cols-2 gap-6">
@@ -121,7 +121,7 @@ export default function AuroraBorealisTemplate({ data }: { data: { user: any } }
         )}
 
         {user.experiences?.length > 0 && (
-          <section className="py-24 px-6">
+          <section id="experience" className="py-24 px-6 scroll-mt-16">
             <div className="max-w-4xl mx-auto">
               <FadeInView><h2 className="text-sm uppercase tracking-[0.3em] text-teal-300/50 mb-12 text-center">Experience</h2></FadeInView>
               <div className="space-y-8 relative before:absolute before:left-4 before:top-0 before:bottom-0 before:w-px before:bg-gradient-to-b before:from-teal-400/50 before:via-violet-400/50 before:to-pink-400/50 pl-12">
@@ -142,7 +142,7 @@ export default function AuroraBorealisTemplate({ data }: { data: { user: any } }
         )}
 
         {user.educations?.length > 0 && (
-          <section className="py-24 px-6">
+          <section id="education" className="py-24 px-6 scroll-mt-16">
             <div className="max-w-4xl mx-auto">
               <FadeInView><h2 className="text-sm uppercase tracking-[0.3em] text-violet-300/50 mb-12 text-center">Education</h2></FadeInView>
               <div className="space-y-6">
@@ -160,7 +160,7 @@ export default function AuroraBorealisTemplate({ data }: { data: { user: any } }
           </section>
         )}
 
-        <section className="py-24 px-6">
+        <section id="contact" className="py-24 px-6 scroll-mt-16">
           <div className="max-w-lg mx-auto">
             <FadeInView>
               <h2 className="text-sm uppercase tracking-[0.3em] text-pink-300/50 mb-8 text-center">Get in Touch</h2>
