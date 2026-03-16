@@ -625,7 +625,7 @@ export default function ResumePage() {
                       </div>
                     </motion.div>
                   ) : (
-                    <motion.div key="buttons" initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="flex gap-2 justify-center sm:justify-start">
+                    <motion.div key="buttons" initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="flex gap-2 justify-center sm:justify-start flex-wrap">
                       <Button size="sm" variant="secondary" onClick={startCamera} disabled={photoSaving}>
                         <Camera className="h-3.5 w-3.5 mr-1.5" />
                         Camera
@@ -634,6 +634,12 @@ export default function ResumePage() {
                         {photoSaving ? <Loader2 className="h-3.5 w-3.5 mr-1.5 animate-spin" /> : <Upload className="h-3.5 w-3.5 mr-1.5" />}
                         Upload
                       </Button>
+                      {displayData?.image && (
+                        <Button size="sm" variant="secondary" onClick={removePhoto} disabled={photoSaving} className="text-red-400 hover:text-red-300 hover:bg-red-500/10">
+                          <X className="h-3.5 w-3.5 mr-1.5" />
+                          Remove
+                        </Button>
+                      )}
                       <input ref={fileInputRef} type="file" accept="image/*" onChange={handleFileUpload} className="hidden" />
                     </motion.div>
                   )}
