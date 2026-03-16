@@ -2,8 +2,25 @@
 
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import {
+  DndContext,
+  closestCenter,
+  PointerSensor,
+  KeyboardSensor,
+  useSensor,
+  useSensors,
+  DragEndEvent,
+} from "@dnd-kit/core";
+import {
+  arrayMove,
+  SortableContext,
+  sortableKeyboardCoordinates,
+  useSortable,
+  rectSortingStrategy,
+} from "@dnd-kit/sortable";
+import { CSS } from "@dnd-kit/utilities";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { FadeIn, StaggerContainer, StaggerItem } from "@/components/shared/motion-wrapper";
+import { FadeIn } from "@/components/shared/motion-wrapper";
 import {
   Eye,
   MousePointerClick,
@@ -22,6 +39,7 @@ import {
   FolderKanban,
   Loader2,
   RefreshCw,
+  GripVertical,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import type { AnalyticsSummary } from "@/types";
@@ -133,10 +151,62 @@ function formatEventLabel(event: string): string {
   return event.replace(/_/g, " ").replace(/\b\w/g, c => c.toUpperCase());
 }
 
+interface KpiItem {
+  id: string;
+  title: string;
+  value: number;
+  sub: string;
+  trend?: number;
+  icon: any;
+  color: string;
+}
+
+function SortableKpiCard({ item }: { item: KpiItem }) {
+  const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({ id: item.id });
+  const style = {
+    transform: CSS.Transform.toString(transform),
+    transition,
+    zIndex: isDragging ? 50 : undefined,
+    opacity: isDragging ? 0.7 : 1,
+  };
+  const Icon = item.icon;
+
+  return (
+    <div ref={setNodeRef} style={style}>
+      <Card className={`border-white/10 bg-white/5 backdrop-blur-xl hover:bg-white/[0.07] transition-all relative group ${isDragging ? "ring-2 ring-indigo-500/40 shadow-lg shadow-indigo-500/10" : ""}`}>
+        <div
+          {...attributes}
+          {...listeners}
+          className="absolute top-2 right-2 p-1 rounded-md cursor-grab active:cursor-grabbing opacity-0 group-hover:opacity-100 hover:bg-white/10 transition-all z-10"
+          title="Drag to reorder"
+        >
+          <GripVertical className="h-3.5 w-3.5 text-gray-500" />
+        </div>
+        <CardContent className="p-4 sm:p-6">
+          <div className="flex items-start justify-between">
+            <div className="min-w-0">
+              <p className="text-xs sm:text-sm text-gray-400 truncate">{item.title}</p>
+              <p className="text-xl sm:text-3xl font-bold text-white mt-1 tabular-nums">{item.value.toLocaleString()}</p>
+              <div className="flex items-center gap-2 mt-1.5">
+                <span className="text-[10px] sm:text-xs text-gray-500">{item.sub}</span>
+                {item.trend !== undefined && <TrendBadge value={item.trend} />}
+              </div>
+            </div>
+            <div className={`p-2 sm:p-3 rounded-xl bg-gradient-to-br ${item.color} opacity-80 shrink-0`}>
+              <Icon className="h-4 w-4 sm:h-5 sm:w-5 text-white" />
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+    </div>
+  );
+}
+
 export default function AnalyticsPage() {
   const [data, setData] = useState<AnalyticsSummary | null>(null);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
+  const [kpiOrder, setKpiOrder] = useState(["total-views", "project-clicks", "this-week", "avg-day"]);
 
   async function fetchData(isRefresh = false) {
     if (isRefresh) setRefreshing(true);
@@ -151,6 +221,54 @@ export default function AnalyticsPage() {
   }
 
   useEffect(() => { fetchData(); }, []);
+
+  const sensors = useSensors(
+    useSensor(PointerSensor, { activationConstraint: { distance: 8 } }),
+    useSensor(KeyboardSensor, { coordinateGetter: sortableKeyboardCoordinates })
+  );
+
+  function handleKpiDragEnd(event: DragEndEvent) {
+    const { active, over } = event;
+    if (!over || active.id === over.id) return;
+    setKpiOrder(prev => arrayMove(prev, prev.indexOf(active.id as string), prev.indexOf(over.id as string)));
+  }
+
+  const kpiItems: Record<string, KpiItem> = {
+    "total-views": {
+      id: "total-views",
+      title: "Total Views",
+      value: data?.totalViews || 0,
+      sub: `${data?.viewsLast30 || 0} last 30d`,
+      trend: data?.viewsTrend || 0,
+      icon: Eye,
+      color: "from-blue-500 to-cyan-500",
+    },
+    "project-clicks": {
+      id: "project-clicks",
+      title: "Project Clicks",
+      value: data?.totalClicks || 0,
+      sub: `${data?.clicksLast30 || 0} last 30d`,
+      trend: data?.clicksTrend || 0,
+      icon: MousePointerClick,
+      color: "from-purple-500 to-pink-500",
+    },
+    "this-week": {
+      id: "this-week",
+      title: "This Week",
+      value: data?.thisWeekViews || 0,
+      sub: "views in 7 days",
+      icon: BarChart3,
+      color: "from-emerald-500 to-teal-500",
+    },
+    "avg-day": {
+      id: "avg-day",
+      title: "Avg / Day",
+      value: data?.viewsLast30 ? Math.round(data.viewsLast30 / 30) : 0,
+      sub: "daily average",
+      icon: Activity,
+      color: "from-amber-500 to-orange-500",
+    },
+  };
 
   const chartData = data?.viewsByDay?.map(d => d.count) || [];
   const totalDeviceCount = data?.deviceBreakdown?.reduce((s, d) => s + d.count, 0) || 1;
@@ -183,64 +301,17 @@ export default function AnalyticsPage() {
         </div>
       </FadeIn>
 
-      {/* KPI Cards */}
-      <StaggerContainer className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
-        {[
-          {
-            title: "Total Views",
-            value: data?.totalViews || 0,
-            sub: `${data?.viewsLast30 || 0} last 30d`,
-            trend: data?.viewsTrend || 0,
-            icon: Eye,
-            color: "from-blue-500 to-cyan-500",
-          },
-          {
-            title: "Project Clicks",
-            value: data?.totalClicks || 0,
-            sub: `${data?.clicksLast30 || 0} last 30d`,
-            trend: data?.clicksTrend || 0,
-            icon: MousePointerClick,
-            color: "from-purple-500 to-pink-500",
-          },
-          {
-            title: "This Week",
-            value: data?.thisWeekViews || 0,
-            sub: "views in 7 days",
-            icon: BarChart3,
-            color: "from-emerald-500 to-teal-500",
-          },
-          {
-            title: "Avg / Day",
-            value: data?.viewsLast30 ? Math.round(data.viewsLast30 / 30) : 0,
-            sub: "daily average",
-            icon: Activity,
-            color: "from-amber-500 to-orange-500",
-          },
-        ].map((stat) => {
-          const Icon = stat.icon;
-          return (
-            <StaggerItem key={stat.title}>
-              <Card className="border-white/10 bg-white/5 backdrop-blur-xl hover:bg-white/[0.07] transition-all">
-                <CardContent className="p-4 sm:p-6">
-                  <div className="flex items-start justify-between">
-                    <div className="min-w-0">
-                      <p className="text-xs sm:text-sm text-gray-400 truncate">{stat.title}</p>
-                      <p className="text-xl sm:text-3xl font-bold text-white mt-1 tabular-nums">{stat.value.toLocaleString()}</p>
-                      <div className="flex items-center gap-2 mt-1.5">
-                        <span className="text-[10px] sm:text-xs text-gray-500">{stat.sub}</span>
-                        {"trend" in stat && <TrendBadge value={stat.trend!} />}
-                      </div>
-                    </div>
-                    <div className={`p-2 sm:p-3 rounded-xl bg-gradient-to-br ${stat.color} opacity-80 shrink-0`}>
-                      <Icon className="h-4 w-4 sm:h-5 sm:w-5 text-white" />
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-            </StaggerItem>
-          );
-        })}
-      </StaggerContainer>
+      {/* KPI Cards — Drag to reorder */}
+      <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={handleKpiDragEnd}>
+        <SortableContext items={kpiOrder} strategy={rectSortingStrategy}>
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
+            {kpiOrder.map(id => {
+              const item = kpiItems[id];
+              return item ? <SortableKpiCard key={id} item={item} /> : null;
+            })}
+          </div>
+        </SortableContext>
+      </DndContext>
 
       {/* Views Chart */}
       <FadeIn delay={0.15}>
