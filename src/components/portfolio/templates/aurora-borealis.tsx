@@ -38,15 +38,15 @@ export default function AuroraBorealisTemplate({ data }: { data: { user: any } }
       </div>
 
       <div className="relative z-10">
-        <section className="min-h-screen flex items-center justify-center px-6">
+        <section className="min-h-screen flex items-center justify-center px-4 sm:px-6 lg:px-8">
           <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 1 }} className="text-center max-w-3xl">
             {user.image && (
               <img src={user.image} alt={user.name} className="w-28 h-28 rounded-full mx-auto mb-8 border-2 border-white/10 object-cover shadow-lg shadow-teal-500/20" />
             )}
-            <h1 className="text-5xl md:text-7xl font-bold tracking-tight">
+            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-7xl font-bold tracking-tight">
               <span className="bg-gradient-to-r from-teal-300 via-violet-300 to-pink-300 bg-clip-text text-transparent">{user.name}</span>
             </h1>
-            {user.headline && <p className="text-xl text-gray-300/70 mt-4">{user.headline}</p>}
+            {user.headline && <p className="text-base sm:text-lg md:text-xl text-gray-300/70 mt-4">{user.headline}</p>}
             {user.location && <p className="text-sm text-gray-500 mt-2">{user.location}</p>}
             <div className="flex justify-center gap-3 mt-8">
               {user.socialLinks?.map((link: any) => {
@@ -63,7 +63,7 @@ export default function AuroraBorealisTemplate({ data }: { data: { user: any } }
         </section>
 
         {user.bio && (
-          <section id="about" className="py-24 px-6 scroll-mt-16">
+          <section id="about" className="py-16 sm:py-20 lg:py-28 px-4 sm:px-6 lg:px-8 scroll-mt-20">
             <FadeInView>
               <div className="max-w-3xl mx-auto text-center">
                 <h2 className="text-sm uppercase tracking-[0.3em] text-teal-300/50 mb-6">About</h2>
@@ -74,13 +74,13 @@ export default function AuroraBorealisTemplate({ data }: { data: { user: any } }
         )}
 
         {user.skills?.length > 0 && (
-          <section id="skills" className="py-24 px-6 scroll-mt-16">
+          <section id="skills" className="py-16 sm:py-20 lg:py-28 px-4 sm:px-6 lg:px-8 scroll-mt-20">
             <div className="max-w-5xl mx-auto">
               <FadeInView><h2 className="text-sm uppercase tracking-[0.3em] text-violet-300/50 mb-12 text-center">Skills</h2></FadeInView>
               <StaggerContainer className="flex flex-wrap justify-center gap-3">
                 {user.skills.map((skill: any) => (
                   <StaggerItem key={skill.id}>
-                    <span className="px-4 py-2 rounded-xl text-sm bg-white/5 border border-white/10 hover:border-teal-400/30 transition-all">
+                    <span className="px-3 py-1.5 sm:px-4 sm:py-2 rounded-xl text-xs sm:text-sm bg-white/5 border border-white/10 hover:border-teal-400/30 transition-all duration-200">
                       {skill.name}
                     </span>
                   </StaggerItem>
@@ -91,13 +91,13 @@ export default function AuroraBorealisTemplate({ data }: { data: { user: any } }
         )}
 
         {user.projects?.length > 0 && (
-          <section id="projects" className="py-24 px-6 scroll-mt-16">
+          <section id="projects" className="py-16 sm:py-20 lg:py-28 px-4 sm:px-6 lg:px-8 scroll-mt-20">
             <div className="max-w-6xl mx-auto">
               <FadeInView><h2 className="text-sm uppercase tracking-[0.3em] text-pink-300/50 mb-12 text-center">Projects</h2></FadeInView>
-              <div className="grid md:grid-cols-2 gap-6">
-                {user.projects.map((project: any) => (
-                  <FadeInView key={project.id}>
-                    <div className="rounded-2xl bg-white/[0.03] border border-white/[0.06] p-6 hover:border-teal-400/20 transition-all group">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
+              {user.projects.map((project: any) => (
+                <FadeInView key={project.id}>
+                  <div className="rounded-2xl bg-white/[0.03] border border-white/[0.06] p-4 sm:p-6 hover:border-teal-400/20 hover:scale-[1.02] transition-all duration-300 group overflow-hidden">
                       {project.imageUrl && <img src={project.imageUrl} alt={project.title} className="w-full h-44 object-cover rounded-xl mb-4 opacity-80 group-hover:opacity-100 transition-opacity" />}
                       <h3 className="text-xl font-bold">{project.title}</h3>
                       {project.description && <p className="text-gray-400 mt-2 text-sm">{project.description}</p>}
@@ -121,8 +121,8 @@ export default function AuroraBorealisTemplate({ data }: { data: { user: any } }
         )}
 
         {user.experiences?.length > 0 && (
-          <section id="experience" className="py-24 px-6 scroll-mt-16">
-            <div className="max-w-4xl mx-auto">
+          <section id="experience" className="py-16 sm:py-20 lg:py-28 px-4 sm:px-6 lg:px-8 scroll-mt-20">
+            <div className="max-w-7xl mx-auto w-full">
               <FadeInView><h2 className="text-sm uppercase tracking-[0.3em] text-teal-300/50 mb-12 text-center">Experience</h2></FadeInView>
               <div className="space-y-8 relative before:absolute before:left-4 before:top-0 before:bottom-0 before:w-px before:bg-gradient-to-b before:from-teal-400/50 before:via-violet-400/50 before:to-pink-400/50 pl-12">
                 {user.experiences.map((exp: any) => (
@@ -142,8 +142,8 @@ export default function AuroraBorealisTemplate({ data }: { data: { user: any } }
         )}
 
         {user.educations?.length > 0 && (
-          <section id="education" className="py-24 px-6 scroll-mt-16">
-            <div className="max-w-4xl mx-auto">
+          <section id="education" className="py-16 sm:py-20 lg:py-28 px-4 sm:px-6 lg:px-8 scroll-mt-20">
+            <div className="max-w-7xl mx-auto w-full">
               <FadeInView><h2 className="text-sm uppercase tracking-[0.3em] text-violet-300/50 mb-12 text-center">Education</h2></FadeInView>
               <div className="space-y-6">
                 {user.educations.map((edu: any) => (
@@ -160,17 +160,20 @@ export default function AuroraBorealisTemplate({ data }: { data: { user: any } }
           </section>
         )}
 
-        <section id="contact" className="py-24 px-6 scroll-mt-16">
-          <div className="max-w-lg mx-auto">
+        <section id="contact" className="py-16 sm:py-20 lg:py-28 px-4 sm:px-6 lg:px-8 scroll-mt-20">
+          <div className="max-w-2xl mx-auto w-full">
             <FadeInView>
               <h2 className="text-sm uppercase tracking-[0.3em] text-pink-300/50 mb-8 text-center">Get in Touch</h2>
               {sent ? (
                 <div className="text-center py-12 text-teal-300">Message sent successfully!</div>
               ) : (
                 <form onSubmit={handleContact} className="space-y-4">
-                  <input value={contactForm.name} onChange={(e) => setContactForm(p => ({ ...p, name: e.target.value }))} placeholder="Name" required className="w-full p-3 rounded-xl bg-white/5 border border-white/10 text-white placeholder-gray-600 focus:border-teal-400/50 outline-none" />
-                  <input value={contactForm.email} onChange={(e) => setContactForm(p => ({ ...p, email: e.target.value }))} placeholder="Email" type="email" required className="w-full p-3 rounded-xl bg-white/5 border border-white/10 text-white placeholder-gray-600 focus:border-teal-400/50 outline-none" />
-                  <textarea value={contactForm.message} onChange={(e) => setContactForm(p => ({ ...p, message: e.target.value }))} placeholder="Message" rows={4} required className="w-full p-3 rounded-xl bg-white/5 border border-white/10 text-white placeholder-gray-600 focus:border-teal-400/50 outline-none resize-none" />
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <input value={contactForm.name} onChange={(e) => setContactForm(p => ({ ...p, name: e.target.value }))} placeholder="Name" required className="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white placeholder-gray-600 focus:border-teal-400/50 outline-none transition-all duration-200" />
+                    <input value={contactForm.email} onChange={(e) => setContactForm(p => ({ ...p, email: e.target.value }))} placeholder="Email" type="email" required className="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white placeholder-gray-600 focus:border-teal-400/50 outline-none transition-all duration-200" />
+                  </div>
+                  <input value={contactForm.subject} onChange={(e) => setContactForm(p => ({ ...p, subject: e.target.value }))} placeholder="Subject" className="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white placeholder-gray-600 focus:border-teal-400/50 outline-none transition-all duration-200" />
+                  <textarea value={contactForm.message} onChange={(e) => setContactForm(p => ({ ...p, message: e.target.value }))} placeholder="Message" rows={4} required className="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white placeholder-gray-600 focus:border-teal-400/50 outline-none resize-none transition-all duration-200" />
                   <button type="submit" disabled={sending} className="w-full py-3 rounded-xl bg-gradient-to-r from-teal-500 to-violet-500 font-semibold hover:opacity-90 transition-opacity">{sending ? "Sending..." : "Send Message"}</button>
                 </form>
               )}

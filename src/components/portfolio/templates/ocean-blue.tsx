@@ -30,9 +30,10 @@ export default function OceanBlueTemplate({ data }: { data: { user: any } }) {
   return (
     <div className="min-h-screen bg-gradient-to-b from-blue-950 via-slate-900 to-blue-950 text-white">
       {/* Hero with animated wave SVG at bottom */}
-      <section className="min-h-screen flex items-center relative overflow-hidden">
+      <section className="min-h-screen flex items-center relative overflow-hidden px-4 sm:px-6 lg:px-8">
         <div className="absolute inset-0">
           <div className="absolute inset-0 bg-gradient-to-b from-blue-950/80 via-transparent to-transparent" />
+          <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-blue-500/10" />
           <svg className="absolute bottom-0 w-full" viewBox="0 0 1440 320" preserveAspectRatio="none">
             <motion.path
               fill="rgba(56,189,248,0.15)"
@@ -56,20 +57,20 @@ export default function OceanBlueTemplate({ data }: { data: { user: any } }) {
             />
           </svg>
         </div>
-        <div className="max-w-5xl mx-auto px-6 z-10 py-32">
-          <motion.div initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.9 }}>
+        <div className="max-w-7xl mx-auto w-full z-10 py-16 sm:py-24 lg:py-32">
+          <motion.div initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.9 }} className="transition-all duration-200">
             {user.image && (
               <img
                 src={user.image}
                 alt={user.name}
-                className="w-32 h-32 rounded-3xl mb-8 border-4 border-blue-500/30 object-cover shadow-2xl shadow-blue-500/20"
+                className="w-full max-w-[8rem] aspect-square rounded-3xl mb-6 sm:mb-8 border-4 border-blue-500/30 object-cover shadow-2xl shadow-blue-500/20"
               />
             )}
-            <h1 className="text-6xl md:text-8xl font-black bg-gradient-to-r from-blue-400 via-sky-400 to-cyan-300 bg-clip-text text-transparent">
+            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-7xl font-black bg-gradient-to-r from-blue-400 via-sky-400 to-cyan-300 bg-clip-text text-transparent">
               {user.name}
             </h1>
             {user.headline && (
-              <p className="text-xl md:text-2xl text-blue-200/90 mt-4 max-w-2xl">{user.headline}</p>
+              <p className="text-base sm:text-lg md:text-xl text-blue-200/90 mt-4 max-w-2xl">{user.headline}</p>
             )}
             {user.location && (
               <p className="flex items-center gap-2 text-blue-400/80 mt-4">
@@ -85,7 +86,7 @@ export default function OceanBlueTemplate({ data }: { data: { user: any } }) {
                     href={link.url}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="p-3 rounded-xl bg-white/5 border border-blue-500/20 hover:bg-blue-500/10 hover:border-blue-400/50 transition-all hover:scale-110"
+                    className="p-3 rounded-xl bg-white/5 border border-blue-500/20 hover:bg-blue-500/10 hover:border-blue-400/50 transition-all duration-300 hover:scale-110"
                   >
                     <Icon className="h-5 w-5" />
                   </a>
@@ -97,9 +98,9 @@ export default function OceanBlueTemplate({ data }: { data: { user: any } }) {
       </section>
 
       {user.bio && (
-        <section id="about" className="py-24 px-6 scroll-mt-16">
+        <section id="about" className="py-16 sm:py-20 lg:py-28 px-4 sm:px-6 lg:px-8 scroll-mt-20">
           <FadeInView>
-            <div className="max-w-4xl mx-auto">
+            <div className="max-w-7xl mx-auto w-full">
               <h2 className="text-3xl font-bold mb-8 bg-gradient-to-r from-blue-400 to-cyan-300 bg-clip-text text-transparent">
                 About Me
               </h2>
@@ -110,17 +111,17 @@ export default function OceanBlueTemplate({ data }: { data: { user: any } }) {
       )}
 
       {user.skills?.length > 0 && (
-        <section id="skills" className="py-24 px-6 bg-white/[0.02] scroll-mt-16">
-          <div className="max-w-5xl mx-auto">
+        <section id="skills" className="py-16 sm:py-20 lg:py-28 px-4 sm:px-6 lg:px-8 bg-white/[0.02] scroll-mt-20">
+          <div className="max-w-7xl mx-auto w-full">
             <FadeInView>
-              <h2 className="text-3xl font-bold mb-12 bg-gradient-to-r from-sky-400 to-blue-400 bg-clip-text text-transparent">
+              <h2 className="text-2xl sm:text-3xl font-bold mb-8 sm:mb-12 bg-gradient-to-r from-sky-400 to-blue-400 bg-clip-text text-transparent">
                 Skills
               </h2>
             </FadeInView>
-            <StaggerContainer className="flex flex-wrap gap-3">
+            <StaggerContainer className="flex flex-wrap gap-2 sm:gap-3">
               {user.skills.map((skill: any) => (
                 <StaggerItem key={skill.id}>
-                  <span className="px-5 py-2.5 rounded-full text-sm font-medium bg-blue-500/20 border border-blue-400/30 text-blue-100 hover:border-cyan-300/50 hover:shadow-[0_0_15px_rgba(34,211,238,0.2)] transition-all duration-300">
+                  <span className="px-3 py-1.5 sm:px-5 sm:py-2.5 rounded-full text-xs sm:text-sm font-medium bg-blue-500/20 border border-blue-400/30 text-blue-100 hover:border-cyan-300/50 hover:shadow-[0_0_15px_rgba(34,211,238,0.2)] transition-all duration-300">
                     {skill.name}
                     {skill.level && (
                       <span className="ml-2 text-xs text-cyan-300">{skill.level}%</span>
@@ -134,22 +135,22 @@ export default function OceanBlueTemplate({ data }: { data: { user: any } }) {
       )}
 
       {user.projects?.length > 0 && (
-        <section id="projects" className="py-24 px-6 scroll-mt-16">
-          <div className="max-w-6xl mx-auto">
+        <section id="projects" className="py-16 sm:py-20 lg:py-28 px-4 sm:px-6 lg:px-8 scroll-mt-20">
+          <div className="max-w-7xl mx-auto w-full">
             <FadeInView>
-              <h2 className="text-3xl font-bold mb-12 bg-gradient-to-r from-blue-400 to-cyan-300 bg-clip-text text-transparent">
+              <h2 className="text-2xl sm:text-3xl font-bold mb-8 sm:mb-12 bg-gradient-to-r from-blue-400 to-cyan-300 bg-clip-text text-transparent">
                 Projects
               </h2>
             </FadeInView>
-            <div className="grid md:grid-cols-2 gap-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
               {user.projects.map((project: any) => (
                 <FadeInView key={project.id}>
-                  <div className="group rounded-2xl bg-white/5 border border-blue-500/20 p-6 hover:border-blue-400/50 hover:shadow-[0_0_30px_rgba(59,130,246,0.15)] transition-all">
+                  <div className="group rounded-2xl bg-white/5 border border-blue-500/20 p-4 sm:p-6 overflow-hidden hover:border-blue-400/50 hover:shadow-[0_0_30px_rgba(59,130,246,0.15)] hover:scale-[1.02] transition-all duration-300">
                     {project.imageUrl && (
                       <img
                         src={project.imageUrl}
                         alt={project.title}
-                        className="w-full h-48 object-cover rounded-xl mb-4"
+                        className="w-full max-w-full h-40 sm:h-48 object-cover rounded-xl mb-4"
                       />
                     )}
                     <h3 className="text-xl font-bold">{project.title}</h3>
@@ -199,19 +200,19 @@ export default function OceanBlueTemplate({ data }: { data: { user: any } }) {
       )}
 
       {user.experiences?.length > 0 && (
-        <section id="experience" className="py-24 px-6 bg-white/[0.02] scroll-mt-16">
-          <div className="max-w-4xl mx-auto">
+        <section id="experience" className="py-16 sm:py-20 lg:py-28 px-4 sm:px-6 lg:px-8 bg-white/[0.02] scroll-mt-20">
+          <div className="max-w-7xl mx-auto w-full">
             <FadeInView>
-              <h2 className="text-3xl font-bold mb-12 bg-gradient-to-r from-cyan-300 to-blue-400 bg-clip-text text-transparent">
+              <h2 className="text-2xl sm:text-3xl font-bold mb-8 sm:mb-12 bg-gradient-to-r from-cyan-300 to-blue-400 bg-clip-text text-transparent">
                 Experience
               </h2>
             </FadeInView>
-            <div className="space-y-8 relative before:absolute before:left-0 before:top-0 before:bottom-0 before:w-px before:bg-gradient-to-b before:from-blue-500 before:to-cyan-400 pl-8">
+            <div className="space-y-8 relative before:absolute before:left-0 sm:before:left-2 before:top-0 before:bottom-0 before:w-px before:bg-gradient-to-b before:from-blue-500 before:to-cyan-400 pl-6 sm:pl-8">
               {user.experiences.map((exp: any) => (
                 <FadeInView key={exp.id}>
-                  <div className="relative">
-                    <div className="absolute -left-8 top-1 w-3 h-3 rounded-full bg-gradient-to-br from-blue-500 to-cyan-400 ring-4 ring-slate-900" />
-                    <h3 className="text-lg font-bold">{exp.position}</h3>
+                  <div className="relative min-w-0">
+                    <div className="absolute -left-6 sm:-left-8 top-1 w-3 h-3 rounded-full bg-gradient-to-br from-blue-500 to-cyan-400 ring-4 ring-slate-900 shrink-0" />
+                    <h3 className="text-base sm:text-lg font-bold">{exp.position}</h3>
                     <p className="text-blue-400">{exp.company}</p>
                     <p className="text-sm text-blue-300/70 mt-1">
                       {formatDate(exp.startDate)} — {exp.current ? "Present" : exp.endDate ? formatDate(exp.endDate) : ""}
@@ -228,18 +229,18 @@ export default function OceanBlueTemplate({ data }: { data: { user: any } }) {
       )}
 
       {user.educations?.length > 0 && (
-        <section id="education" className="py-24 px-6 scroll-mt-16">
-          <div className="max-w-4xl mx-auto">
+        <section id="education" className="py-16 sm:py-20 lg:py-28 px-4 sm:px-6 lg:px-8 scroll-mt-20">
+          <div className="max-w-7xl mx-auto w-full">
             <FadeInView>
-              <h2 className="text-3xl font-bold mb-12 bg-gradient-to-r from-sky-400 to-blue-400 bg-clip-text text-transparent">
+              <h2 className="text-2xl sm:text-3xl font-bold mb-8 sm:mb-12 bg-gradient-to-r from-sky-400 to-blue-400 bg-clip-text text-transparent">
                 Education
               </h2>
             </FadeInView>
             <div className="space-y-6">
               {user.educations.map((edu: any) => (
                 <FadeInView key={edu.id}>
-                  <div className="p-6 rounded-2xl bg-white/5 border border-blue-500/20">
-                    <h3 className="font-bold text-lg">
+                  <div className="p-4 sm:p-6 rounded-2xl bg-white/5 border border-blue-500/20">
+                    <h3 className="font-bold text-base sm:text-lg">
                       {edu.degree}
                       {edu.field ? ` in ${edu.field}` : ""}
                     </h3>
@@ -255,22 +256,23 @@ export default function OceanBlueTemplate({ data }: { data: { user: any } }) {
         </section>
       )}
 
-      <section id="contact" className="py-24 px-6 bg-white/[0.02] scroll-mt-16">
-        <div className="max-w-xl mx-auto">
+      <section id="contact" className="py-16 sm:py-20 lg:py-28 px-4 sm:px-6 lg:px-8 bg-white/[0.02] scroll-mt-20">
+        <div className="max-w-2xl mx-auto w-full">
           <FadeInView>
-            <h2 className="text-3xl font-bold mb-8 bg-gradient-to-r from-blue-400 to-cyan-300 bg-clip-text text-transparent text-center">
+            <h2 className="text-2xl sm:text-3xl font-bold mb-6 sm:mb-8 bg-gradient-to-r from-blue-400 to-cyan-300 bg-clip-text text-transparent text-center">
               Get in Touch
             </h2>
             {sent ? (
               <div className="text-center py-12 text-cyan-400">Message sent!</div>
             ) : (
               <form onSubmit={handleContact} className="space-y-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <input
                   value={contactForm.name}
                   onChange={(e) => setContactForm((p) => ({ ...p, name: e.target.value }))}
                   placeholder="Name"
                   required
-                  className="w-full p-3 rounded-xl bg-white/5 border border-blue-500/20 text-white placeholder-blue-300/50 focus:border-blue-400 outline-none"
+                  className="w-full px-4 py-3 rounded-xl bg-white/5 border border-blue-500/20 text-white placeholder-blue-300/50 focus:border-blue-400 focus:ring-2 focus:ring-blue-400/20 outline-none transition-all duration-200"
                 />
                 <input
                   value={contactForm.email}
@@ -278,13 +280,14 @@ export default function OceanBlueTemplate({ data }: { data: { user: any } }) {
                   placeholder="Email"
                   type="email"
                   required
-                  className="w-full p-3 rounded-xl bg-white/5 border border-blue-500/20 text-white placeholder-blue-300/50 focus:border-blue-400 outline-none"
+                  className="w-full px-4 py-3 rounded-xl bg-white/5 border border-blue-500/20 text-white placeholder-blue-300/50 focus:border-blue-400 focus:ring-2 focus:ring-blue-400/20 outline-none transition-all duration-200"
                 />
+                </div>
                 <input
                   value={contactForm.subject}
                   onChange={(e) => setContactForm((p) => ({ ...p, subject: e.target.value }))}
                   placeholder="Subject"
-                  className="w-full p-3 rounded-xl bg-white/5 border border-blue-500/20 text-white placeholder-blue-300/50 focus:border-blue-400 outline-none"
+                  className="w-full px-4 py-3 rounded-xl bg-white/5 border border-blue-500/20 text-white placeholder-blue-300/50 focus:border-blue-400 outline-none transition-all duration-200"
                 />
                 <textarea
                   value={contactForm.message}
@@ -292,12 +295,12 @@ export default function OceanBlueTemplate({ data }: { data: { user: any } }) {
                   placeholder="Message"
                   rows={4}
                   required
-                  className="w-full p-3 rounded-xl bg-white/5 border border-blue-500/20 text-white placeholder-blue-300/50 focus:border-blue-400 outline-none resize-none"
+                  className="w-full px-4 py-3 rounded-xl bg-white/5 border border-blue-500/20 text-white placeholder-blue-300/50 focus:border-blue-400 outline-none resize-none transition-all duration-200"
                 />
                 <button
                   type="submit"
                   disabled={sending}
-                  className="w-full py-3 rounded-xl bg-gradient-to-r from-blue-500 to-blue-600 font-semibold hover:from-blue-400 hover:to-blue-500 transition-all"
+                  className="w-full py-3 rounded-xl bg-gradient-to-r from-blue-500 to-blue-600 font-semibold hover:from-blue-400 hover:to-blue-500 transition-all duration-300 disabled:opacity-50"
                 >
                   {sending ? "Sending..." : "Send Message"}
                 </button>

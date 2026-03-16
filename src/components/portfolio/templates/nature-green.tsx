@@ -42,20 +42,21 @@ export default function NatureGreenTemplate({ data }: { data: { user: any } }) {
       </div>
 
       {/* Hero */}
-      <section className="min-h-screen flex items-center px-4 relative">
+      <section className="min-h-screen flex items-center px-4 sm:px-6 lg:px-8 relative">
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(16,185,129,0.05),transparent_50%)]" />
+        <div className="absolute inset-0 bg-gradient-to-b from-emerald-200/20 via-transparent to-transparent" />
         <div className="absolute inset-0 opacity-30" style={{
           backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M30 5c-2 0-4 2-4 4s2 4 4 4 4-2 4-4-2-4-4-4z' fill='%2310b981' fill-opacity='0.15'/%3E%3C/svg%3E")`,
         }} />
-        <div className="max-w-6xl mx-auto w-full z-10">
+        <div className="max-w-7xl mx-auto w-full z-10">
           <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }}>
             {user.image && (
-              <img src={user.image} alt={user.name} className="w-32 h-32 rounded-3xl mx-auto mb-8 object-cover border-4 border-emerald-200 shadow-lg" />
+              <img src={user.image} alt={user.name} className="w-full max-w-[8rem] aspect-square rounded-3xl mx-auto mb-6 sm:mb-8 object-cover border-4 border-emerald-200 shadow-lg" />
             )}
-            <h1 className="text-5xl md:text-7xl font-bold text-gray-800">
+            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-7xl font-bold text-gray-800">
               {user.name || "Developer"}
             </h1>
-            <p className="text-xl text-emerald-600 mt-4 max-w-xl">{user.headline || "Building digital experiences"}</p>
+            <p className="text-base sm:text-lg md:text-xl text-emerald-600 mt-4 max-w-xl">{user.headline || "Building digital experiences"}</p>
             {user.location && (
               <p className="text-gray-600 mt-2">{user.location}</p>
             )}
@@ -69,7 +70,7 @@ export default function NatureGreenTemplate({ data }: { data: { user: any } }) {
                     target="_blank"
                     rel="noopener noreferrer"
                     whileHover={{ scale: 1.1, y: -2 }}
-                    className="p-3 rounded-2xl bg-white/80 border border-emerald-100 text-gray-600 hover:text-emerald-600 hover:border-emerald-300 transition-all shadow-sm"
+                    className="p-3 rounded-2xl bg-white/80 border border-emerald-100 text-gray-600 hover:text-emerald-600 hover:border-emerald-300 transition-all duration-200 shadow-sm"
                   >
                     <Icon className="h-5 w-5" />
                   </motion.a>
@@ -82,10 +83,10 @@ export default function NatureGreenTemplate({ data }: { data: { user: any } }) {
 
       {/* About */}
       {user.bio && (
-        <section id="about" className="py-24 px-4 scroll-mt-16">
-          <div className="max-w-4xl mx-auto">
+        <section id="about" className="py-16 sm:py-20 lg:py-28 px-4 sm:px-6 lg:px-8 scroll-mt-20">
+          <div className="max-w-7xl mx-auto w-full">
             <FadeInView>
-              <div className="rounded-3xl bg-white/60 backdrop-blur border border-emerald-100 p-10 shadow-sm">
+              <div className="rounded-3xl bg-white/60 backdrop-blur border border-emerald-100 p-6 sm:p-8 lg:p-10 shadow-sm">
                 <h2 className="text-3xl font-bold text-emerald-600 mb-6">About</h2>
                 <p className="text-lg text-gray-600 leading-relaxed">{user.bio}</p>
               </div>
@@ -96,15 +97,15 @@ export default function NatureGreenTemplate({ data }: { data: { user: any } }) {
 
       {/* Skills */}
       {user.skills?.length > 0 && (
-        <section id="skills" className="py-24 px-4 scroll-mt-16">
-          <div className="max-w-5xl mx-auto">
+        <section id="skills" className="py-16 sm:py-20 lg:py-28 px-4 sm:px-6 lg:px-8 scroll-mt-20">
+          <div className="max-w-7xl mx-auto w-full">
             <FadeInView>
-              <h2 className="text-3xl font-bold text-emerald-600 mb-12">Skills</h2>
+              <h2 className="text-2xl sm:text-3xl font-bold text-emerald-600 mb-8 sm:mb-12">Skills</h2>
             </FadeInView>
-            <StaggerContainer className="flex flex-wrap gap-3">
+            <StaggerContainer className="flex flex-wrap gap-2 sm:gap-3">
               {user.skills.map((skill: any) => (
                 <StaggerItem key={skill.id}>
-                  <span className="inline-block px-4 py-2 rounded-2xl bg-emerald-100 text-emerald-700 font-medium border border-emerald-200 hover:bg-emerald-200/80 transition-colors">
+                  <span className="inline-block px-3 py-1.5 sm:px-4 sm:py-2 text-sm sm:text-base rounded-2xl bg-emerald-100 text-emerald-700 font-medium border border-emerald-200 hover:bg-emerald-200/80 transition-all duration-200">
                     {skill.name}
                   </span>
                 </StaggerItem>
@@ -116,22 +117,22 @@ export default function NatureGreenTemplate({ data }: { data: { user: any } }) {
 
       {/* Projects */}
       {user.projects?.length > 0 && (
-        <section id="projects" className="py-24 px-4 bg-white/30 scroll-mt-16">
-          <div className="max-w-6xl mx-auto">
+        <section id="projects" className="py-16 sm:py-20 lg:py-28 px-4 sm:px-6 lg:px-8 bg-white/30 scroll-mt-20">
+          <div className="max-w-7xl mx-auto w-full">
             <FadeInView>
-              <h2 className="text-3xl font-bold text-emerald-600 mb-12">Projects</h2>
+              <h2 className="text-2xl sm:text-3xl font-bold text-emerald-600 mb-8 sm:mb-12">Projects</h2>
             </FadeInView>
-            <div className="grid md:grid-cols-2 gap-8">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
               {user.projects.map((project: any, i: number) => (
                 <FadeInView key={project.id} delay={i * 0.1}>
                   <motion.div
                     whileHover={{ y: -4 }}
-                    className="rounded-3xl bg-white border border-emerald-100 overflow-hidden shadow-sm hover:shadow-md transition-shadow"
+                    className="rounded-3xl bg-white border border-emerald-100 overflow-hidden shadow-sm hover:shadow-md hover:scale-[1.02] transition-all duration-300"
                   >
                     {project.imageUrl && (
-                      <img src={project.imageUrl} alt={project.title} className="w-full aspect-video object-cover" />
+                      <img src={project.imageUrl} alt={project.title} className="w-full max-w-full aspect-video object-cover" />
                     )}
-                    <div className="p-6">
+                    <div className="p-4 sm:p-6">
                       <h3 className="text-xl font-bold text-gray-800">{project.title}</h3>
                       <p className="text-gray-600 mt-2">{project.description}</p>
                       {project.techStack?.length > 0 && (
@@ -166,8 +167,8 @@ export default function NatureGreenTemplate({ data }: { data: { user: any } }) {
 
       {/* Experience */}
       {user.experiences?.length > 0 && (
-        <section id="experience" className="py-24 px-4 scroll-mt-16">
-          <div className="max-w-4xl mx-auto">
+        <section id="experience" className="py-16 sm:py-20 lg:py-28 px-4 sm:px-6 lg:px-8 scroll-mt-20">
+          <div className="max-w-7xl mx-auto w-full">
             <FadeInView>
               <h2 className="text-3xl font-bold text-emerald-600 mb-12">Experience</h2>
             </FadeInView>
@@ -181,8 +182,8 @@ export default function NatureGreenTemplate({ data }: { data: { user: any } }) {
                         <div className="w-0.5 flex-1 bg-emerald-200 min-h-[60px]" />
                       )}
                     </div>
-                    <div className="pb-12">
-                      <h3 className="text-xl font-bold text-gray-800">{exp.position}</h3>
+                    <div className="pb-12 min-w-0">
+                      <h3 className="text-lg sm:text-xl font-bold text-gray-800">{exp.position}</h3>
                       <p className="text-emerald-600 font-medium">{exp.company}</p>
                       <p className="text-sm text-gray-500 mt-1">
                         {formatDate(exp.startDate)} — {exp.current ? "Present" : exp.endDate ? formatDate(exp.endDate) : ""}
@@ -199,16 +200,16 @@ export default function NatureGreenTemplate({ data }: { data: { user: any } }) {
 
       {/* Education */}
       {user.educations?.length > 0 && (
-        <section id="education" className="py-24 px-4 bg-white/30 scroll-mt-16">
-          <div className="max-w-4xl mx-auto">
+        <section id="education" className="py-16 sm:py-20 lg:py-28 px-4 sm:px-6 lg:px-8 bg-white/30 scroll-mt-20">
+          <div className="max-w-7xl mx-auto w-full">
             <FadeInView>
               <h2 className="text-3xl font-bold text-emerald-600 mb-12">Education</h2>
             </FadeInView>
             <div className="space-y-8">
               {user.educations.map((edu: any, i: number) => (
                 <FadeInView key={edu.id} delay={i * 0.1}>
-                  <div className="rounded-2xl bg-white/80 border border-emerald-100 p-6">
-                    <h3 className="text-lg font-bold text-gray-800">
+                  <div className="rounded-2xl bg-white/80 border border-emerald-100 p-4 sm:p-6">
+                    <h3 className="text-base sm:text-lg font-bold text-gray-800">
                       {edu.degree}
                       {edu.field ? ` in ${edu.field}` : ""}
                     </h3>
@@ -225,8 +226,8 @@ export default function NatureGreenTemplate({ data }: { data: { user: any } }) {
       )}
 
       {/* Contact */}
-      <section id="contact" className="py-24 px-4 scroll-mt-16">
-        <div className="max-w-2xl mx-auto">
+      <section id="contact" className="py-16 sm:py-20 lg:py-28 px-4 sm:px-6 lg:px-8 scroll-mt-20">
+        <div className="max-w-2xl mx-auto w-full">
           <FadeInView>
             <h2 className="text-3xl font-bold text-emerald-600 mb-4">Get in Touch</h2>
             <p className="text-gray-600 mb-10">I&apos;d love to hear from you. Send me a message!</p>
@@ -235,14 +236,14 @@ export default function NatureGreenTemplate({ data }: { data: { user: any } }) {
                 <p className="text-xl text-emerald-600 font-bold">Thanks for reaching out!</p>
               </div>
             ) : (
-              <form onSubmit={handleContact} className="space-y-4">
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <form onSubmit={handleContact} className="space-y-4 sm:gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
                   <input
                     value={contactForm.name}
                     onChange={(e) => setContactForm({ ...contactForm, name: e.target.value })}
                     placeholder="Name"
                     required
-                    className="w-full px-4 py-3 rounded-2xl bg-white border border-emerald-100 text-gray-800 placeholder:text-gray-400 focus:border-emerald-400 focus:ring-2 focus:ring-emerald-100 outline-none transition-all"
+                    className="w-full px-4 py-3 rounded-2xl bg-white border border-emerald-100 text-gray-800 placeholder:text-gray-400 focus:border-emerald-400 focus:ring-2 focus:ring-emerald-100 outline-none transition-all duration-200"
                   />
                   <input
                     value={contactForm.email}
@@ -250,14 +251,14 @@ export default function NatureGreenTemplate({ data }: { data: { user: any } }) {
                     type="email"
                     placeholder="Email"
                     required
-                    className="w-full px-4 py-3 rounded-2xl bg-white border border-emerald-100 text-gray-800 placeholder:text-gray-400 focus:border-emerald-400 focus:ring-2 focus:ring-emerald-100 outline-none transition-all"
+                    className="w-full px-4 py-3 rounded-2xl bg-white border border-emerald-100 text-gray-800 placeholder:text-gray-400 focus:border-emerald-400 focus:ring-2 focus:ring-emerald-100 outline-none transition-all duration-200"
                   />
                 </div>
                 <input
                   value={contactForm.subject}
                   onChange={(e) => setContactForm({ ...contactForm, subject: e.target.value })}
                   placeholder="Subject"
-                  className="w-full px-4 py-3 rounded-2xl bg-white border border-emerald-100 text-gray-800 placeholder:text-gray-400 focus:border-emerald-400 focus:ring-2 focus:ring-emerald-100 outline-none transition-all"
+                  className="w-full px-4 py-3 rounded-2xl bg-white border border-emerald-100 text-gray-800 placeholder:text-gray-400 focus:border-emerald-400 focus:ring-2 focus:ring-emerald-100 outline-none transition-all duration-200"
                 />
                 <textarea
                   value={contactForm.message}
@@ -270,7 +271,7 @@ export default function NatureGreenTemplate({ data }: { data: { user: any } }) {
                 <button
                   type="submit"
                   disabled={sending}
-                  className="w-full py-4 rounded-2xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold transition-colors disabled:opacity-50"
+                  className="w-full py-4 rounded-2xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold transition-all duration-300 disabled:opacity-50"
                 >
                   {sending ? "Sending..." : "Send Message"}
                 </button>

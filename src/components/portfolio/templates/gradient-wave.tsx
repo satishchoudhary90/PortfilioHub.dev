@@ -51,15 +51,16 @@ export default function GradientWaveTemplate({ data }: { data: { user: any } }) 
             />
           </svg>
         </div>
-        <div className="max-w-5xl mx-auto px-6 z-10 py-32">
-          <motion.div initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.9 }}>
+        <div className="absolute inset-0 bg-gradient-to-t from-gray-950/40 via-transparent to-transparent pointer-events-none" aria-hidden="true" />
+        <div className="max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 z-10 py-20 sm:py-28 lg:py-32">
+          <motion.div initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.9 }} className="relative">
             {user.image && (
-              <img src={user.image} alt={user.name} className="w-32 h-32 rounded-3xl mb-8 border-4 border-white/10 object-cover shadow-2xl shadow-violet-500/20" />
+              <img src={user.image} alt={user.name} className="w-24 h-24 sm:w-28 sm:h-28 md:w-32 md:h-32 rounded-2xl sm:rounded-3xl mb-6 sm:mb-8 border-4 border-white/10 object-cover shadow-2xl shadow-violet-500/20" />
             )}
-            <h1 className="text-6xl md:text-8xl font-black bg-gradient-to-r from-violet-400 via-fuchsia-400 to-cyan-400 bg-clip-text text-transparent">
+            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-7xl font-black bg-gradient-to-r from-violet-400 via-fuchsia-400 to-cyan-400 bg-clip-text text-transparent">
               {user.name}
             </h1>
-            {user.headline && <p className="text-xl md:text-2xl text-gray-300 mt-4 max-w-2xl">{user.headline}</p>}
+            {user.headline && <p className="text-base sm:text-lg md:text-xl text-gray-300 mt-4 max-w-2xl">{user.headline}</p>}
             {user.location && (
               <p className="flex items-center gap-2 text-gray-500 mt-4"><MapPin className="h-4 w-4" /> {user.location}</p>
             )}
@@ -68,7 +69,7 @@ export default function GradientWaveTemplate({ data }: { data: { user: any } }) 
                 const Icon = socialIcons[link.platform] || Globe;
                 return (
                   <a key={link.id} href={link.url} target="_blank" rel="noopener noreferrer"
-                    className="p-3 rounded-xl bg-white/5 border border-white/10 hover:bg-white/10 hover:border-violet-500/50 transition-all hover:scale-110">
+                    className="p-3 rounded-xl bg-white/5 border border-white/10 hover:bg-white/10 hover:border-violet-500/50 transition-all duration-300 hover:scale-110">
                     <Icon className="h-5 w-5" />
                   </a>
                 );
@@ -79,24 +80,24 @@ export default function GradientWaveTemplate({ data }: { data: { user: any } }) 
       </section>
 
       {user.bio && (
-        <section id="about" className="py-24 px-6 scroll-mt-16">
+        <section id="about" className="py-16 sm:py-20 lg:py-28 px-4 sm:px-6 lg:px-8 scroll-mt-20">
           <FadeInView>
             <div className="max-w-4xl mx-auto">
-              <h2 className="text-3xl font-bold mb-8 bg-gradient-to-r from-violet-400 to-fuchsia-400 bg-clip-text text-transparent">About Me</h2>
-              <p className="text-lg text-gray-300 leading-relaxed">{user.bio}</p>
+              <h2 className="text-2xl sm:text-3xl font-bold mb-8 bg-gradient-to-r from-violet-400 to-fuchsia-400 bg-clip-text text-transparent">About Me</h2>
+              <p className="text-base sm:text-lg text-gray-300 leading-relaxed">{user.bio}</p>
             </div>
           </FadeInView>
         </section>
       )}
 
       {user.skills?.length > 0 && (
-        <section id="skills" className="py-24 px-6 bg-white/[0.02] scroll-mt-16">
-          <div className="max-w-5xl mx-auto">
-            <FadeInView><h2 className="text-3xl font-bold mb-12 bg-gradient-to-r from-fuchsia-400 to-cyan-400 bg-clip-text text-transparent">Skills</h2></FadeInView>
-            <StaggerContainer className="flex flex-wrap gap-3">
+        <section id="skills" className="py-16 sm:py-20 lg:py-28 px-4 sm:px-6 lg:px-8 bg-white/[0.02] scroll-mt-20">
+          <div className="max-w-7xl mx-auto w-full">
+            <FadeInView><h2 className="text-2xl sm:text-3xl font-bold mb-8 sm:mb-12 bg-gradient-to-r from-fuchsia-400 to-cyan-400 bg-clip-text text-transparent">Skills</h2></FadeInView>
+            <StaggerContainer className="flex flex-wrap gap-2 sm:gap-3">
               {user.skills.map((skill: any) => (
                 <StaggerItem key={skill.id}>
-                  <span className="px-5 py-2.5 rounded-full text-sm font-medium bg-gradient-to-r from-violet-500/20 to-fuchsia-500/20 border border-violet-500/30 hover:border-violet-400/60 transition-all">
+                  <span className="px-3 py-1.5 sm:px-5 sm:py-2.5 rounded-full text-xs sm:text-sm font-medium bg-gradient-to-r from-violet-500/20 to-fuchsia-500/20 border border-violet-500/30 hover:border-violet-400/60 transition-all duration-300">
                     {skill.name}
                     {skill.level && <span className="ml-2 text-xs text-violet-300">{skill.level}%</span>}
                   </span>
@@ -108,14 +109,14 @@ export default function GradientWaveTemplate({ data }: { data: { user: any } }) 
       )}
 
       {user.projects?.length > 0 && (
-        <section id="projects" className="py-24 px-6 scroll-mt-16">
-          <div className="max-w-6xl mx-auto">
-            <FadeInView><h2 className="text-3xl font-bold mb-12 bg-gradient-to-r from-violet-400 to-cyan-400 bg-clip-text text-transparent">Projects</h2></FadeInView>
-            <div className="grid md:grid-cols-2 gap-6">
+        <section id="projects" className="py-16 sm:py-20 lg:py-28 px-4 sm:px-6 lg:px-8 scroll-mt-20">
+          <div className="max-w-7xl mx-auto w-full">
+            <FadeInView><h2 className="text-2xl sm:text-3xl font-bold mb-8 sm:mb-12 bg-gradient-to-r from-violet-400 to-cyan-400 bg-clip-text text-transparent">Projects</h2></FadeInView>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
               {user.projects.map((project: any) => (
                 <FadeInView key={project.id}>
-                  <div className="group rounded-2xl bg-gradient-to-br from-white/5 to-white/[0.02] border border-white/10 p-6 hover:border-violet-500/40 transition-all">
-                    {project.imageUrl && <img src={project.imageUrl} alt={project.title} className="w-full h-48 object-cover rounded-xl mb-4" />}
+                  <div className="group rounded-2xl bg-gradient-to-br from-white/5 to-white/[0.02] border border-white/10 p-4 sm:p-6 hover:border-violet-500/40 hover:scale-[1.02] transition-all duration-300">
+                    {project.imageUrl && <img src={project.imageUrl} alt={project.title} className="w-full max-w-full h-40 sm:h-48 object-cover rounded-xl mb-4" />}
                     <h3 className="text-xl font-bold">{project.title}</h3>
                     {project.description && <p className="text-gray-400 mt-2 text-sm line-clamp-3">{project.description}</p>}
                     {project.techStack?.length > 0 && (
@@ -138,15 +139,15 @@ export default function GradientWaveTemplate({ data }: { data: { user: any } }) 
       )}
 
       {user.experiences?.length > 0 && (
-        <section id="experience" className="py-24 px-6 bg-white/[0.02] scroll-mt-16">
-          <div className="max-w-4xl mx-auto">
-            <FadeInView><h2 className="text-3xl font-bold mb-12 bg-gradient-to-r from-cyan-400 to-violet-400 bg-clip-text text-transparent">Experience</h2></FadeInView>
-            <div className="space-y-8 relative before:absolute before:left-0 before:top-0 before:bottom-0 before:w-px before:bg-gradient-to-b before:from-violet-500 before:to-fuchsia-500 pl-8">
+        <section id="experience" className="py-16 sm:py-20 lg:py-28 px-4 sm:px-6 lg:px-8 bg-white/[0.02] scroll-mt-20">
+          <div className="max-w-4xl mx-auto w-full">
+            <FadeInView><h2 className="text-2xl sm:text-3xl font-bold mb-8 sm:mb-12 bg-gradient-to-r from-cyan-400 to-violet-400 bg-clip-text text-transparent">Experience</h2></FadeInView>
+            <div className="space-y-6 sm:space-y-8 relative before:absolute before:left-0 sm:before:left-0 before:top-0 before:bottom-0 before:w-px before:bg-gradient-to-b before:from-violet-500 before:to-fuchsia-500 pl-6 sm:pl-8">
               {user.experiences.map((exp: any) => (
                 <FadeInView key={exp.id}>
                   <div className="relative">
-                    <div className="absolute -left-8 top-1 w-3 h-3 rounded-full bg-gradient-to-br from-violet-500 to-fuchsia-500 ring-4 ring-gray-950" />
-                    <h3 className="text-lg font-bold">{exp.position}</h3>
+                    <div className="absolute -left-6 sm:-left-8 top-1 w-3 h-3 rounded-full bg-gradient-to-br from-violet-500 to-fuchsia-500 ring-4 ring-gray-950" />
+                    <h3 className="text-base sm:text-lg font-bold">{exp.position}</h3>
                     <p className="text-violet-400">{exp.company}</p>
                     <p className="text-sm text-gray-500 mt-1">{formatDate(exp.startDate)} — {exp.current ? "Present" : exp.endDate ? formatDate(exp.endDate) : ""}</p>
                     {exp.description && <p className="text-gray-400 mt-3 text-sm leading-relaxed">{exp.description}</p>}
@@ -159,14 +160,14 @@ export default function GradientWaveTemplate({ data }: { data: { user: any } }) 
       )}
 
       {user.educations?.length > 0 && (
-        <section id="education" className="py-24 px-6 scroll-mt-16">
-          <div className="max-w-4xl mx-auto">
-            <FadeInView><h2 className="text-3xl font-bold mb-12 bg-gradient-to-r from-fuchsia-400 to-violet-400 bg-clip-text text-transparent">Education</h2></FadeInView>
-            <div className="space-y-6">
+        <section id="education" className="py-16 sm:py-20 lg:py-28 px-4 sm:px-6 lg:px-8 scroll-mt-20">
+          <div className="max-w-4xl mx-auto w-full">
+            <FadeInView><h2 className="text-2xl sm:text-3xl font-bold mb-8 sm:mb-12 bg-gradient-to-r from-fuchsia-400 to-violet-400 bg-clip-text text-transparent">Education</h2></FadeInView>
+            <div className="space-y-4 sm:space-y-6">
               {user.educations.map((edu: any) => (
                 <FadeInView key={edu.id}>
-                  <div className="p-6 rounded-2xl bg-white/5 border border-white/10">
-                    <h3 className="font-bold text-lg">{edu.degree}{edu.field ? ` in ${edu.field}` : ""}</h3>
+                  <div className="p-4 sm:p-6 rounded-2xl bg-white/5 border border-white/10">
+                    <h3 className="font-bold text-base sm:text-lg">{edu.degree}{edu.field ? ` in ${edu.field}` : ""}</h3>
                     <p className="text-violet-400">{edu.institution}</p>
                     <p className="text-sm text-gray-500 mt-1">{formatDate(edu.startDate)} — {edu.current ? "Present" : edu.endDate ? formatDate(edu.endDate) : ""}</p>
                   </div>
@@ -177,18 +178,18 @@ export default function GradientWaveTemplate({ data }: { data: { user: any } }) 
         </section>
       )}
 
-      <section id="contact" className="py-24 px-6 bg-white/[0.02] scroll-mt-16">
-        <div className="max-w-xl mx-auto">
+      <section id="contact" className="py-16 sm:py-20 lg:py-28 px-4 sm:px-6 lg:px-8 bg-white/[0.02] scroll-mt-20">
+        <div className="max-w-xl mx-auto w-full">
           <FadeInView>
-            <h2 className="text-3xl font-bold mb-8 bg-gradient-to-r from-violet-400 to-fuchsia-400 bg-clip-text text-transparent text-center">Get in Touch</h2>
+            <h2 className="text-2xl sm:text-3xl font-bold mb-6 sm:mb-8 bg-gradient-to-r from-violet-400 to-fuchsia-400 bg-clip-text text-transparent text-center">Get in Touch</h2>
             {sent ? (
               <div className="text-center py-12 text-green-400">Message sent!</div>
             ) : (
-              <form onSubmit={handleContact} className="space-y-4">
-                <input value={contactForm.name} onChange={(e) => setContactForm(p => ({ ...p, name: e.target.value }))} placeholder="Name" required className="w-full p-3 rounded-xl bg-white/5 border border-white/10 text-white placeholder-gray-500 focus:border-violet-500 outline-none" />
-                <input value={contactForm.email} onChange={(e) => setContactForm(p => ({ ...p, email: e.target.value }))} placeholder="Email" type="email" required className="w-full p-3 rounded-xl bg-white/5 border border-white/10 text-white placeholder-gray-500 focus:border-violet-500 outline-none" />
-                <textarea value={contactForm.message} onChange={(e) => setContactForm(p => ({ ...p, message: e.target.value }))} placeholder="Message" rows={4} required className="w-full p-3 rounded-xl bg-white/5 border border-white/10 text-white placeholder-gray-500 focus:border-violet-500 outline-none resize-none" />
-                <button type="submit" disabled={sending} className="w-full py-3 rounded-xl bg-gradient-to-r from-violet-600 to-fuchsia-600 font-semibold hover:opacity-90 transition-opacity">{sending ? "Sending..." : "Send Message"}</button>
+              <form onSubmit={handleContact} className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6 [&>textarea]:sm:col-span-2 [&>button]:sm:col-span-2">
+                <input value={contactForm.name} onChange={(e) => setContactForm(p => ({ ...p, name: e.target.value }))} placeholder="Name" required className="w-full p-3 sm:p-4 rounded-xl bg-white/5 border border-white/10 text-white placeholder-gray-500 focus:border-violet-500 outline-none transition-colors duration-300" />
+                <input value={contactForm.email} onChange={(e) => setContactForm(p => ({ ...p, email: e.target.value }))} placeholder="Email" type="email" required className="w-full p-3 sm:p-4 rounded-xl bg-white/5 border border-white/10 text-white placeholder-gray-500 focus:border-violet-500 outline-none transition-colors duration-300" />
+                <textarea value={contactForm.message} onChange={(e) => setContactForm(p => ({ ...p, message: e.target.value }))} placeholder="Message" rows={4} required className="w-full p-3 sm:p-4 rounded-xl bg-white/5 border border-white/10 text-white placeholder-gray-500 focus:border-violet-500 outline-none resize-none transition-colors duration-300" />
+                <button type="submit" disabled={sending} className="w-full py-3 rounded-xl bg-gradient-to-r from-violet-600 to-fuchsia-600 font-semibold hover:opacity-90 transition-all duration-300">{sending ? "Sending..." : "Send Message"}</button>
               </form>
             )}
           </FadeInView>

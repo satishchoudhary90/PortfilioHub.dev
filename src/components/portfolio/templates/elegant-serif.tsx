@@ -25,20 +25,21 @@ export default function ElegantSerifTemplate({ data }: { data: { user: any } }) 
 
   return (
     <div className="min-h-screen bg-[#faf8f5] text-gray-800" style={{ fontFamily: "Georgia, 'Times New Roman', serif" }}>
-      <section className="min-h-[80vh] flex items-center justify-center relative px-6">
+      <section className="min-h-[80vh] flex items-center justify-center relative px-4 sm:px-6 lg:px-8">
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,rgba(180,160,130,0.1),transparent_70%)]" />
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 1 }} className="text-center z-10 max-w-3xl">
+        <div className="absolute inset-0 bg-gradient-to-t from-[#faf8f5]/20 via-transparent to-transparent pointer-events-none" aria-hidden="true" />
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 1 }} className="text-center z-10 max-w-7xl mx-auto w-full">
           {user.image && (
-            <img src={user.image} alt={user.name} className="w-28 h-28 rounded-full mx-auto mb-6 border-4 border-amber-200/60 object-cover" />
+            <img src={user.image} alt={user.name} className="w-20 h-20 sm:w-24 sm:h-24 md:w-28 md:h-28 rounded-full mx-auto mb-4 sm:mb-6 border-4 border-amber-200/60 object-cover" />
           )}
-          <h1 className="text-5xl md:text-7xl font-normal italic text-gray-900 tracking-tight">{user.name}</h1>
-          {user.headline && <p className="text-xl text-amber-700/70 mt-4 tracking-wide">{user.headline}</p>}
+          <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-7xl font-normal italic text-gray-900 tracking-tight">{user.name}</h1>
+          {user.headline && <p className="text-base sm:text-lg md:text-xl text-amber-700/70 mt-4 tracking-wide">{user.headline}</p>}
           <div className="w-24 h-px bg-amber-600/40 mx-auto mt-8" />
-          <div className="flex justify-center gap-4 mt-6">
+          <div className="flex justify-center flex-wrap gap-3 sm:gap-4 mt-6">
             {user.socialLinks?.map((link: any) => {
               const Icon = socialIcons[link.platform] || Globe;
               return (
-                <a key={link.id} href={link.url} target="_blank" rel="noopener noreferrer" className="text-amber-700/50 hover:text-amber-800 transition-colors">
+                <a key={link.id} href={link.url} target="_blank" rel="noopener noreferrer" className="text-amber-700/50 hover:text-amber-800 transition-colors duration-300 hover:scale-110">
                   <Icon className="h-5 w-5" />
                 </a>
               );
@@ -48,24 +49,24 @@ export default function ElegantSerifTemplate({ data }: { data: { user: any } }) 
       </section>
 
       {user.bio && (
-        <section id="about" className="py-20 px-6 scroll-mt-16">
+        <section id="about" className="py-16 sm:py-20 lg:py-28 px-4 sm:px-6 lg:px-8 scroll-mt-20">
           <FadeInView>
-            <div className="max-w-3xl mx-auto text-center">
+            <div className="max-w-7xl mx-auto w-full text-center">
               <h2 className="text-xs uppercase tracking-[0.4em] text-amber-700/50 mb-8">About</h2>
-              <p className="text-xl text-gray-600 leading-relaxed italic">&ldquo;{user.bio}&rdquo;</p>
+              <p className="text-base sm:text-lg md:text-xl text-gray-600 leading-relaxed italic">&ldquo;{user.bio}&rdquo;</p>
             </div>
           </FadeInView>
         </section>
       )}
 
       {user.skills?.length > 0 && (
-        <section id="skills" className="py-20 px-6 bg-white/50 scroll-mt-16">
-          <div className="max-w-4xl mx-auto text-center">
-            <FadeInView><h2 className="text-xs uppercase tracking-[0.4em] text-amber-700/50 mb-10">Expertise</h2></FadeInView>
-            <div className="flex flex-wrap justify-center gap-x-8 gap-y-3">
+        <section id="skills" className="py-16 sm:py-20 lg:py-28 px-4 sm:px-6 lg:px-8 bg-white/50 scroll-mt-20">
+          <div className="max-w-7xl mx-auto w-full text-center">
+            <FadeInView><h2 className="text-xs uppercase tracking-[0.4em] text-amber-700/50 mb-8 sm:mb-10">Expertise</h2></FadeInView>
+            <div className="flex flex-wrap justify-center gap-x-4 sm:gap-x-8 gap-y-3">
               {user.skills.map((skill: any, i: number) => (
                 <FadeInView key={skill.id}>
-                  <span className="text-gray-600 text-lg">
+                  <span className="text-gray-600 text-sm sm:text-base md:text-lg">
                     {skill.name}{i < user.skills.length - 1 ? <span className="ml-8 text-amber-600/30">·</span> : ""}
                   </span>
                 </FadeInView>
@@ -76,15 +77,15 @@ export default function ElegantSerifTemplate({ data }: { data: { user: any } }) 
       )}
 
       {user.projects?.length > 0 && (
-        <section id="projects" className="py-20 px-6 scroll-mt-16">
-          <div className="max-w-5xl mx-auto">
-            <FadeInView><h2 className="text-xs uppercase tracking-[0.4em] text-amber-700/50 mb-12 text-center">Selected Works</h2></FadeInView>
-            <div className="grid md:grid-cols-2 gap-8">
+        <section id="projects" className="py-16 sm:py-20 lg:py-28 px-4 sm:px-6 lg:px-8 scroll-mt-20">
+          <div className="max-w-7xl mx-auto w-full">
+            <FadeInView><h2 className="text-xs uppercase tracking-[0.4em] text-amber-700/50 mb-8 sm:mb-12 text-center">Selected Works</h2></FadeInView>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
               {user.projects.map((project: any) => (
                 <FadeInView key={project.id}>
-                  <div className="group">
-                    {project.imageUrl && <img src={project.imageUrl} alt={project.title} className="w-full h-52 object-cover rounded-sm mb-4 grayscale group-hover:grayscale-0 transition-all duration-500" />}
-                    <h3 className="text-2xl font-normal italic">{project.title}</h3>
+                  <div className="group hover:scale-[1.02] transition-transform duration-300">
+                    {project.imageUrl && <img src={project.imageUrl} alt={project.title} className="w-full max-w-full h-40 sm:h-48 md:h-52 object-cover rounded-sm mb-4 grayscale group-hover:grayscale-0 transition-all duration-500" />}
+                    <h3 className="text-xl sm:text-2xl font-normal italic">{project.title}</h3>
                     {project.description && <p className="text-gray-500 mt-2 text-sm leading-relaxed">{project.description}</p>}
                     {project.techStack?.length > 0 && (
                       <p className="text-xs text-amber-700/50 mt-3 tracking-wider">{project.techStack.join(" · ")}</p>
@@ -102,15 +103,15 @@ export default function ElegantSerifTemplate({ data }: { data: { user: any } }) 
       )}
 
       {user.experiences?.length > 0 && (
-        <section id="experience" className="py-20 px-6 bg-white/50 scroll-mt-16">
-          <div className="max-w-3xl mx-auto">
-            <FadeInView><h2 className="text-xs uppercase tracking-[0.4em] text-amber-700/50 mb-12 text-center">Experience</h2></FadeInView>
-            <div className="space-y-10">
+        <section id="experience" className="py-16 sm:py-20 lg:py-28 px-4 sm:px-6 lg:px-8 bg-white/50 scroll-mt-20">
+          <div className="max-w-7xl mx-auto w-full">
+            <FadeInView><h2 className="text-xs uppercase tracking-[0.4em] text-amber-700/50 mb-8 sm:mb-12 text-center">Experience</h2></FadeInView>
+            <div className="space-y-6 sm:space-y-10">
               {user.experiences.map((exp: any) => (
                 <FadeInView key={exp.id}>
-                  <div className="border-l-2 border-amber-200 pl-6">
-                    <p className="text-sm text-amber-700/50 tracking-wider">{formatDate(exp.startDate)} — {exp.current ? "Present" : exp.endDate ? formatDate(exp.endDate) : ""}</p>
-                    <h3 className="text-xl mt-1 italic">{exp.position}</h3>
+                  <div className="border-l-2 border-amber-200 pl-4 sm:pl-6 overflow-hidden">
+                    <p className="text-xs sm:text-sm text-amber-700/50 tracking-wider">{formatDate(exp.startDate)} — {exp.current ? "Present" : exp.endDate ? formatDate(exp.endDate) : ""}</p>
+                    <h3 className="text-base sm:text-lg md:text-xl mt-1 italic">{exp.position}</h3>
                     <p className="text-amber-700/70">{exp.company}</p>
                     {exp.description && <p className="text-gray-500 mt-3 text-sm leading-relaxed">{exp.description}</p>}
                   </div>
@@ -122,14 +123,14 @@ export default function ElegantSerifTemplate({ data }: { data: { user: any } }) 
       )}
 
       {user.educations?.length > 0 && (
-        <section id="education" className="py-20 px-6 scroll-mt-16">
-          <div className="max-w-3xl mx-auto">
-            <FadeInView><h2 className="text-xs uppercase tracking-[0.4em] text-amber-700/50 mb-12 text-center">Education</h2></FadeInView>
-            <div className="space-y-8">
+        <section id="education" className="py-16 sm:py-20 lg:py-28 px-4 sm:px-6 lg:px-8 scroll-mt-20">
+          <div className="max-w-7xl mx-auto w-full">
+            <FadeInView><h2 className="text-xs uppercase tracking-[0.4em] text-amber-700/50 mb-8 sm:mb-12 text-center">Education</h2></FadeInView>
+            <div className="space-y-6 sm:space-y-8">
               {user.educations.map((edu: any) => (
                 <FadeInView key={edu.id}>
-                  <div className="text-center">
-                    <h3 className="text-xl italic">{edu.degree}{edu.field ? ` in ${edu.field}` : ""}</h3>
+                  <div className="text-center overflow-hidden">
+                    <h3 className="text-lg sm:text-xl italic">{edu.degree}{edu.field ? ` in ${edu.field}` : ""}</h3>
                     <p className="text-amber-700/70">{edu.institution}</p>
                     <p className="text-sm text-gray-400 mt-1">{formatDate(edu.startDate)} — {edu.current ? "Present" : edu.endDate ? formatDate(edu.endDate) : ""}</p>
                   </div>
@@ -140,18 +141,18 @@ export default function ElegantSerifTemplate({ data }: { data: { user: any } }) 
         </section>
       )}
 
-      <section id="contact" className="py-20 px-6 bg-white/50 scroll-mt-16">
-        <div className="max-w-lg mx-auto">
+      <section id="contact" className="py-16 sm:py-20 lg:py-28 px-4 sm:px-6 lg:px-8 bg-white/50 scroll-mt-20">
+        <div className="max-w-lg mx-auto w-full">
           <FadeInView>
-            <h2 className="text-xs uppercase tracking-[0.4em] text-amber-700/50 mb-8 text-center">Correspondence</h2>
+            <h2 className="text-xs uppercase tracking-[0.4em] text-amber-700/50 mb-6 sm:mb-8 text-center">Correspondence</h2>
             {sent ? (
               <div className="text-center py-12 text-amber-700 italic">Thank you for your message.</div>
             ) : (
-              <form onSubmit={handleContact} className="space-y-4">
-                <input value={contactForm.name} onChange={(e) => setContactForm(p => ({ ...p, name: e.target.value }))} placeholder="Your name" required className="w-full p-3 bg-transparent border-b border-amber-200 text-gray-800 placeholder-gray-400 focus:border-amber-500 outline-none" style={{ fontFamily: "Georgia, serif" }} />
-                <input value={contactForm.email} onChange={(e) => setContactForm(p => ({ ...p, email: e.target.value }))} placeholder="Your email" type="email" required className="w-full p-3 bg-transparent border-b border-amber-200 text-gray-800 placeholder-gray-400 focus:border-amber-500 outline-none" style={{ fontFamily: "Georgia, serif" }} />
-                <textarea value={contactForm.message} onChange={(e) => setContactForm(p => ({ ...p, message: e.target.value }))} placeholder="Your message" rows={4} required className="w-full p-3 bg-transparent border-b border-amber-200 text-gray-800 placeholder-gray-400 focus:border-amber-500 outline-none resize-none" style={{ fontFamily: "Georgia, serif" }} />
-                <button type="submit" disabled={sending} className="w-full py-3 bg-amber-700 text-white rounded-sm hover:bg-amber-800 transition-colors tracking-wider text-sm">{sending ? "Sending..." : "Send"}</button>
+              <form onSubmit={handleContact} className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6 [&>textarea]:sm:col-span-2 [&>button]:sm:col-span-2">
+                <input value={contactForm.name} onChange={(e) => setContactForm(p => ({ ...p, name: e.target.value }))} placeholder="Your name" required className="w-full p-3 sm:p-4 bg-transparent border-b border-amber-200 text-gray-800 placeholder-gray-400 focus:border-amber-500 outline-none transition-colors duration-300" style={{ fontFamily: "Georgia, serif" }} />
+                <input value={contactForm.email} onChange={(e) => setContactForm(p => ({ ...p, email: e.target.value }))} placeholder="Your email" type="email" required className="w-full p-3 sm:p-4 bg-transparent border-b border-amber-200 text-gray-800 placeholder-gray-400 focus:border-amber-500 outline-none transition-colors duration-300" style={{ fontFamily: "Georgia, serif" }} />
+                <textarea value={contactForm.message} onChange={(e) => setContactForm(p => ({ ...p, message: e.target.value }))} placeholder="Your message" rows={4} required className="w-full p-3 sm:p-4 bg-transparent border-b border-amber-200 text-gray-800 placeholder-gray-400 focus:border-amber-500 outline-none resize-none transition-colors duration-300" style={{ fontFamily: "Georgia, serif" }} />
+                <button type="submit" disabled={sending} className="w-full py-3 bg-amber-700 text-white rounded-sm hover:bg-amber-800 transition-all duration-300 tracking-wider text-sm">{sending ? "Sending..." : "Send"}</button>
               </form>
             )}
           </FadeInView>

@@ -41,8 +41,9 @@ export default function MinimalTemplate({ data }: { data: { user: any } }) {
   return (
     <div className="min-h-screen bg-slate-950 text-white">
       {/* Hero */}
-      <section className="min-h-screen flex items-center justify-center relative overflow-hidden">
+      <section className="min-h-screen flex items-center justify-center relative overflow-hidden px-4 sm:px-6 lg:px-8">
         <div className="absolute inset-0 bg-gradient-to-b from-indigo-600/10 via-transparent to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-t from-slate-950/40 via-transparent to-transparent" />
         <div className="absolute inset-0">
           {[...Array(50)].map((_, i) => (
             <motion.div
@@ -54,15 +55,15 @@ export default function MinimalTemplate({ data }: { data: { user: any } }) {
             />
           ))}
         </div>
-        <div className="text-center z-10 px-4">
+        <div className="text-center z-10 w-full max-w-7xl mx-auto">
           <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }}>
             {user.image && (
-              <img src={user.image} alt={user.name} className="w-28 h-28 rounded-full mx-auto mb-6 border-4 border-indigo-500/30 object-cover" />
+              <img src={user.image} alt={user.name} className="w-24 h-24 sm:w-28 sm:h-28 rounded-full mx-auto mb-6 border-4 border-indigo-500/30 object-cover" />
             )}
-            <h1 className="text-5xl md:text-7xl font-bold bg-gradient-to-r from-white via-indigo-200 to-indigo-400 bg-clip-text text-transparent">
+            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-7xl font-bold bg-gradient-to-r from-white via-indigo-200 to-indigo-400 bg-clip-text text-transparent">
               {user.name || "Developer"}
             </h1>
-            <p className="text-xl text-gray-400 mt-4 max-w-lg mx-auto">{user.headline || "Full Stack Developer"}</p>
+            <p className="text-base sm:text-lg md:text-xl text-gray-400 mt-4 max-w-lg mx-auto">{user.headline || "Full Stack Developer"}</p>
             {user.location && (
               <p className="text-sm text-gray-500 mt-2 flex items-center justify-center gap-1">
                 <MapPin className="h-4 w-4" /> {user.location}
@@ -91,7 +92,7 @@ export default function MinimalTemplate({ data }: { data: { user: any } }) {
 
       {/* About */}
       {user.bio && (
-        <section id="about" className="py-24 px-4 max-w-4xl mx-auto scroll-mt-16">
+        <section id="about" className="py-16 sm:py-20 lg:py-28 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto w-full scroll-mt-20">
           <FadeInView>
             <h2 className="text-3xl font-bold mb-8">About Me</h2>
             <p className="text-lg text-gray-400 leading-relaxed">{user.bio}</p>
@@ -101,7 +102,7 @@ export default function MinimalTemplate({ data }: { data: { user: any } }) {
 
       {/* Skills */}
       {user.skills?.length > 0 && (
-        <section id="skills" className="py-24 px-4 max-w-4xl mx-auto scroll-mt-16">
+        <section id="skills" className="py-16 sm:py-20 lg:py-28 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto w-full scroll-mt-20">
           <FadeInView>
             <h2 className="text-3xl font-bold mb-12">Skills</h2>
           </FadeInView>
@@ -133,20 +134,20 @@ export default function MinimalTemplate({ data }: { data: { user: any } }) {
 
       {/* Projects */}
       {user.projects?.length > 0 && (
-        <section id="projects" className="py-24 px-4 max-w-6xl mx-auto scroll-mt-16">
+        <section id="projects" className="py-16 sm:py-20 lg:py-28 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto w-full scroll-mt-20">
           <FadeInView>
             <h2 className="text-3xl font-bold mb-12">Projects</h2>
           </FadeInView>
-          <StaggerContainer className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <StaggerContainer className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
             {user.projects.map((project: any) => (
               <StaggerItem key={project.id}>
-                <motion.div whileHover={{ y: -5 }} className="rounded-xl border border-white/10 bg-white/5 backdrop-blur-sm overflow-hidden group">
+                <motion.div whileHover={{ y: -5, scale: 1.02 }} transition={{ duration: 0.3 }} className="rounded-xl border border-white/10 bg-white/5 backdrop-blur-sm overflow-hidden group transition-all duration-300">
                   {project.imageUrl && (
                     <div className="aspect-video overflow-hidden">
-                      <img src={project.imageUrl} alt={project.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                      <img src={project.imageUrl} alt={project.title} className="w-full h-full max-w-full object-cover group-hover:scale-105 transition-transform duration-500" />
                     </div>
                   )}
-                  <div className="p-5 space-y-3">
+                  <div className="p-4 sm:p-5 space-y-3">
                     <h3 className="font-semibold text-lg text-white">{project.title}</h3>
                     <p className="text-sm text-gray-400 line-clamp-2">{project.description}</p>
                     <div className="flex flex-wrap gap-1.5">
@@ -176,7 +177,7 @@ export default function MinimalTemplate({ data }: { data: { user: any } }) {
 
       {/* Experience */}
       {user.experiences?.length > 0 && (
-        <section id="experience" className="py-24 px-4 max-w-4xl mx-auto scroll-mt-16">
+        <section id="experience" className="py-16 sm:py-20 lg:py-28 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto w-full scroll-mt-20">
           <FadeInView>
             <h2 className="text-3xl font-bold mb-12">Experience</h2>
           </FadeInView>
@@ -188,7 +189,7 @@ export default function MinimalTemplate({ data }: { data: { user: any } }) {
                   <div className="relative pl-12">
                     <div className="absolute left-2.5 top-1.5 w-3 h-3 rounded-full bg-indigo-500 ring-4 ring-slate-950" />
                     <div>
-                      <h3 className="font-semibold text-white text-lg">{exp.position}</h3>
+                      <h3 className="font-semibold text-white text-base sm:text-lg">{exp.position}</h3>
                       <p className="text-indigo-400">{exp.company}</p>
                       <p className="text-sm text-gray-500 mt-1">
                         {formatDate(exp.startDate)} — {exp.current ? "Present" : exp.endDate ? formatDate(exp.endDate) : ""}
@@ -205,14 +206,14 @@ export default function MinimalTemplate({ data }: { data: { user: any } }) {
 
       {/* Education */}
       {user.educations?.length > 0 && (
-        <section id="education" className="py-24 px-4 max-w-4xl mx-auto scroll-mt-16">
+        <section id="education" className="py-16 sm:py-20 lg:py-28 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto w-full scroll-mt-20">
           <FadeInView>
             <h2 className="text-3xl font-bold mb-12">Education</h2>
           </FadeInView>
           <StaggerContainer className="space-y-6">
             {user.educations.map((edu: any) => (
               <StaggerItem key={edu.id}>
-                <div className="p-6 rounded-xl border border-white/10 bg-white/5">
+                <div className="p-4 sm:p-6 rounded-xl border border-white/10 bg-white/5">
                   <h3 className="font-semibold text-white">{edu.degree}{edu.field ? ` in ${edu.field}` : ""}</h3>
                   <p className="text-purple-400">{edu.institution}</p>
                   <p className="text-sm text-gray-500 mt-1">
@@ -227,7 +228,7 @@ export default function MinimalTemplate({ data }: { data: { user: any } }) {
       )}
 
       {/* Contact */}
-      <section id="contact" className="py-24 px-4 max-w-2xl mx-auto scroll-mt-16">
+      <section id="contact" className="py-16 sm:py-20 lg:py-28 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto w-full scroll-mt-20">
         <FadeInView>
           <h2 className="text-3xl font-bold mb-2 text-center">Get In Touch</h2>
           <p className="text-gray-500 text-center mb-8">Have a question or want to work together?</p>
@@ -241,14 +242,14 @@ export default function MinimalTemplate({ data }: { data: { user: any } }) {
               </button>
             </motion.div>
           ) : (
-            <form onSubmit={handleContact} className="space-y-4">
+            <form onSubmit={handleContact} className="space-y-4 max-w-2xl mx-auto">
               {contactStatus === "error" && (
                 <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} className="flex items-center gap-2 px-4 py-3 rounded-xl bg-red-500/10 border border-red-500/20 text-red-400 text-sm">
                   <AlertCircle className="h-4 w-4 shrink-0" />
                   Something went wrong. Please try again.
                 </motion.div>
               )}
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
                 <input value={contactForm.name} onChange={(e) => setContactForm({ ...contactForm, name: e.target.value })} placeholder="Your name" required className="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white placeholder:text-gray-600 focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500/20 focus:outline-none transition-all" />
                 <input value={contactForm.email} onChange={(e) => setContactForm({ ...contactForm, email: e.target.value })} type="email" placeholder="your@email.com" required className="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white placeholder:text-gray-600 focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500/20 focus:outline-none transition-all" />
               </div>
