@@ -2,14 +2,76 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Dashboard theme: dark/light modes + 6 accent schemes */
+:root,
+.theme-dark {
+  --bg-primary: #0f172a;
+  --bg-secondary: #1e293b;
+  --bg-card: rgba(255, 255, 255, 0.05);
+  --text-primary: #f8fafc;
+  --text-secondary: #94a3b8;
+  --text-muted: #64748b;
+  --border: rgba(255, 255, 255, 0.1);
+  --accent: #6366f1;
+  --accent-soft: rgba(99, 102, 241, 0.125);
+  --accent-hover: #818cf8;
+}
+
+.theme-light {
+  --bg-primary: #f8fafc;
+  --bg-secondary: #f1f5f9;
+  --bg-card: rgba(0, 0, 0, 0.03);
+  --text-primary: #0f172a;
+  --text-secondary: #475569;
+  --text-muted: #94a3b8;
+  --border: rgba(0, 0, 0, 0.1);
+}
+
+/* Accent overrides */
+.accent-indigo {
+  --accent: #6366f1;
+  --accent-soft: rgba(99, 102, 241, 0.125);
+  --accent-hover: #818cf8;
+}
+
+.accent-emerald {
+  --accent: #10b981;
+  --accent-soft: rgba(16, 185, 129, 0.125);
+  --accent-hover: #34d399;
+}
+
+.accent-rose {
+  --accent: #f43f5e;
+  --accent-soft: rgba(244, 63, 94, 0.125);
+  --accent-hover: #fb7185;
+}
+
+.accent-amber {
+  --accent: #f59e0b;
+  --accent-soft: rgba(245, 158, 11, 0.125);
+  --accent-hover: #fbbf24;
+}
+
+.accent-cyan {
+  --accent: #06b6d4;
+  --accent-soft: rgba(6, 182, 212, 0.125);
+  --accent-hover: #22d3ee;
+}
+
+.accent-violet {
+  --accent: #8b5cf6;
+  --accent-soft: rgba(139, 92, 246, 0.125);
+  --accent-hover: #a78bfa;
+}
+
 @layer base {
   * {
-    border-color: theme('colors.white / 0.1');
+    border-color: var(--border, rgba(255, 255, 255, 0.1));
   }
 
   body {
-    color: theme('colors.gray.100');
-    background: theme('colors.slate.950');
+    color: var(--text-primary, #f8fafc);
+    background: var(--bg-primary, #0f172a);
   }
 
   ::-webkit-scrollbar {
@@ -21,12 +83,12 @@
   }
 
   ::-webkit-scrollbar-thumb {
-    background: theme('colors.white / 0.1');
+    background: var(--border, rgba(255, 255, 255, 0.1));
     border-radius: 3px;
   }
 
   ::-webkit-scrollbar-thumb:hover {
-    background: theme('colors.white / 0.2');
+    background: rgba(255, 255, 255, 0.2);
   }
 }
 

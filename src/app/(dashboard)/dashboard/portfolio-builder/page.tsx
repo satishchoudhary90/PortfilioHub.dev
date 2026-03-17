@@ -68,7 +68,7 @@ function SortableItem({ id, children }: SortableItemProps) {
   return (
     <div ref={setNodeRef} style={style} className="relative group">
       <div {...attributes} {...listeners} className="absolute left-0 top-0 bottom-0 w-8 flex items-center justify-center cursor-grab active:cursor-grabbing opacity-0 group-hover:opacity-100 transition-opacity">
-        <GripVertical className="h-4 w-4 text-gray-500" />
+        <GripVertical className="h-4 w-4 text-theme-muted" />
       </div>
       <div className="pl-8">{children}</div>
     </div>
@@ -353,7 +353,7 @@ export default function PortfolioBuilderPage() {
               <div><Label className="text-xs">Skill Name *</Label><Input value={formData.name || ""} onChange={e => setFormData((p: any) => ({ ...p, name: e.target.value }))} placeholder="React, Python..." /></div>
               <div>
                 <Label className="text-xs">Category</Label>
-                <select value={formData.category || "frontend"} onChange={e => setFormData((p: any) => ({ ...p, category: e.target.value }))} className="w-full h-10 rounded-md border border-white/10 bg-transparent px-3 text-sm text-white">
+                <select value={formData.category || "frontend"} onChange={e => setFormData((p: any) => ({ ...p, category: e.target.value }))} className="w-full h-10 rounded-md border border-theme-border bg-transparent px-3 text-sm text-theme-text">
                   {skillCategories.map(c => <option key={c} value={c} className="bg-gray-900">{c}</option>)}
                 </select>
               </div>
@@ -418,7 +418,7 @@ export default function PortfolioBuilderPage() {
             <div className="grid grid-cols-2 gap-3">
               <div>
                 <Label className="text-xs">Platform</Label>
-                <select value={formData.platform || "github"} onChange={e => setFormData((p: any) => ({ ...p, platform: e.target.value }))} className="w-full h-10 rounded-md border border-white/10 bg-transparent px-3 text-sm text-white">
+                <select value={formData.platform || "github"} onChange={e => setFormData((p: any) => ({ ...p, platform: e.target.value }))} className="w-full h-10 rounded-md border border-theme-border bg-transparent px-3 text-sm text-theme-text">
                   {socialPlatforms.map(p => <option key={p} value={p} className="bg-gray-900">{p}</option>)}
                 </select>
               </div>
@@ -435,13 +435,13 @@ export default function PortfolioBuilderPage() {
         return (
           <div>
             <div className="flex items-center gap-2">
-              <h4 className="font-semibold text-white">{item.title}</h4>
+              <h4 className="font-semibold text-theme-text">{item.title}</h4>
               {item.featured && <Badge variant="secondary" className="text-[10px]">Featured</Badge>}
             </div>
-            {item.description && <p className="text-sm text-gray-400 mt-0.5 line-clamp-1">{item.description}</p>}
+            {item.description && <p className="text-sm text-theme-text-secondary mt-0.5 line-clamp-1">{item.description}</p>}
             {item.techStack?.length > 0 && (
               <div className="flex flex-wrap gap-1 mt-1.5">
-                {item.techStack.map((t: string) => <span key={t} className="text-[10px] px-1.5 py-0.5 rounded bg-white/5 text-gray-400">{t}</span>)}
+                {item.techStack.map((t: string) => <span key={t} className="text-[10px] px-1.5 py-0.5 rounded bg-theme-card text-theme-text-secondary">{t}</span>)}
               </div>
             )}
           </div>
@@ -449,28 +449,28 @@ export default function PortfolioBuilderPage() {
       case "skills":
         return (
           <div className="flex items-center gap-3">
-            <span className="font-medium text-white">{item.name}</span>
+            <span className="font-medium text-theme-text">{item.name}</span>
             <Badge variant="secondary" className="text-[10px]">{item.category}</Badge>
-            <div className="flex-1 h-1.5 bg-white/5 rounded-full max-w-[120px]">
+            <div className="flex-1 h-1.5 bg-theme-card rounded-full max-w-[120px]">
               <div className="h-full rounded-full bg-gradient-to-r from-indigo-500 to-purple-500" style={{ width: `${item.level}%` }} />
             </div>
-            <span className="text-xs text-gray-500">{item.level}%</span>
+            <span className="text-xs text-theme-muted">{item.level}%</span>
           </div>
         );
       case "experience":
         return (
           <div>
-            <h4 className="font-semibold text-white">{item.position}</h4>
+            <h4 className="font-semibold text-theme-text">{item.position}</h4>
             <p className="text-sm text-indigo-400">{item.company}{item.location ? ` · ${item.location}` : ""}</p>
-            <p className="text-xs text-gray-500 mt-0.5">{formatDate(item.startDate)} — {item.current ? "Present" : item.endDate ? formatDate(item.endDate) : ""}</p>
+            <p className="text-xs text-theme-muted mt-0.5">{formatDate(item.startDate)} — {item.current ? "Present" : item.endDate ? formatDate(item.endDate) : ""}</p>
           </div>
         );
       case "education":
         return (
           <div>
-            <h4 className="font-semibold text-white">{item.degree}{item.field ? ` in ${item.field}` : ""}</h4>
+            <h4 className="font-semibold text-theme-text">{item.degree}{item.field ? ` in ${item.field}` : ""}</h4>
             <p className="text-sm text-purple-400">{item.institution}{item.grade ? ` · GPA: ${item.grade}` : ""}</p>
-            <p className="text-xs text-gray-500 mt-0.5">{formatDate(item.startDate)} — {item.current ? "Present" : item.endDate ? formatDate(item.endDate) : ""}</p>
+            <p className="text-xs text-theme-muted mt-0.5">{formatDate(item.startDate)} — {item.current ? "Present" : item.endDate ? formatDate(item.endDate) : ""}</p>
           </div>
         );
       case "socialLinks": {
@@ -478,8 +478,8 @@ export default function PortfolioBuilderPage() {
         return (
           <div className="flex items-center gap-3">
             <Icon className="h-4 w-4 text-pink-400" />
-            <span className="font-medium text-white capitalize">{item.platform}</span>
-            <span className="text-sm text-gray-400 truncate">{item.url}</span>
+            <span className="font-medium text-theme-text capitalize">{item.platform}</span>
+            <span className="text-sm text-theme-text-secondary truncate">{item.url}</span>
           </div>
         );
       }
@@ -499,8 +499,8 @@ export default function PortfolioBuilderPage() {
       <FadeIn>
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-3xl font-bold text-white">Portfolio Builder</h1>
-            <p className="text-gray-400 mt-1">Manage all your portfolio content in one place. Drag to reorder.</p>
+            <h1 className="text-3xl font-bold text-theme-text">Portfolio Builder</h1>
+            <p className="text-theme-text-secondary mt-1">Manage all your portfolio content in one place. Drag to reorder.</p>
           </div>
         </div>
       </FadeIn>
@@ -541,7 +541,7 @@ export default function PortfolioBuilderPage() {
                     >
                       <Plus className="h-3.5 w-3.5 mr-1" /> Add
                     </Button>
-                    {isCollapsed ? <ChevronDown className="h-4 w-4 text-gray-500" /> : <ChevronUp className="h-4 w-4 text-gray-500" />}
+                    {isCollapsed ? <ChevronDown className="h-4 w-4 text-theme-muted" /> : <ChevronUp className="h-4 w-4 text-theme-muted" />}
                   </div>
                 </div>
               </CardHeader>
@@ -572,7 +572,7 @@ export default function PortfolioBuilderPage() {
                                 + {skill}
                               </button>
                             ))}
-                            <button onClick={() => setSuggestedSkills([])} className="px-2 py-1 text-xs text-gray-500 hover:text-gray-300 transition-colors">
+                            <button onClick={() => setSuggestedSkills([])} className="px-2 py-1 text-xs text-theme-muted hover:text-theme-text-secondary transition-colors">
                               Dismiss
                             </button>
                           </div>
@@ -580,7 +580,7 @@ export default function PortfolioBuilderPage() {
                       )}
 
                       {items.length === 0 && !isEditing ? (
-                        <div className="text-center py-8 text-gray-500 text-sm">
+                        <div className="text-center py-8 text-theme-muted text-sm">
                           No {section.label.toLowerCase()} yet. Click &quot;Add&quot; to get started.
                         </div>
                       ) : (
@@ -589,15 +589,15 @@ export default function PortfolioBuilderPage() {
                             <div className="space-y-1.5">
                               {items.map((item: any) => (
                                 <SortableItem key={item.id} id={item.id}>
-                                  <div className="flex items-center gap-3 p-3 rounded-lg bg-white/[0.02] border border-white/[0.05] hover:border-white/10 transition-all">
+                                  <div className="flex items-center gap-3 p-3 rounded-lg bg-theme-card border border-theme-border hover:border-theme-border transition-all">
                                     <div className="flex-1 min-w-0">{renderItem(section.key, item)}</div>
                                     <div className="flex gap-1 shrink-0">
                                       {section.key !== "skills" && section.key !== "socialLinks" && (
-                                        <button onClick={() => startEdit(section.key, item)} className="p-1.5 rounded-md hover:bg-white/5 text-gray-500 hover:text-white transition-colors">
+                                        <button onClick={() => startEdit(section.key, item)} className="p-1.5 rounded-md hover:bg-theme-card text-theme-muted hover:text-theme-text transition-colors">
                                           <Pencil className="h-3.5 w-3.5" />
                                         </button>
                                       )}
-                                      <button onClick={() => deleteItem(section.key, item.id)} className="p-1.5 rounded-md hover:bg-red-500/10 text-gray-500 hover:text-red-400 transition-colors">
+                                      <button onClick={() => deleteItem(section.key, item.id)} className="p-1.5 rounded-md hover:bg-red-500/10 text-theme-muted hover:text-red-400 transition-colors">
                                         <Trash2 className="h-3.5 w-3.5" />
                                       </button>
                                     </div>

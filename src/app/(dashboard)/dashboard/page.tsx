@@ -96,10 +96,10 @@ export default function DashboardPage() {
       <FadeIn>
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-3xl font-bold text-white">
+            <h1 className="text-3xl font-bold text-theme-text">
               Welcome back, {session?.user?.name?.split(" ")[0] || "Developer"}
             </h1>
-            <p className="text-gray-400 mt-1">Here&apos;s an overview of your portfolio</p>
+            <p className="text-theme-text-secondary mt-1">Here&apos;s an overview of your portfolio</p>
           </div>
           <Button
             onClick={runAiReview}
@@ -121,22 +121,22 @@ export default function DashboardPage() {
             exit={{ opacity: 0, y: -20 }}
             transition={{ duration: 0.3 }}
           >
-            <Card className="border-indigo-500/20 bg-indigo-500/5 backdrop-blur-xl">
+            <Card className="border-theme-accent/20 bg-theme-accent-soft backdrop-blur-xl">
               <CardHeader className="pb-3">
                 <div className="flex items-center justify-between">
                   <CardTitle className="flex items-center gap-2 text-lg">
-                    <Sparkles className="h-5 w-5 text-indigo-400" />
+                    <Sparkles className="h-5 w-5 text-theme-accent" />
                     AI Portfolio Review
                   </CardTitle>
-                  <button onClick={() => setReviewOpen(false)} className="p-1.5 rounded-lg hover:bg-white/10 text-gray-400 hover:text-white transition-colors">
+                  <button onClick={() => setReviewOpen(false)} className="p-1.5 rounded-lg hover:bg-theme-accent-soft text-theme-text-secondary hover:text-theme-text transition-colors">
                     <X className="h-4 w-4" />
                   </button>
                 </div>
               </CardHeader>
               <CardContent>
                 {reviewLoading ? (
-                  <div className="flex items-center gap-3 py-8 justify-center text-gray-400">
-                    <Loader2 className="h-5 w-5 animate-spin text-indigo-400" />
+                  <div className="flex items-center gap-3 py-8 justify-center text-theme-text-secondary">
+                    <Loader2 className="h-5 w-5 animate-spin text-theme-accent" />
                     <span>Analyzing your portfolio...</span>
                   </div>
                 ) : (
@@ -150,10 +150,10 @@ export default function DashboardPage() {
                           initial={{ opacity: 0, x: -10 }}
                           animate={{ opacity: 1, x: 0 }}
                           transition={{ delay: i * 0.1 }}
-                          className="flex items-start gap-3 p-3 rounded-lg bg-white/[0.03] border border-white/[0.06]"
+                          className="flex items-start gap-3 p-3 rounded-lg bg-theme-card border border-theme-border"
                         >
                           <Lightbulb className="h-4 w-4 text-amber-400 shrink-0 mt-0.5" />
-                          <p className="text-sm text-gray-300 leading-relaxed">{cleaned}</p>
+                          <p className="text-sm text-theme-text-secondary leading-relaxed">{cleaned}</p>
                         </motion.div>
                       );
                     })}
@@ -173,15 +173,15 @@ export default function DashboardPage() {
       <StaggerContainer className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4">
         {statCards.map((stat) => (
           <StaggerItem key={stat.title}>
-            <Card className="border-white/10 bg-white/5 backdrop-blur-xl hover:bg-white/10 transition-all group">
+            <Card className="border-theme-border bg-theme-card backdrop-blur-xl hover:bg-theme-accent-soft transition-all group">
               <CardContent className="p-6">
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-sm text-gray-400">{stat.title}</p>
-                    <p className="text-3xl font-bold text-white mt-1">{stat.value}</p>
+                    <p className="text-sm text-theme-text-secondary">{stat.title}</p>
+                    <p className="text-3xl font-bold text-theme-text mt-1">{stat.value}</p>
                   </div>
                   <div className={`p-3 rounded-xl bg-gradient-to-br ${stat.color} opacity-80 group-hover:opacity-100 transition-opacity`}>
-                    <stat.icon className="h-5 w-5 text-white" />
+                    <stat.icon className="h-5 w-5 text-theme-text" />
                   </div>
                 </div>
               </CardContent>
@@ -191,7 +191,7 @@ export default function DashboardPage() {
       </StaggerContainer>
 
       <FadeIn delay={0.3}>
-        <Card className="border-white/10 bg-white/5 backdrop-blur-xl">
+        <Card className="border-theme-border bg-theme-card backdrop-blur-xl">
           <CardHeader>
             <CardTitle>Quick Actions</CardTitle>
           </CardHeader>
@@ -207,11 +207,11 @@ export default function DashboardPage() {
                   href={action.href}
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
-                  className="p-4 rounded-xl border border-white/10 bg-white/5 hover:bg-white/10 transition-all group"
+                  className="p-4 rounded-xl border border-theme-border bg-theme-card hover:bg-theme-accent-soft transition-all group"
                 >
-                  <action.icon className="h-8 w-8 text-indigo-400 mb-3" />
-                  <h3 className="font-medium text-white">{action.title}</h3>
-                  <p className="text-sm text-gray-400 mt-1">{action.desc}</p>
+                  <action.icon className="h-8 w-8 text-theme-accent mb-3" />
+                  <h3 className="font-medium text-theme-text">{action.title}</h3>
+                  <p className="text-sm text-theme-text-secondary mt-1">{action.desc}</p>
                 </motion.a>
               ))}
             </div>

@@ -20,7 +20,11 @@ import {
   Copy,
   CheckCheck,
   MessageSquare,
+  Sun,
+  Moon,
 } from "lucide-react";
+import { useDashboardThemeStore } from "@/stores/use-dashboard-theme-store";
+import { clearChatHistory } from "@/lib/chat-history";
 
 const navItems = [
   { title: "Overview", href: "/dashboard", icon: LayoutDashboard },
@@ -35,6 +39,7 @@ const navItems = [
 export function Sidebar() {
   const pathname = usePathname();
   const { data: session } = useSession();
+  const { mode, toggleMode } = useDashboardThemeStore();
   const [copied, setCopied] = useState(false);
 
   function getPortfolioUrl() {
@@ -52,15 +57,20 @@ export function Sidebar() {
     } catch {}
   }
 
+  function handleLogout() {
+    clearChatHistory();
+    signOut({ callbackUrl: "/login" });
+  }
+
   return (
-    <aside className="fixed left-0 top-0 z-40 h-screen w-16 md:w-64 border-r border-white/10 bg-slate-950/50 backdrop-blur-xl transition-all duration-300">
+    <aside className="fixed left-0 top-0 z-40 h-screen w-16 md:w-64 border-r border-theme-border bg-theme-bg-secondary/90 backdrop-blur-xl transition-all duration-300">
       <div className="flex h-full flex-col">
         {/* Logo */}
-        <div className="flex h-16 items-center gap-2 border-b border-white/10 px-3 md:px-6 justify-center md:justify-start">
-          <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center text-sm font-bold text-white shrink-0">
+        <div className="flex h-16 items-center gap-2 border-b border-theme-border px-3 md:px-6 justify-center md:justify-start">
+          <div className="w-8 h-8 rounded-lg bg-theme-accent flex items-center justify-center text-sm font-bold text-white shrink-0">
             D
           </div>
-          <span className="text-lg font-bold text-white hidden md:block">DevPortfolio</span>
+          <span className="text-lg font-bold text-theme-text hidden md:block">DevPortfolio</span>
         </div>
 
         {/* Navigation */}
@@ -75,14 +85,14 @@ export function Sidebar() {
                 className={cn(
                   "flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-all relative justify-center md:justify-start",
                   isActive
-                    ? "text-white bg-indigo-600/20"
-                    : "text-gray-400 hover:text-white hover:bg-white/5"
+                    ? "text-theme-text bg-theme-accent-soft"
+                    : "text-theme-text-secondary hover:text-theme-text hover:bg-theme-card"
                 )}
               >
                 {isActive && (
                   <motion.div
                     layoutId="activeNav"
-                    className="absolute inset-0 rounded-lg bg-indigo-600/20 border border-indigo-500/30"
+                    className="absolute inset-0 rounded-lg bg-theme-accent-soft border border-theme-accent/30"
                     transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
                   />
                 )}
@@ -94,7 +104,18 @@ export function Sidebar() {
         </nav>
 
         {/* Bottom Section */}
-        <div className="border-t border-white/10 p-2 md:p-4 space-y-3">
+        <div className="border-t border-theme-border p-2 md:p-4 space-y-3">
+          {/* Theme toggle */}
+          <div className="flex justify-center md:justify-start">
+            <button
+              onClick={toggleMode}
+              className="p-2.5 rounded-lg text-theme-text-secondary hover:text-theme-text hover:bg-theme-card transition-all"
+              title={mode === "dark" ? "Switch to light mode" : "Switch to dark mode"}
+            >
+              {mode === "dark" ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
+            </button>
+          </div>
+
           {/* View Portfolio - full on md+, icon-only below */}
           {session?.user?.username && (
             <>
@@ -105,7 +126,7 @@ export function Sidebar() {
                     href={getPortfolioUrl()}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex-1 flex items-center gap-2 rounded-lg px-3 py-2 text-sm text-gray-400 hover:text-white hover:bg-white/5 transition-all"
+                    className="flex-1 flex items-center gap-2 rounded-lg px-3 py-2 text-sm text-theme-text-secondary hover:text-theme-text hover:bg-theme-card transition-all"
                   >
                     <ExternalLink className="h-4 w-4 shrink-0" />
                     View Portfolio
@@ -115,16 +136,16 @@ export function Sidebar() {
                     className={cn(
                       "p-2 rounded-lg text-sm transition-all",
                       copied
-                        ? "text-green-400 bg-green-500/10"
-                        : "text-gray-500 hover:text-white hover:bg-white/5"
+                        ? "text-emerald-400 bg-emerald-500/10"
+                        : "text-theme-muted hover:text-theme-text hover:bg-theme-card"
                     )}
                     title="Copy shareable link"
                   >
                     {copied ? <CheckCheck className="h-3.5 w-3.5" /> : <Copy className="h-3.5 w-3.5" />}
                   </button>
                 </div>
-                <div className="mx-3 px-2.5 py-1.5 rounded-md bg-white/5 border border-white/10">
-                  <p className="text-[11px] text-gray-500 truncate font-mono">
+                <div className="mx-3 px-2.5 py-1.5 rounded-md bg-theme-card border border-theme-border">
+                  <p className="text-[11px] text-theme-muted truncate font-mono">
                     {getPortfolioUrl()}
                   </p>
                 </div>
@@ -137,7 +158,7 @@ export function Sidebar() {
                   target="_blank"
                   rel="noopener noreferrer"
                   title="View Portfolio"
-                  className="p-2.5 rounded-lg text-gray-400 hover:text-white hover:bg-white/5 transition-all"
+                  className="p-2.5 rounded-lg text-theme-text-secondary hover:text-theme-text hover:bg-theme-card transition-all"
                 >
                   <ExternalLink className="h-4 w-4" />
                 </a>
@@ -152,12 +173,12 @@ export function Sidebar() {
               <AvatarFallback>{getInitials(session?.user?.name || "U")}</AvatarFallback>
             </Avatar>
             <div className="flex-1 min-w-0 hidden md:block">
-              <p className="text-sm font-medium text-white truncate">{session?.user?.name}</p>
-              <p className="text-xs text-gray-500 truncate">{session?.user?.email}</p>
+              <p className="text-sm font-medium text-theme-text truncate">{session?.user?.name}</p>
+              <p className="text-xs text-theme-muted truncate">{session?.user?.email}</p>
             </div>
             <button
-              onClick={() => signOut({ callbackUrl: "/login" })}
-              className="text-gray-500 hover:text-white transition-colors hidden md:block"
+              onClick={handleLogout}
+              className="text-theme-muted hover:text-theme-text transition-colors hidden md:block"
               title="Sign out"
             >
               <LogOut className="h-4 w-4" />
@@ -167,8 +188,8 @@ export function Sidebar() {
           {/* Logout icon-only (below md) */}
           <div className="flex md:hidden justify-center">
             <button
-              onClick={() => signOut({ callbackUrl: "/login" })}
-              className="p-2.5 rounded-lg text-gray-500 hover:text-white hover:bg-white/5 transition-all"
+              onClick={handleLogout}
+              className="p-2.5 rounded-lg text-theme-muted hover:text-theme-text hover:bg-theme-card transition-all"
               title="Sign out"
             >
               <LogOut className="h-4 w-4" />

@@ -106,8 +106,8 @@ export default function ProfilePage() {
     <div className="max-w-2xl space-y-6">
       <FadeIn>
         <div>
-          <h1 className="text-3xl font-bold text-white">Profile</h1>
-          <p className="text-gray-400 mt-1">Manage your personal information</p>
+          <h1 className="text-3xl font-bold text-theme-text">Profile</h1>
+          <p className="text-theme-text-secondary mt-1">Manage your personal information</p>
         </div>
       </FadeIn>
 

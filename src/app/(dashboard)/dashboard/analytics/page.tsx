@@ -67,7 +67,7 @@ const browserColors: Record<string, string> = {
 function TrendBadge({ value }: { value: number }) {
   if (value === 0) {
     return (
-      <span className="inline-flex items-center gap-0.5 text-xs text-gray-400 bg-gray-500/10 px-1.5 py-0.5 rounded-md">
+      <span className="inline-flex items-center gap-0.5 text-xs text-theme-text-secondary bg-gray-500/10 px-1.5 py-0.5 rounded-md">
         <Minus className="h-3 w-3" /> 0%
       </span>
     );
@@ -108,8 +108,8 @@ function ProgressBar({ value, max, color = "from-indigo-500 to-purple-500", labe
   return (
     <div className="space-y-1.5">
       <div className="flex items-center justify-between text-sm">
-        <span className="text-gray-300 truncate">{label}</span>
-        <span className="text-gray-500 tabular-nums shrink-0 ml-2">{count}</span>
+        <span className="text-theme-text-secondary truncate">{label}</span>
+        <span className="text-theme-muted tabular-nums shrink-0 ml-2">{count}</span>
       </div>
       <div className="h-2 bg-white/5 rounded-full overflow-hidden">
         <motion.div
@@ -132,7 +132,7 @@ function EventIcon({ event }: { event: string }) {
     case "contact_form":
       return <Globe className="h-3.5 w-3.5 text-emerald-400" />;
     default:
-      return <Activity className="h-3.5 w-3.5 text-gray-400" />;
+      return <Activity className="h-3.5 w-3.5 text-theme-text-secondary" />;
   }
 }
 
@@ -173,27 +173,27 @@ function SortableKpiCard({ item }: { item: KpiItem }) {
 
   return (
     <div ref={setNodeRef} style={style}>
-      <Card className={`border-white/10 bg-white/5 backdrop-blur-xl hover:bg-white/[0.07] transition-all relative group ${isDragging ? "ring-2 ring-indigo-500/40 shadow-lg shadow-indigo-500/10" : ""}`}>
+      <Card className={`border-theme-border bg-theme-card backdrop-blur-xl hover:bg-white/[0.07] transition-all relative group ${isDragging ? "ring-2 ring-indigo-500/40 shadow-lg shadow-indigo-500/10" : ""}`}>
         <div
           {...attributes}
           {...listeners}
           className="absolute top-2 right-2 p-1 rounded-md cursor-grab active:cursor-grabbing opacity-0 group-hover:opacity-100 hover:bg-white/10 transition-all z-10"
           title="Drag to reorder"
         >
-          <GripVertical className="h-3.5 w-3.5 text-gray-500" />
+          <GripVertical className="h-3.5 w-3.5 text-theme-muted" />
         </div>
         <CardContent className="p-4 sm:p-6">
           <div className="flex items-start justify-between">
             <div className="min-w-0">
-              <p className="text-xs sm:text-sm text-gray-400 truncate">{item.title}</p>
-              <p className="text-xl sm:text-3xl font-bold text-white mt-1 tabular-nums">{item.value.toLocaleString()}</p>
+              <p className="text-xs sm:text-sm text-theme-text-secondary truncate">{item.title}</p>
+              <p className="text-xl sm:text-3xl font-bold text-theme-text mt-1 tabular-nums">{item.value.toLocaleString()}</p>
               <div className="flex items-center gap-2 mt-1.5">
-                <span className="text-[10px] sm:text-xs text-gray-500">{item.sub}</span>
+                <span className="text-[10px] sm:text-xs text-theme-muted">{item.sub}</span>
                 {item.trend !== undefined && <TrendBadge value={item.trend} />}
               </div>
             </div>
             <div className={`p-2 sm:p-3 rounded-xl bg-gradient-to-br ${item.color} opacity-80 shrink-0`}>
-              <Icon className="h-4 w-4 sm:h-5 sm:w-5 text-white" />
+              <Icon className="h-4 w-4 sm:h-5 sm:w-5 text-theme-text" />
             </div>
           </div>
         </CardContent>
@@ -279,7 +279,7 @@ export default function AnalyticsPage() {
       <div className="flex items-center justify-center min-h-[60vh]">
         <div className="flex flex-col items-center gap-3">
           <Loader2 className="h-8 w-8 animate-spin text-indigo-400" />
-          <p className="text-sm text-gray-400">Loading analytics...</p>
+          <p className="text-sm text-theme-text-secondary">Loading analytics...</p>
         </div>
       </div>
     );
@@ -291,8 +291,8 @@ export default function AnalyticsPage() {
       <FadeIn>
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
           <div>
-            <h1 className="text-2xl sm:text-3xl font-bold text-white">Analytics</h1>
-            <p className="text-gray-400 mt-1 text-sm sm:text-base">Track your portfolio performance over the last 30 days</p>
+            <h1 className="text-2xl sm:text-3xl font-bold text-theme-text">Analytics</h1>
+            <p className="text-theme-text-secondary mt-1 text-sm sm:text-base">Track your portfolio performance over the last 30 days</p>
           </div>
           <Button variant="secondary" size="sm" onClick={() => fetchData(true)} disabled={refreshing}>
             <RefreshCw className={`h-3.5 w-3.5 mr-1.5 ${refreshing ? "animate-spin" : ""}`} />
@@ -315,14 +315,14 @@ export default function AnalyticsPage() {
 
       {/* Views Chart */}
       <FadeIn delay={0.15}>
-        <Card className="border-white/10 bg-white/5 backdrop-blur-xl">
+        <Card className="border-theme-border bg-theme-card backdrop-blur-xl">
           <CardHeader className="pb-2">
             <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
               <CardTitle className="text-base sm:text-lg flex items-center gap-2">
                 <BarChart3 className="h-4 w-4 text-indigo-400" />
                 Views Over Time
               </CardTitle>
-              <span className="text-xs text-gray-500">Last 30 days</span>
+              <span className="text-xs text-theme-muted">Last 30 days</span>
             </div>
           </CardHeader>
           <CardContent>
@@ -333,13 +333,13 @@ export default function AnalyticsPage() {
                     <MiniChart data={chartData} maxHeight={100} />
                   </div>
                 </div>
-                <div className="flex justify-between text-[10px] text-gray-600">
+                <div className="flex justify-between text-[10px] text-theme-muted">
                   <span>{data?.viewsByDay?.[0]?.date}</span>
                   <span>{data?.viewsByDay?.[data.viewsByDay.length - 1]?.date}</span>
                 </div>
               </div>
             ) : (
-              <div className="flex flex-col items-center py-12 text-gray-500">
+              <div className="flex flex-col items-center py-12 text-theme-muted">
                 <BarChart3 className="h-10 w-10 mb-3 opacity-30" />
                 <p className="text-sm">No view data yet</p>
                 <p className="text-xs mt-1">Share your portfolio to start tracking views</p>
@@ -352,7 +352,7 @@ export default function AnalyticsPage() {
       {/* Middle Row: Devices & Browsers */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
         <FadeIn delay={0.2}>
-          <Card className="border-white/10 bg-white/5 backdrop-blur-xl">
+          <Card className="border-theme-border bg-theme-card backdrop-blur-xl">
             <CardHeader className="pb-2">
               <CardTitle className="text-base sm:text-lg flex items-center gap-2">
                 <Monitor className="h-4 w-4 text-blue-400" />
@@ -386,13 +386,13 @@ export default function AnalyticsPage() {
                         <div key={d.device} className="flex items-center justify-between">
                           <div className="flex items-center gap-2.5">
                             <div className={`p-1.5 rounded-lg bg-gradient-to-br ${deviceColors[d.device] || "from-gray-600 to-gray-500"}`}>
-                              <Icon className="h-3.5 w-3.5 text-white" />
+                              <Icon className="h-3.5 w-3.5 text-theme-text" />
                             </div>
-                            <span className="text-sm text-gray-300">{d.device}</span>
+                            <span className="text-sm text-theme-text-secondary">{d.device}</span>
                           </div>
                           <div className="flex items-center gap-2">
-                            <span className="text-xs text-gray-500">{pct}%</span>
-                            <span className="text-sm text-white font-medium tabular-nums w-8 text-right">{d.count}</span>
+                            <span className="text-xs text-theme-muted">{pct}%</span>
+                            <span className="text-sm text-theme-text font-medium tabular-nums w-8 text-right">{d.count}</span>
                           </div>
                         </div>
                       );
@@ -407,7 +407,7 @@ export default function AnalyticsPage() {
         </FadeIn>
 
         <FadeIn delay={0.25}>
-          <Card className="border-white/10 bg-white/5 backdrop-blur-xl">
+          <Card className="border-theme-border bg-theme-card backdrop-blur-xl">
             <CardHeader className="pb-2">
               <CardTitle className="text-base sm:text-lg flex items-center gap-2">
                 <Chrome className="h-4 w-4 text-blue-400" />
@@ -425,11 +425,11 @@ export default function AnalyticsPage() {
                         <div className="flex items-center justify-between text-sm">
                           <div className="flex items-center gap-2">
                             <div className="h-2.5 w-2.5 rounded-full shrink-0" style={{ backgroundColor: color }} />
-                            <span className="text-gray-300">{b.browser}</span>
+                            <span className="text-theme-text-secondary">{b.browser}</span>
                           </div>
                           <div className="flex items-center gap-2">
-                            <span className="text-xs text-gray-500">{pct}%</span>
-                            <span className="text-white font-medium tabular-nums w-8 text-right">{b.count}</span>
+                            <span className="text-xs text-theme-muted">{pct}%</span>
+                            <span className="text-theme-text font-medium tabular-nums w-8 text-right">{b.count}</span>
                           </div>
                         </div>
                         <div className="h-1.5 bg-white/5 rounded-full overflow-hidden">
@@ -456,7 +456,7 @@ export default function AnalyticsPage() {
       {/* Bottom Row: Referrers, Top Projects, Recent Activity */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-6">
         <FadeIn delay={0.3}>
-          <Card className="border-white/10 bg-white/5 backdrop-blur-xl">
+          <Card className="border-theme-border bg-theme-card backdrop-blur-xl">
             <CardHeader className="pb-2">
               <CardTitle className="text-base sm:text-lg flex items-center gap-2">
                 <Globe className="h-4 w-4 text-emerald-400" />
@@ -488,7 +488,7 @@ export default function AnalyticsPage() {
         </FadeIn>
 
         <FadeIn delay={0.35}>
-          <Card className="border-white/10 bg-white/5 backdrop-blur-xl">
+          <Card className="border-theme-border bg-theme-card backdrop-blur-xl">
             <CardHeader className="pb-2">
               <CardTitle className="text-base sm:text-lg flex items-center gap-2">
                 <FolderKanban className="h-4 w-4 text-purple-400" />
@@ -520,7 +520,7 @@ export default function AnalyticsPage() {
         </FadeIn>
 
         <FadeIn delay={0.4}>
-          <Card className="border-white/10 bg-white/5 backdrop-blur-xl">
+          <Card className="border-theme-border bg-theme-card backdrop-blur-xl">
             <CardHeader className="pb-2">
               <CardTitle className="text-base sm:text-lg flex items-center gap-2">
                 <Clock className="h-4 w-4 text-amber-400" />
@@ -534,12 +534,12 @@ export default function AnalyticsPage() {
                     <div key={e.id} className="flex items-center gap-2.5 py-2 px-2 rounded-lg hover:bg-white/[0.03] transition-colors">
                       <EventIcon event={e.event} />
                       <div className="flex-1 min-w-0">
-                        <p className="text-xs text-gray-300 truncate">{formatEventLabel(e.event)}</p>
-                        {e.path && <p className="text-[10px] text-gray-600 truncate">{e.path}</p>}
+                        <p className="text-xs text-theme-text-secondary truncate">{formatEventLabel(e.event)}</p>
+                        {e.path && <p className="text-[10px] text-theme-muted truncate">{e.path}</p>}
                       </div>
                       <div className="text-right shrink-0">
-                        <p className="text-[10px] text-gray-500">{formatTimeAgo(e.createdAt)}</p>
-                        {e.device && <p className="text-[10px] text-gray-600">{e.device}</p>}
+                        <p className="text-[10px] text-theme-muted">{formatTimeAgo(e.createdAt)}</p>
+                        {e.device && <p className="text-[10px] text-theme-muted">{e.device}</p>}
                       </div>
                     </div>
                   ))}
@@ -557,7 +557,7 @@ export default function AnalyticsPage() {
 
 function EmptyState({ icon: Icon, text }: { icon: any; text: string }) {
   return (
-    <div className="flex flex-col items-center py-8 text-gray-500">
+    <div className="flex flex-col items-center py-8 text-theme-muted">
       <Icon className="h-8 w-8 mb-2 opacity-20" />
       <p className="text-sm">{text}</p>
     </div>

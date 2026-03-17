@@ -28,7 +28,8 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { useToast } from "@/components/ui/toast";
 import { FadeIn } from "@/components/shared/motion-wrapper";
 import { useThemeStore, type ThemeState } from "@/stores/use-theme-store";
-import { Palette, Save, ChevronDown, Check, GripVertical } from "lucide-react";
+import { useDashboardThemeStore, type DashboardAccent } from "@/stores/use-dashboard-theme-store";
+import { Palette, Save, ChevronDown, Check, GripVertical, Sun, Moon } from "lucide-react";
 
 const templates = [
   { value: "minimal", label: "Minimal Developer", desc: "Clean with starfield hero", colors: ["#0f172a", "#6366f1", "#818cf8"] },
@@ -67,7 +68,7 @@ function ColorSwatch({ colors }: { colors: string[] }) {
       {colors.map((c, i) => (
         <div
           key={i}
-          className="h-5 w-5 rounded-full border-2 border-slate-800 ring-1 ring-white/10"
+          className="h-5 w-5 rounded-full border-2 border-theme-border"
           style={{ background: c, zIndex: colors.length - i }}
         />
       ))}
@@ -403,19 +404,80 @@ export default function SettingsPage() {
     setIsLoading(false);
   }
 
+  const dashboardTheme = useDashboardThemeStore();
+  const accents: { value: DashboardAccent; label: string; color: string }[] = [
+    { value: "indigo", label: "Indigo", color: "#6366f1" },
+    { value: "emerald", label: "Emerald", color: "#10b981" },
+    { value: "rose", label: "Rose", color: "#f43f5e" },
+    { value: "amber", label: "Amber", color: "#f59e0b" },
+    { value: "cyan", label: "Cyan", color: "#06b6d4" },
+    { value: "violet", label: "Violet", color: "#8b5cf6" },
+  ];
+
   return (
     <div className="max-w-2xl space-y-6 pl-8">
       <FadeIn>
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-3xl font-bold text-white">Theme Settings</h1>
-            <p className="text-gray-400 mt-1">Customize your portfolio appearance — drag to reorder sections</p>
+            <h1 className="text-3xl font-bold text-theme-text">Theme Settings</h1>
+            <p className="text-theme-text-secondary mt-1">Customize your portfolio appearance — drag to reorder sections</p>
           </div>
           <Button onClick={saveTheme} disabled={isLoading}>
             <Save className="h-4 w-4 mr-2" />
             {isLoading ? "Saving..." : "Save Theme"}
           </Button>
         </div>
+      </FadeIn>
+
+      <FadeIn delay={0.05}>
+        <Card className="border-theme-border bg-theme-card backdrop-blur-xl">
+          <CardHeader>
+            <CardTitle>Dashboard Theme</CardTitle>
+            <CardDescription>Switch between light/dark mode and pick an accent color for the dashboard</CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-6">
+            <div className="flex items-center justify-between p-4 rounded-lg bg-theme-card border border-theme-border">
+              <div>
+                <p className="text-sm font-medium text-theme-text">Mode</p>
+                <p className="text-xs text-theme-muted mt-1">Light or dark dashboard appearance</p>
+              </div>
+              <div className="flex gap-1 p-1 rounded-lg bg-theme-bg-secondary border border-theme-border">
+                <button
+                  onClick={() => dashboardTheme.setMode("light")}
+                  className={`p-2 rounded-md transition-colors ${dashboardTheme.mode === "light" ? "bg-theme-accent text-white" : "text-theme-text-secondary hover:text-theme-text"}`}
+                >
+                  <Sun className="h-4 w-4" />
+                </button>
+                <button
+                  onClick={() => dashboardTheme.setMode("dark")}
+                  className={`p-2 rounded-md transition-colors ${dashboardTheme.mode === "dark" ? "bg-theme-accent text-white" : "text-theme-text-secondary hover:text-theme-text"}`}
+                >
+                  <Moon className="h-4 w-4" />
+                </button>
+              </div>
+            </div>
+            <div>
+              <p className="text-sm font-medium text-theme-text mb-3">Accent Color</p>
+              <div className="flex flex-wrap gap-3">
+                {accents.map((a) => (
+                  <button
+                    key={a.value}
+                    onClick={() => dashboardTheme.setAccent(a.value)}
+                    className={`flex items-center gap-2 px-3 py-2 rounded-lg border-2 transition-all ${
+                      dashboardTheme.accent === a.value
+                        ? "border-theme-accent bg-theme-accent-soft"
+                        : "border-theme-border bg-theme-card hover:border-theme-accent/50"
+                    }`}
+                  >
+                    <div className="w-4 h-4 rounded-full shrink-0" style={{ background: a.color }} />
+                    <span className="text-sm text-theme-text">{a.label}</span>
+                    {dashboardTheme.accent === a.value && <Check className="h-4 w-4 text-theme-accent" />}
+                  </button>
+                ))}
+              </div>
+            </div>
+          </CardContent>
+        </Card>
       </FadeIn>
 
       <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={handleDragEnd}>

@@ -9,6 +9,20 @@ const config: Config = {
   ],
   theme: {
     extend: {
+      colors: {
+        theme: {
+          bg: "var(--bg-primary)",
+          "bg-secondary": "var(--bg-secondary)",
+          card: "var(--bg-card)",
+          text: "var(--text-primary)",
+          "text-secondary": "var(--text-secondary)",
+          muted: "var(--text-muted)",
+          border: "var(--border)",
+          accent: "var(--accent)",
+          "accent-soft": "var(--accent-soft)",
+          "accent-hover": "var(--accent-hover)",
+        },
+      },
       animation: {
         "fade-in": "fadeIn 0.5s ease-in-out",
         "slide-up": "slideUp 0.5s ease-out",

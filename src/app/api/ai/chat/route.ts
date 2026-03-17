@@ -1,7 +1,6 @@
 import { NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
-import { GoogleGenerativeAI } from "@google/generative-ai";
 
 const SYSTEM_PROMPT = `You are DevPortfolio AI — a helpful assistant built into a developer portfolio builder app. You help developers with:
 - Writing bios, headlines, project descriptions, cover letters
@@ -11,6 +10,8 @@ const SYSTEM_PROMPT = `You are DevPortfolio AI — a helpful assistant built int
 - Any other creative or technical writing tasks
 
 Be concise, professional, and helpful. Use markdown formatting when appropriate (bold, lists, code blocks). Keep responses focused and actionable.`;
+
+const GROQ_URL = "https://api.groq.com/openai/v1/chat/completions";
 
 export async function POST(req: Request) {
   try {
@@ -25,39 +26,66 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: "Messages are required" }, { status: 400 });
     }
 
-    const apiKey = process.env.GEMINI_API_KEY;
-    if (!apiKey || apiKey === "your-gemini-api-key" || apiKey.length < 10) {
+    const groqKey = process.env.GROQ_API_KEY;
+    if (!groqKey || groqKey === "your-groq-api-key" || groqKey.length < 10) {
       return NextResponse.json({
-        reply: "AI chat is not configured yet. Please add your `GEMINI_API_KEY` in the environment variables to enable this feature. You can get a free key at [Google AI Studio](https://aistudio.google.com/apikey).",
+        reply: "AI chat is not configured yet. Please add your `GROQ_API_KEY` in the environment variables. Get a free key at [Groq Console](https://console.groq.com/keys).",
       });
     }
 
     try {
-      const genAI = new GoogleGenerativeAI(apiKey);
-      const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash" });
+      const apiMessages = [
+        { role: "system", content: SYSTEM_PROMPT },
+        ...messages.map((m: { role: string; content: string }) => ({
+          role: m.role === "user" ? "user" : "assistant",
+          content: m.content,
+        })),
+      ];
 
-      const history = messages.slice(0, -1).map((m: { role: string; content: string }) => ({
-        role: m.role === "user" ? "user" : "model",
-        parts: [{ text: m.content }],
-      }));
-
-      const chat = model.startChat({
-        history: [
-          { role: "user", parts: [{ text: "System instruction: " + SYSTEM_PROMPT }] },
-          { role: "model", parts: [{ text: "Understood! I'm DevPortfolio AI, ready to help you with your developer portfolio, resume, career, and any technical questions. What can I help you with?" }] },
-          ...history,
-        ],
+      const res = await fetch(GROQ_URL, {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${groqKey}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          model: "llama-3.3-70b-versatile",
+          messages: apiMessages,
+          temperature: 0.7,
+          max_tokens: 2048,
+        }),
       });
 
-      const lastMessage = messages[messages.length - 1].content;
-      const result = await chat.sendMessage(lastMessage);
-      const reply = result.response.text().trim();
+      if (!res.ok) {
+        const err = await res.json().catch(() => ({}));
+        const code = res.status;
+        const msg = err?.error?.message || "";
+
+        if (code === 429) {
+          return NextResponse.json({
+            reply: "**Rate limit reached.** Please wait a moment and try again. Groq free-tier allows ~30 requests/minute.",
+          });
+        }
+        if (code === 401 || code === 403) {
+          return NextResponse.json({
+            reply: "**Invalid API key.** Your `GROQ_API_KEY` is invalid or revoked. Get a new one at [Groq Console](https://console.groq.com/keys).",
+          });
+        }
+
+        console.error("Groq API error:", code, msg);
+        return NextResponse.json({
+          reply: "Sorry, the AI service returned an error. Please try again in a moment.",
+        });
+      }
+
+      const data = await res.json();
+      const reply = data.choices?.[0]?.message?.content?.trim() || "No response generated.";
 
       return NextResponse.json({ reply });
     } catch (aiError) {
-      console.error("Gemini chat error:", aiError);
+      console.error("Groq chat error:", aiError);
       return NextResponse.json({
-        reply: "Sorry, I encountered an error processing your request. Please try again.",
+        reply: "**Network error.** Could not reach the AI service. Please check your connection and try again.",
       });
     }
   } catch (error) {

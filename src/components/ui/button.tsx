@@ -10,12 +10,12 @@ const buttonVariants = cva(
   {
     variants: {
       variant: {
-        default: "bg-indigo-600 text-white hover:bg-indigo-700 shadow-lg shadow-indigo-500/25",
+        default: "bg-theme-accent text-white hover:bg-theme-accent-hover shadow-lg shadow-[color:var(--accent)]/25",
         destructive: "bg-red-600 text-white hover:bg-red-700 shadow-lg shadow-red-500/25",
-        outline: "border border-white/10 bg-white/5 hover:bg-white/10 text-white",
-        secondary: "bg-white/10 text-white hover:bg-white/20",
-        ghost: "hover:bg-white/10 text-white",
-        link: "text-indigo-400 underline-offset-4 hover:underline",
+        outline: "border border-theme-border bg-theme-card hover:bg-theme-bg-secondary text-theme-text",
+        secondary: "bg-theme-accent-soft text-theme-text hover:bg-theme-accent-soft/80",
+        ghost: "hover:bg-theme-card text-theme-text",
+        link: "text-theme-accent underline-offset-4 hover:underline",
       },
       size: {
         default: "h-10 px-4 py-2",

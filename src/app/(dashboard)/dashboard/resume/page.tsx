@@ -517,8 +517,8 @@ export default function ResumePage() {
       <FadeIn>
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-3xl font-bold text-white">Resume Generator</h1>
-            <p className="text-gray-400 mt-1">
+            <h1 className="text-3xl font-bold text-theme-text">Resume Generator</h1>
+            <p className="text-theme-text-secondary mt-1">
               {templates.length} templates · Choose, edit, and download as PDF
             </p>
           </div>
@@ -527,7 +527,7 @@ export default function ResumePage() {
               variant="ghost"
               onClick={aiGenerateSummary}
               disabled={aiSummaryLoading || !userData}
-              className="text-indigo-400 hover:text-indigo-300"
+              className="text-theme-accent hover:text-theme-accent"
             >
               {aiSummaryLoading ? <Loader2 className="h-4 w-4 mr-2 animate-spin" /> : <Sparkles className="h-4 w-4 mr-2" />}
               AI Summary
@@ -538,8 +538,8 @@ export default function ResumePage() {
                 Save Edits
               </Button>
             )}
-            <div className="flex items-center gap-2 px-3 py-2 rounded-lg bg-white/5 border border-white/10">
-              <Pencil className="h-3.5 w-3.5 text-gray-400" />
+            <div className="flex items-center gap-2 px-3 py-2 rounded-lg bg-theme-card border border-theme-border">
+              <Pencil className="h-3.5 w-3.5 text-theme-text-secondary" />
               <Label className="text-xs cursor-pointer">Edit Mode</Label>
               <Switch checked={editMode} onCheckedChange={setEditMode} />
             </div>
@@ -561,8 +561,8 @@ export default function ResumePage() {
               className={cn(
                 "px-3 py-1.5 rounded-lg text-sm font-medium transition-all",
                 activeCategory === cat.id
-                  ? "bg-indigo-600 text-white"
-                  : "bg-white/5 text-gray-400 hover:bg-white/10 hover:text-white"
+                  ? "bg-theme-accent text-theme-text"
+                  : "bg-theme-card text-theme-text-secondary hover:bg-theme-accent-soft hover:text-theme-text"
               )}
             >
               {cat.label}
@@ -573,23 +573,23 @@ export default function ResumePage() {
 
       {/* Resume Photo */}
       <FadeIn delay={0.08}>
-        <Card className="border-white/10 bg-white/5 backdrop-blur-xl">
+        <Card className="border-theme-border bg-theme-card backdrop-blur-xl">
           <CardContent className="p-4 sm:p-6">
             <div className="flex flex-col sm:flex-row items-center gap-4 sm:gap-6">
               {/* Photo preview */}
               <div className="relative group shrink-0">
-                <div className="w-24 h-24 sm:w-28 sm:h-28 rounded-full overflow-hidden border-2 border-white/10 bg-white/5 flex items-center justify-center">
+                <div className="w-24 h-24 sm:w-28 sm:h-28 rounded-full overflow-hidden border-2 border-theme-border bg-theme-card flex items-center justify-center">
                   {displayData?.image ? (
                     <img src={displayData.image} alt="Resume photo" className="w-full h-full object-cover" />
                   ) : (
-                    <User className="h-10 w-10 text-gray-600" />
+                    <User className="h-10 w-10 text-theme-muted" />
                   )}
                 </div>
                 {displayData?.image && (
                   <button
                     onClick={removePhoto}
                     disabled={photoSaving}
-                    className="absolute -top-1 -right-1 p-1 rounded-full bg-red-500/90 text-white opacity-0 group-hover:opacity-100 transition-opacity hover:bg-red-500"
+                    className="absolute -top-1 -right-1 p-1 rounded-full bg-red-500/90 text-theme-text opacity-0 group-hover:opacity-100 transition-opacity hover:bg-red-500"
                     title="Remove photo"
                   >
                     <X className="h-3 w-3" />
@@ -599,8 +599,8 @@ export default function ResumePage() {
 
               {/* Camera / Upload controls */}
               <div className="flex-1 text-center sm:text-left">
-                <h3 className="text-sm font-medium text-white mb-1">Resume Photo</h3>
-                <p className="text-xs text-gray-500 mb-3">Take a photo with your camera or upload one. It will appear on your resume.</p>
+                <h3 className="text-sm font-medium text-theme-text mb-1">Resume Photo</h3>
+                <p className="text-xs text-theme-muted mb-3">Take a photo with your camera or upload one. It will appear on your resume.</p>
                 
                 <AnimatePresence mode="wait">
                   {cameraOpen ? (
@@ -611,7 +611,7 @@ export default function ResumePage() {
                       exit={{ opacity: 0, height: 0 }}
                       className="space-y-3"
                     >
-                      <div className="relative w-48 h-48 mx-auto sm:mx-0 rounded-xl overflow-hidden border border-white/10 bg-black">
+                      <div className="relative w-48 h-48 mx-auto sm:mx-0 rounded-xl overflow-hidden border border-theme-border bg-black">
                         <video ref={videoRef} autoPlay playsInline muted className="w-full h-full object-cover mirror" style={{ transform: "scaleX(-1)" }} />
                       </div>
                       <div className="flex gap-2 justify-center sm:justify-start">
@@ -665,18 +665,18 @@ export default function ResumePage() {
               className={cn(
                 "relative p-3 rounded-xl border-2 text-left transition-all",
                 activeTemplate === tmpl.id
-                  ? "border-indigo-500 bg-indigo-500/10"
-                  : "border-white/10 bg-white/5 hover:border-white/20"
+                  ? "border-theme-accent bg-theme-accent-soft"
+                  : "border-theme-border bg-theme-card hover:border-theme-accent/50"
               )}
             >
               {activeTemplate === tmpl.id && (
                 <div className="absolute top-2 right-2 w-4 h-4 rounded-full bg-indigo-500 flex items-center justify-center">
-                  <Check className="h-2.5 w-2.5 text-white" />
+                  <Check className="h-2.5 w-2.5 text-theme-text" />
                 </div>
               )}
               <div className={cn("w-full h-12 rounded-md mb-2", tmpl.preview)} />
-              <h3 className="font-medium text-white text-xs">{tmpl.name}</h3>
-              <p className="text-[10px] text-gray-500 mt-0.5 line-clamp-1">{tmpl.description}</p>
+              <h3 className="font-medium text-theme-text text-xs">{tmpl.name}</h3>
+              <p className="text-[10px] text-theme-muted mt-0.5 line-clamp-1">{tmpl.description}</p>
             </motion.button>
           ))}
         </div>
@@ -684,9 +684,9 @@ export default function ResumePage() {
 
       {editMode && (
         <FadeIn delay={0.15}>
-          <div className="flex items-center gap-2 px-4 py-3 rounded-lg bg-indigo-500/10 border border-indigo-500/20">
-            <Pencil className="h-4 w-4 text-indigo-400" />
-            <p className="text-sm text-indigo-300">
+          <div className="flex items-center gap-2 px-4 py-3 rounded-lg bg-theme-accent-soft border border-theme-accent/20">
+            <Pencil className="h-4 w-4 text-theme-accent" />
+            <p className="text-sm text-theme-accent">
               <strong>Edit mode active</strong> — Click on the name, headline, or bio text in the preview below to edit directly. Click &quot;Save Edits&quot; to persist changes.
             </p>
           </div>
@@ -699,7 +699,7 @@ export default function ResumePage() {
           <CardHeader>
             <div className="flex items-center justify-between">
               <CardTitle className="flex items-center gap-2">
-                <FileText className="h-5 w-5 text-indigo-400" />
+                <FileText className="h-5 w-5 text-theme-accent" />
                 {templates.find((t) => t.id === activeTemplate)?.name} Resume
                 <Badge variant="secondary" className="ml-2 text-[10px]">A4</Badge>
               </CardTitle>
@@ -726,7 +726,7 @@ export default function ResumePage() {
                 </AnimatePresence>
               </div>
             ) : (
-              <div className="text-center py-12 text-gray-400">Loading profile data...</div>
+              <div className="text-center py-12 text-theme-text-secondary">Loading profile data...</div>
             )}
           </CardContent>
         </Card>
