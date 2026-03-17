@@ -19,6 +19,7 @@ import {
   ExternalLink,
   Copy,
   CheckCheck,
+  MessageSquare,
 } from "lucide-react";
 
 const navItems = [
@@ -27,6 +28,7 @@ const navItems = [
   { title: "Portfolio Builder", href: "/dashboard/portfolio-builder", icon: Layers },
   { title: "Analytics", href: "/dashboard/analytics", icon: BarChart3 },
   { title: "Resume", href: "/dashboard/resume", icon: FileText },
+  { title: "AI Chat", href: "/dashboard/ai-chat", icon: MessageSquare },
   { title: "Settings", href: "/dashboard/settings", icon: Settings },
 ];
 
