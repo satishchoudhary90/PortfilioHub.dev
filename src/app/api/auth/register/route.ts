@@ -47,9 +47,21 @@ export async function POST(req: Request) {
       { user: { id: user.id, name: user.name, email: user.email, username: user.username } },
       { status: 201 }
     );
-  } catch (error: any) {
-    if (error.issues) {
-      return NextResponse.json({ error: error.issues[0].message }, { status: 400 });
+  } catch (error: unknown) {
+    if (error && typeof error === "object" && "issues" in error && Array.isArray((error as { issues: unknown[] }).issues)) {
+      return NextResponse.json(
+        { error: (error as { issues: { message: string }[] }).issues[0].message },
+        { status: 400 }
+      );
+    }
+    console.error("Register error:", error);
+    const err = error as { code?: string; message?: string };
+    if (err.code === "P2002") {
+      return NextResponse.json({ error: "Email or username already exists" }, { status: 409 });
+    }
+    const message = err.message ?? (error instanceof Error ? error.message : "Internal server error");
+    if (message.toLowerCase().includes("connect") || message.toLowerCase().includes("connection") || message.toLowerCase().includes("econnrefused")) {
+      return NextResponse.json({ error: "Database connection failed. Check your DATABASE_URL and ensure the database is running." }, { status: 503 });
     }
     return NextResponse.json({ error: "Internal server error" }, { status: 500 });
   }
