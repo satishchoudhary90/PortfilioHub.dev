@@ -26,6 +26,7 @@ import {
   History,
 } from "lucide-react";
 
+
 interface Message {
   id: string;
   role: "user" | "assistant";

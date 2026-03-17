@@ -1,11 +1,17 @@
 import { NextResponse } from "next/server";
 import bcrypt from "bcryptjs";
+import { PrismaClientInitializationError } from "@prisma/client/runtime/library";
 import { prisma } from "@/lib/prisma";
 import { registerSchema } from "@/lib/validations";
 
 export async function POST(req: Request) {
   try {
-    const body = await req.json();
+    let body: unknown;
+    try {
+      body = await req.json();
+    } catch {
+      return NextResponse.json({ error: "Invalid JSON body" }, { status: 400 });
+    }
     const { name, email, password, username } = registerSchema.parse(body);
 
     const existingUser = await prisma.user.findFirst({
@@ -55,13 +61,25 @@ export async function POST(req: Request) {
       );
     }
     console.error("Register error:", error);
+    if (error instanceof PrismaClientInitializationError) {
+      return NextResponse.json(
+        {
+          error:
+            "Database connection failed. Ensure DATABASE_URL is set and reachable (Neon: use pooled URL with -pooler, add ?connect_timeout=15).",
+        },
+        { status: 503 }
+      );
+    }
     const err = error as { code?: string; message?: string };
     if (err.code === "P2002") {
       return NextResponse.json({ error: "Email or username already exists" }, { status: 409 });
     }
     const message = err.message ?? (error instanceof Error ? error.message : "Internal server error");
-    if (message.toLowerCase().includes("connect") || message.toLowerCase().includes("connection") || message.toLowerCase().includes("econnrefused")) {
-      return NextResponse.json({ error: "Database connection failed. Check your DATABASE_URL and ensure the database is running." }, { status: 503 });
+    if (message.toLowerCase().includes("connect") || message.toLowerCase().includes("connection") || message.toLowerCase().includes("econnrefused") || message.toLowerCase().includes("p1001") || message.toLowerCase().includes("can't reach")) {
+      return NextResponse.json(
+        { error: "Database connection failed. Check DATABASE_URL and ensure the database is running (Neon may need a moment to wake from sleep)." },
+        { status: 503 }
+      );
     }
     return NextResponse.json({ error: "Internal server error" }, { status: 500 });
   }
