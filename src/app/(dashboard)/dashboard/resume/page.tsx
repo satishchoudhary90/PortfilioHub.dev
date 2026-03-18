@@ -524,47 +524,68 @@ export default function ResumePage() {
                 <span className="xs:hidden">D</span>ownload as PDF
               </p>
             </div>
-            <div className="flex flex-col xs:flex-row items-stretch xs:items-center gap-2 xs:gap-3">
+            <div className="flex flex-row items-center gap-1 md:gap-3 overflow-x-auto">
               <Button
-                variant="ghost"
+                variant="outline"
                 onClick={aiGenerateSummary}
                 disabled={aiSummaryLoading || !userData}
-                className="text-theme-accent hover:text-theme-accent text-sm min-h-[44px] xs:min-h-auto"
+                className="text-theme-text hover:text-white border border-theme-border bg-transparent hover:bg-[#6366F1] text-xs md:text-sm min-h-[36px] md:min-h-[44px] min-w-[36px] md:min-w-auto px-2 md:px-4 whitespace-nowrap transition-all"
               >
                 {aiSummaryLoading ? (
-                  <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                  <Loader2 className="h-3 w-3 md:h-4 md:w-4 mr-0 md:mr-2 animate-spin" />
                 ) : (
-                  <Sparkles className="h-4 w-4 mr-2" />
+                  <Sparkles className="h-3 w-3 md:h-4 md:w-4 mr-0 md:mr-2" />
                 )}
-                <span className="hidden xs:inline">AI Summary</span>
-                <span className="xs:hidden">AI</span>
+                <span className="hidden md:inline">AI Summary</span>
+                <span className="md:hidden">AI</span>
               </Button>
               {editMode && (
                 <Button
-                  variant="secondary"
+                  variant="outline"
                   onClick={saveEdits}
-                  className="text-sm min-h-[44px] xs:min-h-auto"
+                  className="text-theme-text hover:text-white border border-theme-border bg-transparent hover:bg-[#6366F1] text-xs md:text-sm min-h-[36px] md:min-h-[44px] min-w-[36px] md:min-w-auto px-2 md:px-4 whitespace-nowrap transition-all"
                 >
-                  <Save className="h-4 w-4 mr-2" />
-                  <span className="hidden xs:inline">Save Edits</span>
-                  <span className="xs:hidden">Save</span>
+                  <Save className="h-3 w-3 md:h-4 md:w-4 mr-0 md:mr-2" />
+                  <span className="hidden md:inline">Save Edits</span>
+                  <span className="md:hidden">Save</span>
                 </Button>
               )}
-              <div className="flex items-center gap-2 px-3 py-2 rounded-lg bg-theme-card border border-theme-border min-h-[44px]">
-                <Pencil className="h-3.5 w-3.5 text-theme-text-secondary" />
-                <Label className="text-xs cursor-pointer">Edit Mode</Label>
-                <Switch checked={editMode} onCheckedChange={setEditMode} />
+              <div className="flex items-center gap-0.5 md:gap-2 px-0 md:px-3 py-0 md:py-2 md:rounded-lg md:bg-theme-card md:border md:border-theme-border min-h-[36px] md:min-h-[44px]">
+                {/* Mobile: Pencil Icon Button */}
+                <Button
+                  variant="outline"
+                  onClick={() => setEditMode(!editMode)}
+                  className={`md:hidden min-h-[36px] min-w-[36px] p-0 border transition-all ${
+                    editMode
+                      ? "bg-[#6366F1] text-white border-[#6366F1] hover:bg-[#6366F1]/90"
+                      : "bg-transparent text-theme-text border-theme-border hover:bg-[#6366F1] hover:text-white hover:border-[#6366F1]"
+                  }`}
+                >
+                  <Pencil className="h-3 w-3" />
+                </Button>
+
+                {/* Desktop: Switch with Label */}
+                <Pencil className="h-3.5 w-3.5 text-theme-text-secondary hidden md:inline" />
+                <Label className="text-[8px] md:text-xs cursor-pointer hidden md:inline">
+                  Edit Mode
+                </Label>
+                <Switch
+                  checked={editMode}
+                  onCheckedChange={setEditMode}
+                  className="hidden md:flex"
+                />
               </div>
               <Button
+                variant="outline"
                 onClick={generatePDF}
                 disabled={isGenerating || !displayData}
-                className="text-sm min-h-[44px] xs:min-h-auto"
+                className="text-theme-text hover:text-white border border-theme-border bg-transparent hover:bg-[#6366F1] text-xs md:text-sm min-h-[36px] md:min-h-[44px] min-w-[36px] md:min-w-auto px-2 md:px-4 whitespace-nowrap transition-all"
               >
-                <Download className="h-4 w-4 mr-2" />
-                <span className="hidden sm:inline">
+                <Download className="h-3 w-3 md:h-4 md:w-4 mr-0 md:mr-2" />
+                <span className="hidden md:inline">
                   {isGenerating ? "Generating..." : "Download PDF"}
                 </span>
-                <span className="sm:hidden">
+                <span className="md:hidden">
                   {isGenerating ? "..." : "PDF"}
                 </span>
               </Button>

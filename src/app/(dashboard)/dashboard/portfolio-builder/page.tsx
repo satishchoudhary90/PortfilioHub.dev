@@ -1074,24 +1074,61 @@ export default function PortfolioBuilderPage() {
                 onClick={() => toggleSection(section.key)}
               >
                 <div className="flex flex-col xs:flex-row items-start xs:items-center justify-between gap-1 xs:gap-2">
-                  <CardTitle className="flex items-center gap-1.5 xs:gap-2 text-base sm:text-lg">
-                    <Icon
-                      className={`h-4 w-4 sm:h-5 sm:w-5 ${section.color}`}
-                    />
-                    <span className="hidden xs:inline text-sm sm:text-base">
-                      {section.label}
-                    </span>
-                    <span className="xs:hidden text-sm">
-                      {section.label.replace(/s$/, "")}
-                    </span>
-                    <Badge
-                      variant="secondary"
-                      className="ml-0.5 sm:ml-1 text-[9px] sm:text-[10px] px-1 sm:px-2"
-                    >
-                      {items.length}
-                    </Badge>
-                  </CardTitle>
+                  <div className="flex items-center gap-1.5 xs:gap-2 flex-wrap">
+                    <CardTitle className="flex items-center gap-1.5 xs:gap-2 text-base sm:text-lg">
+                      <Icon
+                        className={`h-4 w-4 sm:h-5 sm:w-5 ${section.color}`}
+                      />
+                      <span className="hidden xs:inline text-sm sm:text-base">
+                        {section.label}
+                      </span>
+                      <span className="xs:hidden text-sm">
+                        {section.label.replace(/s$/, "")}
+                      </span>
+                      <Badge
+                        variant="secondary"
+                        className="ml-0.5 sm:ml-1 text-[9px] sm:text-[10px] px-1 sm:px-2"
+                      >
+                        {items.length}
+                      </Badge>
+                    </CardTitle>
+
+                    {/* Mobile: Buttons beside title */}
+                    <div className="flex items-center gap-1 xs:hidden h-3 w-3">
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          startAdd(section.key);
+                          if (isCollapsed) toggleSection(section.key);
+                        }}
+                        className="w-2 h-2 flex items-center justify-center text-blue-500 transition-all duration-200"
+                      >
+                        <Plus className="" />
+                        <div className="text-blue-500 text-md font-bold">
+                          Add
+                        </div>
+                      </button>
+                      {section.key === "skills" && (
+                        <button
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            aiSuggestSkills();
+                          }}
+                          disabled={aiGenerating === "skill-suggest"}
+                          className="w-8 h-8 flex items-center justify-center text-blue-500 transition-all duration-200 disabled:opacity-50"
+                        >
+                          {aiGenerating === "skill-suggest" ? (
+                            <Loader2 className="h-4 w-4 animate-spin" />
+                          ) : (
+                            <Sparkles className="h-5 w-5" />
+                          )}
+                        </button>
+                      )}
+                    </div>
+                  </div>
+
                   <div className="flex items-center gap-1 xs:gap-1.5">
+                    {/* Desktop: Buttons on right */}
                     {section.key === "skills" && (
                       <Button
                         size="sm"
@@ -1101,7 +1138,7 @@ export default function PortfolioBuilderPage() {
                           aiSuggestSkills();
                         }}
                         disabled={aiGenerating === "skill-suggest"}
-                        className="text-indigo-400 hover:text-indigo-300 text-xs p-1.5 sm:p-2 h-8 sm:h-9"
+                        className="hidden xs:flex text-indigo-400 hover:text-indigo-300 text-xs p-1.5 sm:p-2 h-8 sm:h-9"
                       >
                         {aiGenerating === "skill-suggest" ? (
                           <Loader2 className="h-3 w-3 sm:h-3.5 sm:w-3.5 mr-0.5 sm:mr-1 animate-spin" />
@@ -1122,7 +1159,7 @@ export default function PortfolioBuilderPage() {
                         startAdd(section.key);
                         if (isCollapsed) toggleSection(section.key);
                       }}
-                      className="text-xs p-1.5 sm:p-2 h-8 sm:h-9"
+                      className="hidden xs:flex text-xs p-1.5 sm:p-2 h-8 sm:h-9"
                     >
                       <Plus className="h-3.5 w-3.5 mr-1" /> Add
                     </Button>
