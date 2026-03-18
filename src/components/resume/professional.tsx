@@ -46,7 +46,7 @@ export default function ProfessionalResume({
   if (!data) return null;
 
   return (
-    <div className="bg-white text-gray-900 p-10 space-y-6 font-serif w-[794px] min-h-[1123px] mx-auto shadow-2xl">
+    <div className="bg-white text-gray-900 p-4 sm:p-6 lg:p-10 space-y-4 sm:space-y-5 lg:space-y-6 font-serif w-full max-w-[794px] min-h-screen print:min-h-[1123px] mx-auto shadow-sm lg:shadow-2xl">
       {/* Header */}
       <div className="border-b-2 border-gray-800 pb-4">
         <div className="flex items-center gap-4">

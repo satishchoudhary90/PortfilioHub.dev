@@ -29,7 +29,9 @@ function EditableText({
       className={`${className || ""} ${editable ? "outline-none ring-1 ring-transparent hover:ring-indigo-400/50 focus:ring-indigo-500 rounded px-0.5 cursor-text" : ""}`}
       contentEditable={editable}
       suppressContentEditableWarning
-      onBlur={(e: any) => editable && onEdit?.(field, e.currentTarget.textContent || "")}
+      onBlur={(e: any) =>
+        editable && onEdit?.(field, e.currentTarget.textContent || "")
+      }
     >
       {value || (editable ? "Click to edit" : "")}
     </Tag>
@@ -43,12 +45,16 @@ const HEADER_COLOR = "#bb9af7";
 const COMMENT_COLOR = "#565f89";
 const GUTTER_WIDTH = 32;
 
-export default function DeveloperResume({ data, editable, onEdit }: ResumeProps) {
+export default function DeveloperResume({
+  data,
+  editable,
+  onEdit,
+}: ResumeProps) {
   if (!data) return null;
 
   return (
     <div
-      className="w-[794px] min-h-[1123px] mx-auto shadow-2xl font-mono text-sm overflow-hidden flex"
+      className="w-full max-w-[794px] min-h-screen print:min-h-[1123px] mx-auto shadow-sm lg:shadow-2xl font-mono text-xs sm:text-sm overflow-hidden flex flex-col lg:flex-row"
       style={{ backgroundColor: BG }}
     >
       {/* Line numbers gutter */}
@@ -65,29 +71,45 @@ export default function DeveloperResume({ data, editable, onEdit }: ResumeProps)
         {/* Name & headline */}
         <div className="mb-4 flex items-start gap-4">
           {data.image && (
-            <img src={data.image} alt="" className="w-12 h-12 rounded-full object-cover ring-2 ring-green-500/50 shrink-0" />
+            <img
+              src={data.image}
+              alt=""
+              className="w-12 h-12 rounded-full object-cover ring-2 ring-green-500/50 shrink-0"
+            />
           )}
           <div>
-          <span style={{ color: COMMENT_COLOR }} className="italic">
-            {"// "}resume.ts
-          </span>
-          <div className="mt-2">
-            <span style={{ color: NAME_COLOR }}>const </span>
-            <span style={{ color: "#c0caf5" }}>name</span>
-            <span style={{ color: "#9ece6a" }}> = </span>
-            <span style={{ color: "#e0af68" }}>{'"'}</span>
-            <EditableText value={data.name} field="name" editable={editable} onEdit={onEdit} tag="span" />
-            <span style={{ color: "#e0af68" }}>{'"'}</span>
-            <span style={{ color: "#9ece6a" }}>;</span>
-          </div>
-          <div className="mt-1">
-            <span style={{ color: "#c0caf5" }}>headline</span>
-            <span style={{ color: "#9ece6a" }}> = </span>
-            <span style={{ color: "#e0af68" }}>{'"'}</span>
-            <EditableText value={data.headline} field="headline" editable={editable} onEdit={onEdit} tag="span" />
-            <span style={{ color: "#e0af68" }}>{'"'}</span>
-            <span style={{ color: "#9ece6a" }}>;</span>
-          </div>
+            <span style={{ color: COMMENT_COLOR }} className="italic">
+              {"// "}resume.ts
+            </span>
+            <div className="mt-2">
+              <span style={{ color: NAME_COLOR }}>const </span>
+              <span style={{ color: "#c0caf5" }}>name</span>
+              <span style={{ color: "#9ece6a" }}> = </span>
+              <span style={{ color: "#e0af68" }}>{'"'}</span>
+              <EditableText
+                value={data.name}
+                field="name"
+                editable={editable}
+                onEdit={onEdit}
+                tag="span"
+              />
+              <span style={{ color: "#e0af68" }}>{'"'}</span>
+              <span style={{ color: "#9ece6a" }}>;</span>
+            </div>
+            <div className="mt-1">
+              <span style={{ color: "#c0caf5" }}>headline</span>
+              <span style={{ color: "#9ece6a" }}> = </span>
+              <span style={{ color: "#e0af68" }}>{'"'}</span>
+              <EditableText
+                value={data.headline}
+                field="headline"
+                editable={editable}
+                onEdit={onEdit}
+                tag="span"
+              />
+              <span style={{ color: "#e0af68" }}>{'"'}</span>
+              <span style={{ color: "#9ece6a" }}>;</span>
+            </div>
           </div>
         </div>
 
@@ -107,7 +129,13 @@ export default function DeveloperResume({ data, editable, onEdit }: ResumeProps)
           <div className="mb-4">
             <span style={{ color: HEADER_COLOR }}>{"// bio"}</span>
             <p className="text-gray-400 mt-1 leading-relaxed">
-              <EditableText value={data.bio} field="bio" editable={editable} onEdit={onEdit} tag="span" />
+              <EditableText
+                value={data.bio}
+                field="bio"
+                editable={editable}
+                onEdit={onEdit}
+                tag="span"
+              />
             </p>
           </div>
         )}
@@ -124,7 +152,9 @@ export default function DeveloperResume({ data, editable, onEdit }: ResumeProps)
                   <span style={{ color: "#c0caf5" }}>{skill.name}</span>
                   <span style={{ color: "#9ece6a" }}> {"}"}</span>
                   <span style={{ color: "#7aa2f7" }}> from </span>
-                  <span style={{ color: "#e0af68" }}>{`"${skill.category || "stack"}"`}</span>
+                  <span
+                    style={{ color: "#e0af68" }}
+                  >{`"${skill.category || "stack"}"`}</span>
                   <span style={{ color: "#9ece6a" }}>;</span>
                 </div>
               ))}
@@ -141,9 +171,17 @@ export default function DeveloperResume({ data, editable, onEdit }: ResumeProps)
                 <div key={exp.id}>
                   <div className="flex justify-between items-baseline gap-2">
                     <span style={{ color: "#c0caf5" }}>{exp.position}</span>
-                    <span style={{ color: COMMENT_COLOR }} className="italic text-xs">
+                    <span
+                      style={{ color: COMMENT_COLOR }}
+                      className="italic text-xs"
+                    >
                       {"// "}
-                      {formatDate(exp.startDate)} — {exp.current ? "Present" : exp.endDate ? formatDate(exp.endDate) : ""}
+                      {formatDate(exp.startDate)} —{" "}
+                      {exp.current
+                        ? "Present"
+                        : exp.endDate
+                          ? formatDate(exp.endDate)
+                          : ""}
                     </span>
                   </div>
                   <div style={{ color: "#7aa2f7" }} className="text-xs">
@@ -170,15 +208,38 @@ export default function DeveloperResume({ data, editable, onEdit }: ResumeProps)
                   <div className="flex justify-between items-baseline gap-2">
                     <span style={{ color: "#c0caf5" }}>{proj.title}</span>
                     <div className="flex gap-2 text-xs">
-                      {proj.githubUrl && <a href={proj.githubUrl} style={{ color: "#7aa2f7" }} className="hover:underline">repo</a>}
-                      {proj.liveUrl && <a href={proj.liveUrl} style={{ color: "#9ece6a" }} className="hover:underline">live</a>}
+                      {proj.githubUrl && (
+                        <a
+                          href={proj.githubUrl}
+                          style={{ color: "#7aa2f7" }}
+                          className="hover:underline"
+                        >
+                          repo
+                        </a>
+                      )}
+                      {proj.liveUrl && (
+                        <a
+                          href={proj.liveUrl}
+                          style={{ color: "#9ece6a" }}
+                          className="hover:underline"
+                        >
+                          live
+                        </a>
+                      )}
                     </div>
                   </div>
                   {proj.description && (
-                    <p className="text-gray-400 text-xs mt-1 leading-relaxed pl-2 border-l-2 border-gray-700">{proj.description}</p>
+                    <p className="text-gray-400 text-xs mt-1 leading-relaxed pl-2 border-l-2 border-gray-700">
+                      {proj.description}
+                    </p>
                   )}
                   {proj.techStack?.length > 0 && (
-                    <p style={{ color: COMMENT_COLOR }} className="text-xs mt-0.5">{proj.techStack.join(" | ")}</p>
+                    <p
+                      style={{ color: COMMENT_COLOR }}
+                      className="text-xs mt-0.5"
+                    >
+                      {proj.techStack.join(" | ")}
+                    </p>
                   )}
                 </div>
               ))}
@@ -198,9 +259,17 @@ export default function DeveloperResume({ data, editable, onEdit }: ResumeProps)
                       {edu.degree}
                       {edu.field ? ` in ${edu.field}` : ""}
                     </span>
-                    <span style={{ color: COMMENT_COLOR }} className="italic text-xs">
+                    <span
+                      style={{ color: COMMENT_COLOR }}
+                      className="italic text-xs"
+                    >
                       {"// "}
-                      {formatDate(edu.startDate)} — {edu.current ? "Present" : edu.endDate ? formatDate(edu.endDate) : ""}
+                      {formatDate(edu.startDate)} —{" "}
+                      {edu.current
+                        ? "Present"
+                        : edu.endDate
+                          ? formatDate(edu.endDate)
+                          : ""}
                     </span>
                   </div>
                   <div style={{ color: "#7aa2f7" }} className="text-xs">

@@ -96,11 +96,11 @@ function SortableItem({ id, children }: SortableItemProps) {
       <div
         {...attributes}
         {...listeners}
-        className="absolute left-0 top-0 bottom-0 w-8 flex items-center justify-center cursor-grab active:cursor-grabbing opacity-0 group-hover:opacity-100 transition-opacity"
+        className="absolute left-0 top-0 bottom-0 w-8 sm:w-6 flex items-center justify-center cursor-grab active:cursor-grabbing opacity-60 sm:opacity-0 group-hover:opacity-100 transition-opacity touch-manipulation"
       >
-        <GripVertical className="h-4 w-4 text-theme-muted" />
+        <GripVertical className="h-5 w-5 sm:h-4 sm:w-4 text-theme-muted" />
       </div>
-      <div className="pl-8">{children}</div>
+      <div className="pl-8 sm:pl-8">{children}</div>
     </div>
   );
 }
@@ -458,8 +458,8 @@ export default function PortfolioBuilderPage() {
     switch (section) {
       case "projects":
         return (
-          <div className="space-y-3">
-            <div className="grid grid-cols-2 gap-3">
+          <div className="space-y-2 sm:space-y-3">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-3">
               <div>
                 <Label className="text-xs">Title *</Label>
                 <Input
@@ -485,13 +485,13 @@ export default function PortfolioBuilderPage() {
               </div>
             </div>
             <div>
-              <div className="flex items-center justify-between">
+              <div className="flex flex-col xs:flex-row xs:items-center gap-2 xs:justify-between">
                 <Label className="text-xs">Description</Label>
                 <button
                   type="button"
                   onClick={aiGenerateProjectDesc}
                   disabled={aiGenerating === "project"}
-                  className="flex items-center gap-1 text-[11px] text-indigo-400 hover:text-indigo-300 disabled:opacity-50 transition-colors"
+                  className="flex items-center gap-1 text-[11px] text-indigo-400 hover:text-indigo-300 disabled:opacity-50 transition-colors self-start xs:self-auto"
                 >
                   {aiGenerating === "project" ? (
                     <Loader2 className="h-3 w-3 animate-spin" />
@@ -513,7 +513,7 @@ export default function PortfolioBuilderPage() {
                 rows={2}
               />
             </div>
-            <div className="grid grid-cols-2 gap-3">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               <div>
                 <Label className="text-xs">GitHub URL</Label>
                 <Input
@@ -540,7 +540,7 @@ export default function PortfolioBuilderPage() {
             </div>
             <div>
               <Label className="text-xs">Tech Stack</Label>
-              <div className="flex gap-2 mt-1">
+              <div className="flex flex-col xs:flex-row gap-1.5 sm:gap-2 mt-1">
                 <Input
                   value={formData._techInput || ""}
                   onChange={(e) =>
@@ -549,19 +549,43 @@ export default function PortfolioBuilderPage() {
                       _techInput: e.target.value,
                     }))
                   }
-                  onKeyDown={(e) =>
-                    e.key === "Enter" && (e.preventDefault(), addTechTag())
-                  }
-                  placeholder="Add tech..."
+                  placeholder="React, Node.js, MongoDB..."
                   className="flex-1"
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter" && formData._techInput?.trim()) {
+                      e.preventDefault();
+                      const tech = formData._techInput.trim();
+                      const current = formData.techStack || [];
+                      if (!current.includes(tech)) {
+                        setFormData((p: any) => ({
+                          ...p,
+                          techStack: [...current, tech],
+                          _techInput: "",
+                        }));
+                      }
+                    }
+                  }}
                 />
                 <Button
                   type="button"
                   size="sm"
                   variant="secondary"
-                  onClick={addTechTag}
+                  onClick={() => {
+                    if (formData._techInput?.trim()) {
+                      const tech = formData._techInput.trim();
+                      const current = formData.techStack || [];
+                      if (!current.includes(tech)) {
+                        setFormData((p: any) => ({
+                          ...p,
+                          techStack: [...current, tech],
+                          _techInput: "",
+                        }));
+                      }
+                    }
+                  }}
+                  className="whitespace-nowrap"
                 >
-                  Add
+                  <Plus className="h-3 w-3 mr-1" /> Add
                 </Button>
               </div>
               {formData.techStack?.length > 0 && (
@@ -571,7 +595,15 @@ export default function PortfolioBuilderPage() {
                       key={t}
                       variant="secondary"
                       className="gap-1 cursor-pointer"
-                      onClick={() => removeTechTag(t)}
+                      onClick={() => {
+                        const current = formData.techStack || [];
+                        setFormData((p: any) => ({
+                          ...p,
+                          techStack: current.filter(
+                            (item: string) => item !== t,
+                          ),
+                        }));
+                      }}
                     >
                       {t} <X className="h-3 w-3" />
                     </Badge>
@@ -592,8 +624,8 @@ export default function PortfolioBuilderPage() {
         );
       case "skills":
         return (
-          <div className="space-y-3">
-            <div className="grid grid-cols-3 gap-3">
+          <div className="space-y-2 sm:space-y-3">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2 sm:gap-3">
               <div>
                 <Label className="text-xs">Skill Name *</Label>
                 <Input
@@ -647,7 +679,7 @@ export default function PortfolioBuilderPage() {
       case "experience":
         return (
           <div className="space-y-3">
-            <div className="grid grid-cols-2 gap-3">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               <div>
                 <Label className="text-xs">Position *</Label>
                 <Input
@@ -672,7 +704,7 @@ export default function PortfolioBuilderPage() {
                 />
               </div>
             </div>
-            <div className="grid grid-cols-3 gap-3">
+            <div className="grid grid-cols-1 xs:grid-cols-2 lg:grid-cols-3 gap-3">
               <div>
                 <Label className="text-xs">Start Date *</Label>
                 <Input
@@ -755,7 +787,7 @@ export default function PortfolioBuilderPage() {
       case "education":
         return (
           <div className="space-y-3">
-            <div className="grid grid-cols-2 gap-3">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               <div>
                 <Label className="text-xs">Degree *</Label>
                 <Input
@@ -780,7 +812,7 @@ export default function PortfolioBuilderPage() {
                 />
               </div>
             </div>
-            <div className="grid grid-cols-3 gap-3">
+            <div className="grid grid-cols-1 xs:grid-cols-2 lg:grid-cols-3 gap-3">
               <div>
                 <Label className="text-xs">Field</Label>
                 <Input
@@ -887,25 +919,30 @@ export default function PortfolioBuilderPage() {
       case "projects":
         return (
           <div>
-            <div className="flex items-center gap-2">
-              <h4 className="font-semibold text-theme-text">{item.title}</h4>
+            <div className="flex items-center gap-1.5 sm:gap-2">
+              <h4 className="font-semibold text-sm sm:text-base text-theme-text">
+                {item.title}
+              </h4>
               {item.featured && (
-                <Badge variant="secondary" className="text-[10px]">
+                <Badge
+                  variant="secondary"
+                  className="text-[9px] sm:text-[10px] px-1 py-0.5"
+                >
                   Featured
                 </Badge>
               )}
             </div>
             {item.description && (
-              <p className="text-sm text-theme-text-secondary mt-0.5 line-clamp-1">
+              <p className="text-xs sm:text-sm text-theme-text-secondary mt-0.5 line-clamp-1">
                 {item.description}
               </p>
             )}
             {item.techStack?.length > 0 && (
-              <div className="flex flex-wrap gap-1 mt-1.5">
+              <div className="flex flex-wrap gap-0.5 sm:gap-1 mt-1 sm:mt-1.5">
                 {item.techStack.map((t: string) => (
                   <span
                     key={t}
-                    className="text-[10px] px-1.5 py-0.5 rounded bg-theme-card text-theme-text-secondary"
+                    className="text-[9px] sm:text-[10px] px-1 sm:px-1.5 py-0.5 rounded bg-theme-card text-theme-text-secondary"
                   >
                     {t}
                   </span>
@@ -916,29 +953,42 @@ export default function PortfolioBuilderPage() {
         );
       case "skills":
         return (
-          <div className="flex items-center gap-3">
-            <span className="font-medium text-theme-text">{item.name}</span>
-            <Badge variant="secondary" className="text-[10px]">
-              {item.category}
-            </Badge>
-            <div className="flex-1 h-1.5 bg-theme-card rounded-full max-w-[120px]">
-              <div
-                className="h-full rounded-full bg-gradient-to-r from-indigo-500 to-purple-500"
-                style={{ width: `${item.level}%` }}
-              />
+          <div className="flex flex-col xs:flex-row xs:items-center gap-1.5 xs:gap-2 sm:gap-3">
+            <div className="flex items-center gap-1.5 xs:gap-2 min-w-0">
+              <span className="font-medium text-xs sm:text-sm text-theme-text truncate">
+                {item.name}
+              </span>
+              <Badge
+                variant="secondary"
+                className="text-[8px] sm:text-[9px] lg:text-[10px] shrink-0 px-1 py-0.5"
+              >
+                {item.category}
+              </Badge>
             </div>
-            <span className="text-xs text-theme-muted">{item.level}%</span>
+            <div className="flex items-center gap-1.5 xs:gap-2">
+              <div className="flex-1 h-1.5 xs:h-2 bg-theme-card rounded-full min-w-[60px] sm:min-w-[80px] max-w-[100px] sm:max-w-[120px]">
+                <div
+                  className="h-full rounded-full bg-gradient-to-r from-indigo-500 to-purple-500"
+                  style={{ width: `${item.level}%` }}
+                />
+              </div>
+              <span className="text-[10px] sm:text-xs text-theme-muted shrink-0">
+                {item.level}%
+              </span>
+            </div>
           </div>
         );
       case "experience":
         return (
           <div>
-            <h4 className="font-semibold text-theme-text">{item.position}</h4>
-            <p className="text-sm text-indigo-400">
+            <h4 className="font-semibold text-sm sm:text-base text-theme-text">
+              {item.position}
+            </h4>
+            <p className="text-xs sm:text-sm text-indigo-400">
               {item.company}
               {item.location ? ` · ${item.location}` : ""}
             </p>
-            <p className="text-xs text-theme-muted mt-0.5">
+            <p className="text-[10px] sm:text-xs text-theme-muted mt-0.5">
               {formatDate(item.startDate)} —{" "}
               {item.current
                 ? "Present"
@@ -951,15 +1001,15 @@ export default function PortfolioBuilderPage() {
       case "education":
         return (
           <div>
-            <h4 className="font-semibold text-theme-text">
+            <h4 className="font-semibold text-sm sm:text-base text-theme-text">
               {item.degree}
               {item.field ? ` in ${item.field}` : ""}
             </h4>
-            <p className="text-sm text-purple-400">
+            <p className="text-xs sm:text-sm text-purple-400">
               {item.institution}
               {item.grade ? ` · GPA: ${item.grade}` : ""}
             </p>
-            <p className="text-xs text-theme-muted mt-0.5">
+            <p className="text-[10px] sm:text-xs text-theme-muted mt-0.5">
               {formatDate(item.startDate)} —{" "}
               {item.current
                 ? "Present"
@@ -972,12 +1022,12 @@ export default function PortfolioBuilderPage() {
       case "socialLinks": {
         const Icon = platformIcons[item.platform] || Globe;
         return (
-          <div className="flex items-center gap-3">
-            <Icon className="h-4 w-4 text-pink-400" />
-            <span className="font-medium text-theme-text capitalize">
+          <div className="flex items-center gap-2 sm:gap-3">
+            <Icon className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-pink-400" />
+            <span className="font-medium text-xs sm:text-sm text-theme-text capitalize">
               {item.platform}
             </span>
-            <span className="text-sm text-theme-text-secondary truncate">
+            <span className="text-[11px] sm:text-sm text-theme-text-secondary truncate">
               {item.url}
             </span>
           </div>
@@ -995,15 +1045,16 @@ export default function PortfolioBuilderPage() {
   }
 
   return (
-    <div className="space-y-4 max-w-4xl">
+    <div className="space-y-3 sm:space-y-4 max-w-4xl">
       <FadeIn>
-        <div className="flex items-center justify-between">
+        <div className="flex flex-col gap-3 sm:gap-4">
           <div>
-            <h1 className="text-3xl font-bold text-theme-text">
+            <h1 className="text-2xl sm:text-3xl font-bold text-theme-text">
               Portfolio Builder
             </h1>
-            <p className="text-theme-text-secondary mt-1">
-              Manage all your portfolio content in one place. Drag to reorder.
+            <p className="text-sm sm:text-base text-theme-text-secondary mt-1">
+              Manage all your portfolio content in one place.{" "}
+              <span className="hidden sm:inline">Drag to reorder.</span>
             </p>
           </div>
         </div>
@@ -1019,18 +1070,28 @@ export default function PortfolioBuilderPage() {
           <FadeIn key={section.key} delay={idx * 0.05}>
             <Card>
               <CardHeader
-                className="pb-3 cursor-pointer"
+                className="pb-2 sm:pb-3 cursor-pointer px-3 sm:px-6 py-2 sm:py-4"
                 onClick={() => toggleSection(section.key)}
               >
-                <div className="flex items-center justify-between">
-                  <CardTitle className="flex items-center gap-2 text-lg">
-                    <Icon className={`h-5 w-5 ${section.color}`} />
-                    {section.label}
-                    <Badge variant="secondary" className="ml-1 text-[10px]">
+                <div className="flex flex-col xs:flex-row items-start xs:items-center justify-between gap-1 xs:gap-2">
+                  <CardTitle className="flex items-center gap-1.5 xs:gap-2 text-base sm:text-lg">
+                    <Icon
+                      className={`h-4 w-4 sm:h-5 sm:w-5 ${section.color}`}
+                    />
+                    <span className="hidden xs:inline text-sm sm:text-base">
+                      {section.label}
+                    </span>
+                    <span className="xs:hidden text-sm">
+                      {section.label.replace(/s$/, "")}
+                    </span>
+                    <Badge
+                      variant="secondary"
+                      className="ml-0.5 sm:ml-1 text-[9px] sm:text-[10px] px-1 sm:px-2"
+                    >
                       {items.length}
                     </Badge>
                   </CardTitle>
-                  <div className="flex items-center gap-2">
+                  <div className="flex items-center gap-1 xs:gap-1.5">
                     {section.key === "skills" && (
                       <Button
                         size="sm"
@@ -1040,14 +1101,17 @@ export default function PortfolioBuilderPage() {
                           aiSuggestSkills();
                         }}
                         disabled={aiGenerating === "skill-suggest"}
-                        className="text-indigo-400 hover:text-indigo-300"
+                        className="text-indigo-400 hover:text-indigo-300 text-xs p-1.5 sm:p-2 h-8 sm:h-9"
                       >
                         {aiGenerating === "skill-suggest" ? (
-                          <Loader2 className="h-3.5 w-3.5 mr-1 animate-spin" />
+                          <Loader2 className="h-3 w-3 sm:h-3.5 sm:w-3.5 mr-0.5 sm:mr-1 animate-spin" />
                         ) : (
-                          <Sparkles className="h-3.5 w-3.5 mr-1" />
+                          <Sparkles className="h-3 w-3 sm:h-3.5 sm:w-3.5 mr-0.5 sm:mr-1" />
                         )}
-                        AI Suggest
+                        <span className="hidden xs:inline text-xs sm:text-sm">
+                          AI
+                        </span>
+                        <span className="xs:hidden text-xs">AI</span>
                       </Button>
                     )}
                     <Button
@@ -1058,6 +1122,7 @@ export default function PortfolioBuilderPage() {
                         startAdd(section.key);
                         if (isCollapsed) toggleSection(section.key);
                       }}
+                      className="text-xs p-1.5 sm:p-2 h-8 sm:h-9"
                     >
                       <Plus className="h-3.5 w-3.5 mr-1" /> Add
                     </Button>
@@ -1078,27 +1143,32 @@ export default function PortfolioBuilderPage() {
                     exit={{ height: 0, opacity: 0 }}
                     transition={{ duration: 0.2 }}
                   >
-                    <CardContent className="pt-0 space-y-2">
+                    <CardContent className="pt-0 space-y-2 px-3 sm:px-6 pb-3 sm:pb-6">
                       {isEditing && (
                         <motion.div
                           initial={{ opacity: 0, y: -10 }}
                           animate={{ opacity: 1, y: 0 }}
                           className="p-4 rounded-xl bg-indigo-500/5 border border-indigo-500/20 space-y-3"
                         >
-                          <div className="flex items-center justify-between">
+                          <div className="flex flex-col xs:flex-row xs:items-center gap-2 xs:justify-between">
                             <p className="text-sm font-medium text-indigo-400">
                               {editingItem.id ? "Edit" : "Add"}{" "}
                               {section.label.replace(/s$/, "")}
                             </p>
-                            <div className="flex gap-2">
+                            <div className="flex gap-2 xs:gap-2">
                               <Button
                                 size="sm"
                                 variant="secondary"
                                 onClick={cancelEdit}
+                                className="flex-1 xs:flex-none text-xs xs:text-sm"
                               >
                                 <X className="h-3.5 w-3.5 mr-1" /> Cancel
                               </Button>
-                              <Button size="sm" onClick={saveItem}>
+                              <Button
+                                size="sm"
+                                onClick={saveItem}
+                                className="flex-1 xs:flex-none text-xs xs:text-sm"
+                              >
                                 <Check className="h-3.5 w-3.5 mr-1" /> Save
                               </Button>
                             </div>
@@ -1139,7 +1209,7 @@ export default function PortfolioBuilderPage() {
                         )}
 
                       {items.length === 0 && !isEditing ? (
-                        <div className="text-center py-8 text-theme-muted text-sm">
+                        <div className="text-center py-6 sm:py-8 text-theme-muted text-xs sm:text-sm">
                           No {section.label.toLowerCase()} yet. Click
                           &quot;Add&quot; to get started.
                         </div>
@@ -1156,7 +1226,7 @@ export default function PortfolioBuilderPage() {
                             <div className="space-y-1.5">
                               {items.map((item: any) => (
                                 <SortableItem key={item.id} id={item.id}>
-                                  <div className="flex items-center gap-3 p-3 rounded-lg bg-theme-card border border-theme-border hover:border-theme-border transition-all">
+                                  <div className="flex items-center gap-2 sm:gap-3 p-2 sm:p-3 rounded-lg bg-theme-card border border-theme-border hover:border-theme-border transition-all">
                                     <div className="flex-1 min-w-0">
                                       {renderItem(section.key, item)}
                                     </div>

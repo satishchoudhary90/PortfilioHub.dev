@@ -47,14 +47,18 @@ export default function AcademicResume({
 
   return (
     <div
-      className="w-[794px] min-h-[1123px] mx-auto shadow-2xl bg-white text-gray-900 p-10 font-serif"
+      className="w-full max-w-[794px] min-h-screen print:min-h-[1123px] mx-auto shadow-sm lg:shadow-2xl bg-white text-gray-900 p-4 sm:p-6 lg:p-10 font-serif"
       style={{ fontFamily: "'Times New Roman', Times, serif" }}
     >
       {/* Contact */}
       <div className="text-center mb-8">
         <div className="flex flex-col items-center gap-3">
           {data.image && (
-            <img src={data.image} alt="" className="w-14 h-14 rounded-full object-cover border border-gray-200 shadow-sm" />
+            <img
+              src={data.image}
+              alt=""
+              className="w-14 h-14 rounded-full object-cover border border-gray-200 shadow-sm"
+            />
           )}
           <h1 className="text-2xl font-bold">
             <EditableText
@@ -190,15 +194,34 @@ export default function AcademicResume({
               {data.projects.map((proj: any) => (
                 <div key={proj.id}>
                   <div className="flex justify-between items-baseline">
-                    <h3 className="font-semibold text-gray-900">{proj.title}</h3>
-                    <div className="flex gap-2 text-xs" style={{ color: "#1e40af" }}>
-                      {proj.githubUrl && <a href={proj.githubUrl} className="hover:underline">GitHub</a>}
-                      {proj.liveUrl && <a href={proj.liveUrl} className="hover:underline">Live</a>}
+                    <h3 className="font-semibold text-gray-900">
+                      {proj.title}
+                    </h3>
+                    <div
+                      className="flex gap-2 text-xs"
+                      style={{ color: "#1e40af" }}
+                    >
+                      {proj.githubUrl && (
+                        <a href={proj.githubUrl} className="hover:underline">
+                          GitHub
+                        </a>
+                      )}
+                      {proj.liveUrl && (
+                        <a href={proj.liveUrl} className="hover:underline">
+                          Live
+                        </a>
+                      )}
                     </div>
                   </div>
-                  {proj.description && <p className="text-sm text-gray-700 mt-0.5">{proj.description}</p>}
+                  {proj.description && (
+                    <p className="text-sm text-gray-700 mt-0.5">
+                      {proj.description}
+                    </p>
+                  )}
                   {proj.techStack?.length > 0 && (
-                    <p className="text-xs text-gray-500 mt-0.5">{proj.techStack.join(" · ")}</p>
+                    <p className="text-xs text-gray-500 mt-0.5">
+                      {proj.techStack.join(" · ")}
+                    </p>
                   )}
                 </div>
               ))}

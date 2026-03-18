@@ -42,7 +42,7 @@ export default function BoldResume({ data, editable, onEdit }: ResumeProps) {
   if (!data) return null;
 
   return (
-    <div className="w-[794px] min-h-[1123px] mx-auto shadow-2xl flex overflow-hidden">
+    <div className="w-full max-w-[794px] min-h-screen print:min-h-[1123px] mx-auto shadow-sm lg:shadow-2xl flex flex-col lg:flex-row overflow-hidden">
       {/* Left column — 30% black */}
       <div
         className="w-[30%] min-h-full p-8 text-white flex flex-col"
@@ -50,27 +50,31 @@ export default function BoldResume({ data, editable, onEdit }: ResumeProps) {
       >
         <div className="flex items-center gap-4">
           {data.image && (
-            <img src={data.image} alt="" className="w-14 h-14 rounded-full object-cover ring-2 ring-white/30 shrink-0" />
+            <img
+              src={data.image}
+              alt=""
+              className="w-14 h-14 rounded-full object-cover ring-2 ring-white/30 shrink-0"
+            />
           )}
           <div>
-        <h1 className="text-xl font-bold leading-tight">
-          <EditableText
-            value={data.name}
-            field="name"
-            editable={editable}
-            onEdit={onEdit}
-            tag="span"
-          />
-        </h1>
-        <p className="text-sm text-white/80 mt-2">
-          <EditableText
-            value={data.headline}
-            field="headline"
-            editable={editable}
-            onEdit={onEdit}
-            tag="span"
-          />
-        </p>
+            <h1 className="text-xl font-bold leading-tight">
+              <EditableText
+                value={data.name}
+                field="name"
+                editable={editable}
+                onEdit={onEdit}
+                tag="span"
+              />
+            </h1>
+            <p className="text-sm text-white/80 mt-2">
+              <EditableText
+                value={data.headline}
+                field="headline"
+                editable={editable}
+                onEdit={onEdit}
+                tag="span"
+              />
+            </p>
           </div>
         </div>
         <div className="mt-6 space-y-2 text-sm">
@@ -128,10 +132,7 @@ export default function BoldResume({ data, editable, onEdit }: ResumeProps) {
               {data.experiences.map((exp: any) => (
                 <div key={exp.id}>
                   <div className="flex justify-between items-baseline">
-                    <h3
-                      className="font-semibold"
-                      style={{ color: "#dc2626" }}
-                    >
+                    <h3 className="font-semibold" style={{ color: "#dc2626" }}>
                       {exp.position}
                     </h3>
                     <span className="text-xs text-gray-500">
@@ -165,15 +166,34 @@ export default function BoldResume({ data, editable, onEdit }: ResumeProps) {
               {data.projects.map((proj: any) => (
                 <div key={proj.id}>
                   <div className="flex justify-between items-baseline">
-                    <h3 className="font-semibold" style={{ color: "#dc2626" }}>{proj.title}</h3>
-                    <div className="flex gap-2 text-xs" style={{ color: "#dc2626" }}>
-                      {proj.githubUrl && <a href={proj.githubUrl} className="hover:underline">GitHub</a>}
-                      {proj.liveUrl && <a href={proj.liveUrl} className="hover:underline">Live</a>}
+                    <h3 className="font-semibold" style={{ color: "#dc2626" }}>
+                      {proj.title}
+                    </h3>
+                    <div
+                      className="flex gap-2 text-xs"
+                      style={{ color: "#dc2626" }}
+                    >
+                      {proj.githubUrl && (
+                        <a href={proj.githubUrl} className="hover:underline">
+                          GitHub
+                        </a>
+                      )}
+                      {proj.liveUrl && (
+                        <a href={proj.liveUrl} className="hover:underline">
+                          Live
+                        </a>
+                      )}
                     </div>
                   </div>
-                  {proj.description && <p className="text-sm text-gray-600 mt-1">{proj.description}</p>}
+                  {proj.description && (
+                    <p className="text-sm text-gray-600 mt-1">
+                      {proj.description}
+                    </p>
+                  )}
                   {proj.techStack?.length > 0 && (
-                    <p className="text-xs text-gray-500 mt-0.5">{proj.techStack.join(" · ")}</p>
+                    <p className="text-xs text-gray-500 mt-0.5">
+                      {proj.techStack.join(" · ")}
+                    </p>
                   )}
                 </div>
               ))}
@@ -191,10 +211,7 @@ export default function BoldResume({ data, editable, onEdit }: ResumeProps) {
               {data.educations.map((edu: any) => (
                 <div key={edu.id}>
                   <div className="flex justify-between items-baseline">
-                    <h3
-                      className="font-semibold"
-                      style={{ color: "#dc2626" }}
-                    >
+                    <h3 className="font-semibold" style={{ color: "#dc2626" }}>
                       {edu.degree}
                       {edu.field ? `, ${edu.field}` : ""}
                     </h3>

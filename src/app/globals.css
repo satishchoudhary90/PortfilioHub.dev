@@ -97,3 +97,67 @@
     text-wrap: balance;
   }
 }
+
+/* Mobile-specific improvements */
+@media (max-width: 480px) {
+  /* Better mobile touch targets */
+  button,
+  .btn,
+  [role="button"] {
+    min-height: 44px;
+    min-width: 44px;
+  }
+
+  /* Improve readability on small screens */
+  .text-xs {
+    font-size: 0.75rem;
+    line-height: 1.1rem;
+  }
+
+  /* Better spacing for mobile cards */
+  .card {
+    margin: 0;
+    border-radius: 0.5rem;
+  }
+
+  /* Ensure modals/dialogs are mobile-friendly */
+  .dialog-content {
+    margin: 1rem;
+    width: calc(100vw - 2rem);
+  }
+
+  /* Better drag handles on mobile */
+  .sortable-item {
+    touch-action: manipulation;
+  }
+
+  /* Portfolio builder mobile optimizations */
+  .portfolio-section-card {
+    padding: 0.75rem;
+  }
+}
+
+/* iPhone SE specific optimizations */
+@media (max-width: 375px) {
+  /* Even smaller text for very small screens */
+  h1 {
+    font-size: 1.5rem;
+  }
+  h2 {
+    font-size: 1.25rem;
+  }
+  h3 {
+    font-size: 1.1rem;
+  }
+
+  /* Better table/grid layouts */
+  .grid-cols-2 {
+    grid-template-columns: 1fr;
+    gap: 0.5rem;
+  }
+
+  .grid-cols-3 {
+    grid-template-columns: 1fr;
+    gap: 0.5rem;
+  }
+}

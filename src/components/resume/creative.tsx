@@ -46,7 +46,7 @@ export default function CreativeResume({
   if (!data) return null;
 
   return (
-    <div className="bg-white text-gray-900 flex w-[794px] min-h-[1123px] mx-auto shadow-2xl font-sans">
+    <div className="bg-white text-gray-900 flex flex-col lg:flex-row w-full max-w-[794px] min-h-screen print:min-h-[1123px] mx-auto shadow-sm lg:shadow-2xl font-sans">
       {/* Left sidebar */}
       <div className="w-1/3 bg-indigo-900 text-white p-6 space-y-6">
         {/* Avatar / Photo */}

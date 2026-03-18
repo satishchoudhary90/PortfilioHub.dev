@@ -38,16 +38,12 @@ function EditableText({
   );
 }
 
-export default function ElegantResume({
-  data,
-  editable,
-  onEdit,
-}: ResumeProps) {
+export default function ElegantResume({ data, editable, onEdit }: ResumeProps) {
   if (!data) return null;
 
   return (
     <div
-      className="w-[794px] min-h-[1123px] mx-auto shadow-2xl bg-[#f5f5f5] text-gray-800 p-16 font-sans"
+      className="w-full max-w-[794px] min-h-screen print:min-h-[1123px] mx-auto shadow-sm lg:shadow-2xl bg-[#f5f5f5] text-gray-800 p-6 sm:p-10 lg:p-16 font-sans"
       style={{ fontFamily: "Helvetica, Arial, sans-serif" }}
     >
       <div className="space-y-12">
@@ -55,37 +51,41 @@ export default function ElegantResume({
         <div>
           <div className="flex items-center gap-5">
             {data.image && (
-              <img src={data.image} alt="" className="w-14 h-14 rounded-full object-cover border border-gray-300 shadow-sm shrink-0" />
+              <img
+                src={data.image}
+                alt=""
+                className="w-14 h-14 rounded-full object-cover border border-gray-300 shadow-sm shrink-0"
+              />
             )}
             <div>
-          <h1 className="text-4xl font-light tracking-tight">
-            <EditableText
-              value={data.name}
-              field="name"
-              editable={editable}
-              onEdit={onEdit}
-              tag="span"
-            />
-          </h1>
-          <p className="text-lg font-light text-gray-600 mt-2">
-            <EditableText
-              value={data.headline}
-              field="headline"
-              editable={editable}
-              onEdit={onEdit}
-              tag="span"
-            />
-          </p>
-          <div
-            className="h-px my-6"
-            style={{ backgroundColor: "#d4d4d4", width: "100%" }}
-          />
-          <div className="flex flex-wrap gap-6 text-sm text-gray-600">
-            {data.email && <span>{data.email}</span>}
-            {data.phone && <span>{data.phone}</span>}
-            {data.location && <span>{data.location}</span>}
-            {data.website && <span>{data.website}</span>}
-          </div>
+              <h1 className="text-4xl font-light tracking-tight">
+                <EditableText
+                  value={data.name}
+                  field="name"
+                  editable={editable}
+                  onEdit={onEdit}
+                  tag="span"
+                />
+              </h1>
+              <p className="text-lg font-light text-gray-600 mt-2">
+                <EditableText
+                  value={data.headline}
+                  field="headline"
+                  editable={editable}
+                  onEdit={onEdit}
+                  tag="span"
+                />
+              </p>
+              <div
+                className="h-px my-6"
+                style={{ backgroundColor: "#d4d4d4", width: "100%" }}
+              />
+              <div className="flex flex-wrap gap-6 text-sm text-gray-600">
+                {data.email && <span>{data.email}</span>}
+                {data.phone && <span>{data.phone}</span>}
+                {data.location && <span>{data.location}</span>}
+                {data.website && <span>{data.website}</span>}
+              </div>
             </div>
           </div>
         </div>
@@ -132,7 +132,9 @@ export default function ElegantResume({
               {data.experiences.map((exp: any) => (
                 <div key={exp.id} className="space-y-1">
                   <div className="flex justify-between items-baseline">
-                    <h3 className="font-normal text-gray-800">{exp.position}</h3>
+                    <h3 className="font-normal text-gray-800">
+                      {exp.position}
+                    </h3>
                     <span className="text-xs text-gray-500">
                       {formatDate(exp.startDate)} —{" "}
                       {exp.current
@@ -184,7 +186,9 @@ export default function ElegantResume({
                           : ""}
                     </span>
                   </div>
-                  <p className="text-sm text-gray-600 italic">{edu.institution}</p>
+                  <p className="text-sm text-gray-600 italic">
+                    {edu.institution}
+                  </p>
                 </div>
               ))}
             </div>
@@ -210,13 +214,27 @@ export default function ElegantResume({
                   <div className="flex justify-between items-baseline">
                     <h3 className="font-normal text-gray-800">{proj.title}</h3>
                     <div className="flex gap-2 text-xs text-gray-500">
-                      {proj.githubUrl && <a href={proj.githubUrl} className="hover:underline">GitHub</a>}
-                      {proj.liveUrl && <a href={proj.liveUrl} className="hover:underline">Live</a>}
+                      {proj.githubUrl && (
+                        <a href={proj.githubUrl} className="hover:underline">
+                          GitHub
+                        </a>
+                      )}
+                      {proj.liveUrl && (
+                        <a href={proj.liveUrl} className="hover:underline">
+                          Live
+                        </a>
+                      )}
                     </div>
                   </div>
-                  {proj.description && <p className="text-sm text-gray-600 italic">{proj.description}</p>}
+                  {proj.description && (
+                    <p className="text-sm text-gray-600 italic">
+                      {proj.description}
+                    </p>
+                  )}
                   {proj.techStack?.length > 0 && (
-                    <p className="text-xs text-gray-500">{proj.techStack.join(", ")}</p>
+                    <p className="text-xs text-gray-500">
+                      {proj.techStack.join(", ")}
+                    </p>
                   )}
                 </div>
               ))}

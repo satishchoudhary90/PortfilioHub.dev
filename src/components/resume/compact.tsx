@@ -29,7 +29,9 @@ function EditableText({
       className={`${className || ""} ${editable ? "outline-none ring-1 ring-transparent hover:ring-indigo-400/50 focus:ring-indigo-500 rounded px-0.5 cursor-text" : ""}`}
       contentEditable={editable}
       suppressContentEditableWarning
-      onBlur={(e: any) => editable && onEdit?.(field, e.currentTarget.textContent || "")}
+      onBlur={(e: any) =>
+        editable && onEdit?.(field, e.currentTarget.textContent || "")
+      }
     >
       {value || (editable ? "Click to edit" : "")}
     </Tag>
@@ -40,27 +42,45 @@ export default function CompactResume({ data, editable, onEdit }: ResumeProps) {
   if (!data) return null;
 
   return (
-    <div className="w-[794px] min-h-[1123px] mx-auto shadow-2xl bg-white p-6 text-xs">
+    <div className="w-full max-w-[794px] min-h-screen print:min-h-[1123px] mx-auto shadow-sm lg:shadow-2xl bg-white p-3 sm:p-4 lg:p-6 text-xs">
       {/* Header: name, headline, two-column contact + skills */}
       <div className="border-b border-gray-300 pb-3 mb-3">
         <div className="flex items-center gap-3">
           {data.image && (
-            <img src={data.image} alt="" className="w-12 h-12 rounded-full object-cover border border-gray-200 shadow-sm shrink-0" />
+            <img
+              src={data.image}
+              alt=""
+              className="w-12 h-12 rounded-full object-cover border border-gray-200 shadow-sm shrink-0"
+            />
           )}
           <div className="flex-1">
             <h1 className="text-sm font-bold text-gray-900 leading-tight">
-              <EditableText value={data.name} field="name" editable={editable} onEdit={onEdit} tag="span" />
+              <EditableText
+                value={data.name}
+                field="name"
+                editable={editable}
+                onEdit={onEdit}
+                tag="span"
+              />
             </h1>
             <p className="text-gray-600 mt-0.5">
-              <EditableText value={data.headline} field="headline" editable={editable} onEdit={onEdit} tag="span" />
+              <EditableText
+                value={data.headline}
+                field="headline"
+                editable={editable}
+                onEdit={onEdit}
+                tag="span"
+              />
             </p>
           </div>
         </div>
-        <div className="grid grid-cols-2 gap-x-8 gap-y-1 mt-2">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-4 sm:gap-x-8 gap-y-1 mt-2">
           <div className="space-y-0.5">
             {data.email && <div className="text-gray-700">{data.email}</div>}
             {data.phone && <div className="text-gray-700">{data.phone}</div>}
-            {data.location && <div className="text-gray-700">{data.location}</div>}
+            {data.location && (
+              <div className="text-gray-700">{data.location}</div>
+            )}
           </div>
           <div>
             {data.skills?.length > 0 && (
@@ -79,10 +99,18 @@ export default function CompactResume({ data, editable, onEdit }: ResumeProps) {
       {/* Bio */}
       {(data.bio || editable) && (
         <section className="mb-3">
-          <h2 className="text-[10px] font-bold uppercase tracking-wider text-[#374151] mb-1.5">Summary</h2>
+          <h2 className="text-[10px] font-bold uppercase tracking-wider text-[#374151] mb-1.5">
+            Summary
+          </h2>
           <div className="border-b border-gray-200 pb-3">
             <p className="text-gray-700 leading-relaxed">
-              <EditableText value={data.bio} field="bio" editable={editable} onEdit={onEdit} tag="span" />
+              <EditableText
+                value={data.bio}
+                field="bio"
+                editable={editable}
+                onEdit={onEdit}
+                tag="span"
+              />
             </p>
           </div>
         </section>
@@ -91,18 +119,31 @@ export default function CompactResume({ data, editable, onEdit }: ResumeProps) {
       {/* Experience */}
       {data.experiences?.length > 0 && (
         <section className="mb-3">
-          <h2 className="text-[10px] font-bold uppercase tracking-wider text-[#374151] mb-1.5">Experience</h2>
+          <h2 className="text-[10px] font-bold uppercase tracking-wider text-[#374151] mb-1.5">
+            Experience
+          </h2>
           <div className="border-b border-gray-200 pb-3 space-y-2">
             {data.experiences.map((exp: any) => (
               <div key={exp.id}>
                 <div className="flex justify-between items-baseline gap-2">
-                  <span className="font-semibold text-gray-900">{exp.position}</span>
+                  <span className="font-semibold text-gray-900">
+                    {exp.position}
+                  </span>
                   <span className="text-gray-500 shrink-0">
-                    {formatDate(exp.startDate)} — {exp.current ? "Present" : exp.endDate ? formatDate(exp.endDate) : ""}
+                    {formatDate(exp.startDate)} —{" "}
+                    {exp.current
+                      ? "Present"
+                      : exp.endDate
+                        ? formatDate(exp.endDate)
+                        : ""}
                   </span>
                 </div>
                 <p className="text-gray-600">{exp.company}</p>
-                {exp.description && <p className="text-gray-600 mt-0.5 leading-relaxed">{exp.description}</p>}
+                {exp.description && (
+                  <p className="text-gray-600 mt-0.5 leading-relaxed">
+                    {exp.description}
+                  </p>
+                )}
               </div>
             ))}
           </div>
@@ -112,18 +153,32 @@ export default function CompactResume({ data, editable, onEdit }: ResumeProps) {
       {/* Projects */}
       {data.projects?.length > 0 && (
         <section className="mb-3">
-          <h2 className="text-[10px] font-bold uppercase tracking-wider text-[#374151] mb-1.5">Projects</h2>
+          <h2 className="text-[10px] font-bold uppercase tracking-wider text-[#374151] mb-1.5">
+            Projects
+          </h2>
           <div className="border-b border-gray-200 pb-3 space-y-2">
             {data.projects.map((proj: any) => (
               <div key={proj.id}>
                 <div className="flex justify-between items-baseline gap-2">
-                  <span className="font-semibold text-gray-900">{proj.title}</span>
+                  <span className="font-semibold text-gray-900">
+                    {proj.title}
+                  </span>
                   <div className="flex gap-2 text-gray-500 shrink-0">
-                    {proj.githubUrl && <a href={proj.githubUrl} className="hover:underline">GitHub</a>}
-                    {proj.liveUrl && <a href={proj.liveUrl} className="hover:underline">Live</a>}
+                    {proj.githubUrl && (
+                      <a href={proj.githubUrl} className="hover:underline">
+                        GitHub
+                      </a>
+                    )}
+                    {proj.liveUrl && (
+                      <a href={proj.liveUrl} className="hover:underline">
+                        Live
+                      </a>
+                    )}
                   </div>
                 </div>
-                {proj.description && <p className="text-gray-600">{proj.description}</p>}
+                {proj.description && (
+                  <p className="text-gray-600">{proj.description}</p>
+                )}
                 {proj.techStack?.length > 0 && (
                   <p className="text-gray-500">{proj.techStack.join(" · ")}</p>
                 )}
@@ -136,7 +191,9 @@ export default function CompactResume({ data, editable, onEdit }: ResumeProps) {
       {/* Education */}
       {data.educations?.length > 0 && (
         <section className="mb-3">
-          <h2 className="text-[10px] font-bold uppercase tracking-wider text-[#374151] mb-1.5">Education</h2>
+          <h2 className="text-[10px] font-bold uppercase tracking-wider text-[#374151] mb-1.5">
+            Education
+          </h2>
           <div className="border-b border-gray-200 pb-3 space-y-2">
             {data.educations.map((edu: any) => (
               <div key={edu.id}>
@@ -146,7 +203,12 @@ export default function CompactResume({ data, editable, onEdit }: ResumeProps) {
                     {edu.field ? `, ${edu.field}` : ""}
                   </span>
                   <span className="text-gray-500 shrink-0">
-                    {formatDate(edu.startDate)} — {edu.current ? "Present" : edu.endDate ? formatDate(edu.endDate) : ""}
+                    {formatDate(edu.startDate)} —{" "}
+                    {edu.current
+                      ? "Present"
+                      : edu.endDate
+                        ? formatDate(edu.endDate)
+                        : ""}
                   </span>
                 </div>
                 <p className="text-gray-600">{edu.institution}</p>
@@ -155,7 +217,6 @@ export default function CompactResume({ data, editable, onEdit }: ResumeProps) {
           </div>
         </section>
       )}
-
     </div>
   );
 }

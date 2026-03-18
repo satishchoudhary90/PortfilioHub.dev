@@ -512,60 +512,76 @@ export default function ResumePage() {
   return (
     <div className="space-y-6">
       <FadeIn>
-        <div className="flex items-center justify-between">
-          <div>
-            <h1 className="text-3xl font-bold text-theme-text">
-              Resume Generator
-            </h1>
-            <p className="text-theme-text-secondary mt-1">
-              {templates.length} templates · Choose, edit, and download as PDF
-            </p>
-          </div>
-          <div className="flex items-center gap-3">
-            <Button
-              variant="ghost"
-              onClick={aiGenerateSummary}
-              disabled={aiSummaryLoading || !userData}
-              className="text-theme-accent hover:text-theme-accent"
-            >
-              {aiSummaryLoading ? (
-                <Loader2 className="h-4 w-4 mr-2 animate-spin" />
-              ) : (
-                <Sparkles className="h-4 w-4 mr-2" />
-              )}
-              AI Summary
-            </Button>
-            {editMode && (
-              <Button variant="secondary" onClick={saveEdits}>
-                <Save className="h-4 w-4 mr-2" />
-                Save Edits
-              </Button>
-            )}
-            <div className="flex items-center gap-2 px-3 py-2 rounded-lg bg-theme-card border border-theme-border">
-              <Pencil className="h-3.5 w-3.5 text-theme-text-secondary" />
-              <Label className="text-xs cursor-pointer">Edit Mode</Label>
-              <Switch checked={editMode} onCheckedChange={setEditMode} />
+        <div className="space-y-4">
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+            <div>
+              <h1 className="text-2xl sm:text-3xl font-bold text-theme-text">
+                Resume Generator
+              </h1>
+              <p className="text-sm sm:text-base text-theme-text-secondary mt-1">
+                {templates.length} templates ·{" "}
+                <span className="hidden xs:inline">Choose, edit, and d</span>
+                <span className="xs:hidden">D</span>ownload as PDF
+              </p>
             </div>
-            <Button
-              onClick={generatePDF}
-              disabled={isGenerating || !displayData}
-            >
-              <Download className="h-4 w-4 mr-2" />
-              {isGenerating ? "Generating..." : "Download PDF"}
-            </Button>
+            <div className="flex flex-col xs:flex-row items-stretch xs:items-center gap-2 xs:gap-3">
+              <Button
+                variant="ghost"
+                onClick={aiGenerateSummary}
+                disabled={aiSummaryLoading || !userData}
+                className="text-theme-accent hover:text-theme-accent text-sm min-h-[44px] xs:min-h-auto"
+              >
+                {aiSummaryLoading ? (
+                  <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                ) : (
+                  <Sparkles className="h-4 w-4 mr-2" />
+                )}
+                <span className="hidden xs:inline">AI Summary</span>
+                <span className="xs:hidden">AI</span>
+              </Button>
+              {editMode && (
+                <Button
+                  variant="secondary"
+                  onClick={saveEdits}
+                  className="text-sm min-h-[44px] xs:min-h-auto"
+                >
+                  <Save className="h-4 w-4 mr-2" />
+                  <span className="hidden xs:inline">Save Edits</span>
+                  <span className="xs:hidden">Save</span>
+                </Button>
+              )}
+              <div className="flex items-center gap-2 px-3 py-2 rounded-lg bg-theme-card border border-theme-border min-h-[44px]">
+                <Pencil className="h-3.5 w-3.5 text-theme-text-secondary" />
+                <Label className="text-xs cursor-pointer">Edit Mode</Label>
+                <Switch checked={editMode} onCheckedChange={setEditMode} />
+              </div>
+              <Button
+                onClick={generatePDF}
+                disabled={isGenerating || !displayData}
+                className="text-sm min-h-[44px] xs:min-h-auto"
+              >
+                <Download className="h-4 w-4 mr-2" />
+                <span className="hidden sm:inline">
+                  {isGenerating ? "Generating..." : "Download PDF"}
+                </span>
+                <span className="sm:hidden">
+                  {isGenerating ? "..." : "PDF"}
+                </span>
+              </Button>
+            </div>
           </div>
         </div>
       </FadeIn>
 
       {/* Category Filter */}
       <FadeIn delay={0.05}>
-        <div className="flex gap-2">
+        <div className="flex gap-2 overflow-x-auto pb-2 sm:pb-0">
           {categories.map((cat) => (
             <button
               key={cat.id}
               onClick={() => setActiveCategory(cat.id)}
               className={cn(
-                "px-3 py-1.5 rounded-lg text-sm font-medium transition-all",
+                "px-3 py-2 rounded-lg text-sm font-medium transition-all whitespace-nowrap min-h-[44px] sm:min-h-auto",
                 activeCategory === cat.id
                   ? "bg-theme-accent text-theme-text"
                   : "bg-theme-card text-theme-text-secondary hover:bg-theme-accent-soft hover:text-theme-text",
@@ -712,7 +728,7 @@ export default function ResumePage() {
 
       {/* Template Selector */}
       <FadeIn delay={0.1}>
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-7 gap-3">
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-7 gap-3">
           {filteredTemplates.map((tmpl) => (
             <motion.button
               key={tmpl.id}
@@ -720,7 +736,7 @@ export default function ResumePage() {
               whileTap={{ scale: 0.97 }}
               onClick={() => setActiveTemplate(tmpl.id)}
               className={cn(
-                "relative p-3 rounded-xl border-2 text-left transition-all",
+                "relative p-3 rounded-xl border-2 text-left transition-all min-h-[120px] sm:min-h-auto",
                 activeTemplate === tmpl.id
                   ? "border-theme-accent bg-theme-accent-soft"
                   : "border-theme-border bg-theme-card hover:border-theme-accent/50",
@@ -734,10 +750,10 @@ export default function ResumePage() {
               <div
                 className={cn("w-full h-12 rounded-md mb-2", tmpl.preview)}
               />
-              <h3 className="font-medium text-theme-text text-xs">
+              <h3 className="font-medium text-theme-text text-xs sm:text-sm">
                 {tmpl.name}
               </h3>
-              <p className="text-[10px] text-theme-muted mt-0.5 line-clamp-1">
+              <p className="text-[10px] sm:text-xs text-theme-muted mt-0.5 line-clamp-2">
                 {tmpl.description}
               </p>
             </motion.button>
@@ -747,12 +763,17 @@ export default function ResumePage() {
 
       {editMode && (
         <FadeIn delay={0.15}>
-          <div className="flex items-center gap-2 px-4 py-3 rounded-lg bg-theme-accent-soft border border-theme-accent/20">
-            <Pencil className="h-4 w-4 text-theme-accent" />
-            <p className="text-sm text-theme-accent">
-              <strong>Edit mode active</strong> — Click on the name, headline,
-              or bio text in the preview below to edit directly. Click
-              &quot;Save Edits&quot; to persist changes.
+          <div className="flex items-start sm:items-center gap-2 px-3 sm:px-4 py-3 rounded-lg bg-theme-accent-soft border border-theme-accent/20">
+            <Pencil className="h-4 w-4 text-theme-accent shrink-0 mt-0.5 sm:mt-0" />
+            <p className="text-xs sm:text-sm text-theme-accent">
+              <strong>Edit mode active</strong> —{" "}
+              <span className="hidden sm:inline">
+                Click on the name, headline, or bio text in the preview below to
+                edit directly. Click &quot;Save Edits&quot; to persist changes.
+              </span>
+              <span className="sm:hidden">
+                Tap text in preview to edit. Tap Save to keep changes.
+              </span>
             </p>
           </div>
         </FadeIn>

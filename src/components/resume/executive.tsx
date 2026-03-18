@@ -47,7 +47,7 @@ export default function ExecutiveResume({
 
   return (
     <div
-      className="w-[794px] min-h-[1123px] mx-auto shadow-2xl bg-white text-gray-900 font-serif"
+      className="w-full max-w-[794px] min-h-screen print:min-h-[1123px] mx-auto shadow-sm lg:shadow-2xl bg-white text-gray-900 font-serif"
       style={{ fontFamily: "Georgia, 'Times New Roman', serif" }}
     >
       {/* Header — dark navy with white text, gold accents */}
@@ -57,7 +57,11 @@ export default function ExecutiveResume({
       >
         <div className="flex items-center gap-5">
           {data.image && (
-            <img src={data.image} alt="" className="w-14 h-14 rounded-full object-cover ring-2 ring-white/30 shrink-0" />
+            <img
+              src={data.image}
+              alt=""
+              className="w-14 h-14 rounded-full object-cover ring-2 ring-white/30 shrink-0"
+            />
           )}
           <div>
             <h1 className="text-3xl font-light tracking-wide">
@@ -127,7 +131,9 @@ export default function ExecutiveResume({
               {data.experiences.map((exp: any) => (
                 <div key={exp.id} className="space-y-1">
                   <div className="flex justify-between items-baseline">
-                    <h3 className="font-semibold text-gray-900">{exp.position}</h3>
+                    <h3 className="font-semibold text-gray-900">
+                      {exp.position}
+                    </h3>
                     <span className="text-xs text-gray-500">
                       {formatDate(exp.startDate)} —{" "}
                       {exp.current
@@ -195,15 +201,32 @@ export default function ExecutiveResume({
               {data.projects.map((proj: any) => (
                 <div key={proj.id} className="space-y-1">
                   <div className="flex justify-between items-baseline">
-                    <h3 className="font-semibold text-gray-900">{proj.title}</h3>
-                    <div className="flex gap-3 text-xs" style={{ color: "#B8860B" }}>
-                      {proj.githubUrl && <a href={proj.githubUrl} className="hover:underline">GitHub</a>}
-                      {proj.liveUrl && <a href={proj.liveUrl} className="hover:underline">Live</a>}
+                    <h3 className="font-semibold text-gray-900">
+                      {proj.title}
+                    </h3>
+                    <div
+                      className="flex gap-3 text-xs"
+                      style={{ color: "#B8860B" }}
+                    >
+                      {proj.githubUrl && (
+                        <a href={proj.githubUrl} className="hover:underline">
+                          GitHub
+                        </a>
+                      )}
+                      {proj.liveUrl && (
+                        <a href={proj.liveUrl} className="hover:underline">
+                          Live
+                        </a>
+                      )}
                     </div>
                   </div>
-                  {proj.description && <p className="text-sm text-gray-600">{proj.description}</p>}
+                  {proj.description && (
+                    <p className="text-sm text-gray-600">{proj.description}</p>
+                  )}
                   {proj.techStack?.length > 0 && (
-                    <p className="text-xs text-gray-500">{proj.techStack.join(" · ")}</p>
+                    <p className="text-xs text-gray-500">
+                      {proj.techStack.join(" · ")}
+                    </p>
                   )}
                 </div>
               ))}

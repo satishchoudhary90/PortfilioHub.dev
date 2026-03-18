@@ -42,7 +42,7 @@ export default function ClassicResume({ data, editable, onEdit }: ResumeProps) {
   if (!data) return null;
 
   return (
-    <div className="w-[794px] min-h-[1123px] mx-auto shadow-2xl bg-white text-black p-12 font-serif">
+    <div className="w-full max-w-[794px] min-h-screen print:min-h-[1123px] mx-auto shadow-sm lg:shadow-2xl bg-white text-black p-4 sm:p-8 lg:p-12 font-serif">
       {/* Name — centered, uppercase, wide letter-spacing */}
       <div className="text-center">
         <div className="flex flex-col items-center gap-3">

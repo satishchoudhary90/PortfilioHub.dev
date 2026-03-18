@@ -38,20 +38,20 @@ function EditableText({
   );
 }
 
-export default function StartupResume({
-  data,
-  editable,
-  onEdit,
-}: ResumeProps) {
+export default function StartupResume({ data, editable, onEdit }: ResumeProps) {
   if (!data) return null;
 
   return (
-    <div className="w-[794px] min-h-[1123px] mx-auto shadow-2xl bg-white text-gray-900 overflow-hidden rounded-lg">
+    <div className="w-full max-w-[794px] min-h-screen print:min-h-[1123px] mx-auto shadow-sm lg:shadow-2xl bg-white text-gray-900 overflow-hidden rounded-lg">
       {/* Gradient header */}
       <div className="bg-gradient-to-r from-violet-600 to-fuchsia-500 text-white px-10 py-8">
         <div className="flex items-center gap-4">
           {data.image && (
-            <img src={data.image} alt="" className="w-14 h-14 rounded-full object-cover ring-2 ring-white/40 shrink-0" />
+            <img
+              src={data.image}
+              alt=""
+              className="w-14 h-14 rounded-full object-cover ring-2 ring-white/40 shrink-0"
+            />
           )}
           <div>
             <h1 className="text-2xl font-bold">
@@ -73,26 +73,26 @@ export default function StartupResume({
               />
             </p>
             <div className="flex flex-wrap gap-2 mt-4">
-          {data.email && (
-            <span className="px-3 py-1 rounded-full bg-white/20 text-sm">
-              {data.email}
-            </span>
-          )}
-          {data.phone && (
-            <span className="px-3 py-1 rounded-full bg-white/20 text-sm">
-              {data.phone}
-            </span>
-          )}
-            {data.location && (
-              <span className="px-3 py-1 rounded-full bg-white/20 text-sm">
-                {data.location}
-              </span>
-            )}
-            {data.website && (
-              <span className="px-3 py-1 rounded-full bg-white/20 text-sm">
-                {data.website}
-              </span>
-            )}
+              {data.email && (
+                <span className="px-3 py-1 rounded-full bg-white/20 text-sm">
+                  {data.email}
+                </span>
+              )}
+              {data.phone && (
+                <span className="px-3 py-1 rounded-full bg-white/20 text-sm">
+                  {data.phone}
+                </span>
+              )}
+              {data.location && (
+                <span className="px-3 py-1 rounded-full bg-white/20 text-sm">
+                  {data.location}
+                </span>
+              )}
+              {data.website && (
+                <span className="px-3 py-1 rounded-full bg-white/20 text-sm">
+                  {data.website}
+                </span>
+              )}
             </div>
           </div>
         </div>
@@ -201,19 +201,41 @@ export default function StartupResume({
             </h2>
             <div className="space-y-3">
               {data.projects.map((proj: any) => (
-                <div key={proj.id} className="p-4 rounded-xl bg-gray-50 shadow-sm border border-gray-100">
+                <div
+                  key={proj.id}
+                  className="p-4 rounded-xl bg-gray-50 shadow-sm border border-gray-100"
+                >
                   <div className="flex justify-between items-start">
-                    <h3 className="font-semibold text-gray-900">{proj.title}</h3>
+                    <h3 className="font-semibold text-gray-900">
+                      {proj.title}
+                    </h3>
                     <div className="flex gap-2 text-xs text-violet-600">
-                      {proj.githubUrl && <a href={proj.githubUrl} className="hover:underline">GitHub</a>}
-                      {proj.liveUrl && <a href={proj.liveUrl} className="hover:underline">Live</a>}
+                      {proj.githubUrl && (
+                        <a href={proj.githubUrl} className="hover:underline">
+                          GitHub
+                        </a>
+                      )}
+                      {proj.liveUrl && (
+                        <a href={proj.liveUrl} className="hover:underline">
+                          Live
+                        </a>
+                      )}
                     </div>
                   </div>
-                  {proj.description && <p className="text-sm text-gray-600 mt-1">{proj.description}</p>}
+                  {proj.description && (
+                    <p className="text-sm text-gray-600 mt-1">
+                      {proj.description}
+                    </p>
+                  )}
                   {proj.techStack?.length > 0 && (
                     <div className="flex flex-wrap gap-1.5 mt-2">
                       {proj.techStack.map((tech: string, i: number) => (
-                        <span key={i} className="px-2 py-0.5 rounded-full bg-violet-100 text-violet-800 text-xs">{tech}</span>
+                        <span
+                          key={i}
+                          className="px-2 py-0.5 rounded-full bg-violet-100 text-violet-800 text-xs"
+                        >
+                          {tech}
+                        </span>
                       ))}
                     </div>
                   )}
