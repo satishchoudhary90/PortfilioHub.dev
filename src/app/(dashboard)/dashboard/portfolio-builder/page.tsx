@@ -920,7 +920,7 @@ export default function PortfolioBuilderPage() {
         return (
           <div>
             <div className="flex items-center gap-1.5 sm:gap-2">
-              <h4 className="font-semibold text-sm sm:text-base text-theme-text">
+              <h4 className="font-semibold text-xs sm:text-sm text-theme-text">
                 {item.title}
               </h4>
               {item.featured && (
@@ -1094,19 +1094,17 @@ export default function PortfolioBuilderPage() {
                     </CardTitle>
 
                     {/* Mobile: Buttons beside title */}
-                    <div className="flex items-center gap-1 xs:hidden h-3 w-3">
+                    <div className="flex items-center gap-1 xs:hidden">
                       <button
                         onClick={(e) => {
                           e.stopPropagation();
                           startAdd(section.key);
                           if (isCollapsed) toggleSection(section.key);
                         }}
-                        className="w-2 h-2 flex items-center justify-center text-blue-500 transition-all duration-200"
+                        className="items-center justify-center whitespace-nowrap font-medium transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-theme-card rounded-md flex text-indigo-400 hover:text-indigo-300 text-xs p-1.5 h-8"
                       >
-                        <Plus className="" />
-                        <div className="text-blue-500 text-md font-bold">
-                          Add
-                        </div>
+                        <Plus className="h-3 w-3 mr-0.5" />
+                        <span className="text-xs">Add</span>
                       </button>
                       {section.key === "skills" && (
                         <button
@@ -1115,14 +1113,20 @@ export default function PortfolioBuilderPage() {
                             aiSuggestSkills();
                           }}
                           disabled={aiGenerating === "skill-suggest"}
-                          className="w-8 h-8 flex items-center justify-center text-blue-500 transition-all duration-200 disabled:opacity-50"
+                          className="items-center justify-center whitespace-nowrap font-medium transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-theme-card rounded-md flex text-indigo-400 hover:text-indigo-300 text-xs p-1.5 h-8"
                         >
                           {aiGenerating === "skill-suggest" ? (
-                            <Loader2 className="h-4 w-4 animate-spin" />
+                            <Loader2 className="h-3 w-3 mr-0.5 animate-spin" />
                           ) : (
-                            <Sparkles className="h-5 w-5" />
+                            <Sparkles className="h-3 w-3 mr-0.5" />
                           )}
+                          <span className="text-xs">AI</span>
                         </button>
+                      )}
+                      {isCollapsed ? (
+                        <ChevronDown className="h-4 w-4 text-theme-muted" />
+                      ) : (
+                        <ChevronUp className="h-4 w-4 text-theme-muted" />
                       )}
                     </div>
                   </div>
@@ -1163,11 +1167,13 @@ export default function PortfolioBuilderPage() {
                     >
                       <Plus className="h-3.5 w-3.5 mr-1" /> Add
                     </Button>
-                    {isCollapsed ? (
-                      <ChevronDown className="h-4 w-4 text-theme-muted" />
-                    ) : (
-                      <ChevronUp className="h-4 w-4 text-theme-muted" />
-                    )}
+                    <div className="hidden xs:block">
+                      {isCollapsed ? (
+                        <ChevronDown className="h-4 w-4 text-theme-muted" />
+                      ) : (
+                        <ChevronUp className="h-4 w-4 text-theme-muted" />
+                      )}
+                    </div>
                   </div>
                 </div>
               </CardHeader>
