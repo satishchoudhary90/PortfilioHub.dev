@@ -36,7 +36,8 @@ export default function RegisterPage() {
       const json = await res.json();
 
       if (!res.ok) {
-        setError(json.error || "Something went wrong");
+        const msg = json.error || "Something went wrong";
+        setError(json.debug ? `${msg}\n\nDebug: ${json.debug}` : msg);
         setIsLoading(false);
         return;
       }
@@ -82,7 +83,7 @@ export default function RegisterPage() {
           <CardContent>
             <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
               {error && (
-                <div className="p-3 rounded-lg bg-red-500/10 border border-red-500/20 text-red-400 text-sm">
+                <div className="p-3 rounded-lg bg-red-500/10 border border-red-500/20 text-red-400 text-sm whitespace-pre-wrap">
                   {error}
                 </div>
               )}

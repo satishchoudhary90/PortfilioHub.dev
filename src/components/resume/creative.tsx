@@ -8,10 +8,20 @@ interface ResumeProps {
   onEdit?: (field: string, value: string) => void;
 }
 
-function EditableText({ value, field, editable, onEdit, className, tag: Tag = "span" }: {
-  value: string; field: string; editable?: boolean;
+function EditableText({
+  value,
+  field,
+  editable,
+  onEdit,
+  className,
+  tag: Tag = "span",
+}: {
+  value: string;
+  field: string;
+  editable?: boolean;
   onEdit?: (field: string, value: string) => void;
-  className?: string; tag?: any;
+  className?: string;
+  tag?: any;
 }) {
   if (!value && !editable) return null;
   return (
@@ -19,14 +29,20 @@ function EditableText({ value, field, editable, onEdit, className, tag: Tag = "s
       className={`${className || ""} ${editable ? "outline-none ring-1 ring-transparent hover:ring-indigo-400/50 focus:ring-indigo-500 rounded px-0.5 cursor-text" : ""}`}
       contentEditable={editable}
       suppressContentEditableWarning
-      onBlur={(e: any) => editable && onEdit?.(field, e.currentTarget.textContent || "")}
+      onBlur={(e: any) =>
+        editable && onEdit?.(field, e.currentTarget.textContent || "")
+      }
     >
       {value || (editable ? "Click to edit" : "")}
     </Tag>
   );
 }
 
-export default function CreativeResume({ data, editable, onEdit }: ResumeProps) {
+export default function CreativeResume({
+  data,
+  editable,
+  onEdit,
+}: ResumeProps) {
   if (!data) return null;
 
   return (
@@ -36,23 +52,47 @@ export default function CreativeResume({ data, editable, onEdit }: ResumeProps) 
         {/* Avatar / Photo */}
         <div className="flex justify-center">
           {data.image && (
-            <img src={data.image} alt="" className="w-20 h-20 rounded-full object-cover ring-2 ring-indigo-400/50 mx-auto" />
+            <img
+              src={data.image}
+              alt=""
+              className="w-20 h-20 rounded-full object-cover ring-2 ring-indigo-400/50 mx-auto"
+            />
           )}
           {!data.image && (
             <div className="w-20 h-20 rounded-full bg-indigo-700 flex items-center justify-center text-2xl font-bold mx-auto">
-              {(data.name || "D").split(" ").map((n: string) => n[0]).join("").slice(0, 2)}
+              {(data.name || "D")
+                .split(" ")
+                .map((n: string) => n[0])
+                .join("")
+                .slice(0, 2)}
             </div>
           )}
         </div>
 
         <div className="text-center">
-          <EditableText value={data.name} field="name" editable={editable} onEdit={onEdit} className="text-xl font-bold block" tag="h1" />
-          <EditableText value={data.headline} field="headline" editable={editable} onEdit={onEdit} className="text-indigo-200 text-sm mt-1 block" tag="p" />
+          <EditableText
+            value={data.name}
+            field="name"
+            editable={editable}
+            onEdit={onEdit}
+            className="text-xl font-bold block"
+            tag="h1"
+          />
+          <EditableText
+            value={data.headline}
+            field="headline"
+            editable={editable}
+            onEdit={onEdit}
+            className="text-indigo-200 text-sm mt-1 block"
+            tag="p"
+          />
         </div>
 
         {/* Contact */}
         <div>
-          <h2 className="text-xs font-bold uppercase tracking-wider text-indigo-300 mb-2">Contact</h2>
+          <h2 className="text-xs font-bold uppercase tracking-wider text-indigo-300 mb-2">
+            Contact
+          </h2>
           <div className="space-y-1.5 text-xs text-indigo-100">
             {data.email && <p>{data.email}</p>}
             {data.phone && <p>{data.phone}</p>}
@@ -64,7 +104,9 @@ export default function CreativeResume({ data, editable, onEdit }: ResumeProps) 
         {/* Skills */}
         {data.skills?.length > 0 && (
           <div>
-            <h2 className="text-xs font-bold uppercase tracking-wider text-indigo-300 mb-2">Skills</h2>
+            <h2 className="text-xs font-bold uppercase tracking-wider text-indigo-300 mb-2">
+              Skills
+            </h2>
             <div className="space-y-2">
               {data.skills.map((skill: any) => (
                 <div key={skill.id}>
@@ -87,10 +129,15 @@ export default function CreativeResume({ data, editable, onEdit }: ResumeProps) 
         {/* Social Links */}
         {data.socialLinks?.length > 0 && (
           <div>
-            <h2 className="text-xs font-bold uppercase tracking-wider text-indigo-300 mb-2">Links</h2>
+            <h2 className="text-xs font-bold uppercase tracking-wider text-indigo-300 mb-2">
+              Links
+            </h2>
             <div className="space-y-1 text-xs text-indigo-100">
               {data.socialLinks.map((link: any) => (
-                <p key={link.id} className="capitalize">{link.platform}: <span className="text-indigo-300 break-all">{link.url}</span></p>
+                <p key={link.id} className="capitalize">
+                  {link.platform}:{" "}
+                  <span className="text-indigo-300 break-all">{link.url}</span>
+                </p>
               ))}
             </div>
           </div>
@@ -102,27 +149,48 @@ export default function CreativeResume({ data, editable, onEdit }: ResumeProps) 
         {/* About */}
         {(data.bio || editable) && (
           <div>
-            <h2 className="text-lg font-bold text-indigo-900 border-b-2 border-indigo-200 pb-1 mb-3">About Me</h2>
-            <EditableText value={data.bio} field="bio" editable={editable} onEdit={onEdit} className="text-sm text-gray-600 leading-relaxed block" tag="p" />
+            <h2 className="text-lg font-bold text-indigo-900 border-b-2 border-indigo-200 pb-1 mb-3">
+              About Me
+            </h2>
+            <EditableText
+              value={data.bio}
+              field="bio"
+              editable={editable}
+              onEdit={onEdit}
+              className="text-sm text-gray-600 leading-relaxed block"
+              tag="p"
+            />
           </div>
         )}
 
         {/* Experience */}
         {data.experiences?.length > 0 && (
           <div>
-            <h2 className="text-lg font-bold text-indigo-900 border-b-2 border-indigo-200 pb-1 mb-3">Experience</h2>
+            <h2 className="text-lg font-bold text-indigo-900 border-b-2 border-indigo-200 pb-1 mb-3">
+              Experience
+            </h2>
             <div className="space-y-4">
               {data.experiences.map((exp: any) => (
                 <div key={exp.id}>
                   <div className="flex justify-between items-baseline">
                     <h3 className="text-sm font-bold">{exp.position}</h3>
                     <span className="text-[11px] text-gray-400">
-                      {formatDate(exp.startDate)} — {exp.current ? "Present" : exp.endDate ? formatDate(exp.endDate) : ""}
+                      {formatDate(exp.startDate)} —{" "}
+                      {exp.current
+                        ? "Present"
+                        : exp.endDate
+                          ? formatDate(exp.endDate)
+                          : ""}
                     </span>
                   </div>
-                  <p className="text-xs text-indigo-600 font-medium">{exp.company}{exp.location ? ` · ${exp.location}` : ""}</p>
+                  <p className="text-xs text-indigo-600 font-medium">
+                    {exp.company}
+                    {exp.location ? ` · ${exp.location}` : ""}
+                  </p>
                   {exp.description && (
-                    <p className="text-xs text-gray-600 mt-1.5 leading-relaxed">{exp.description}</p>
+                    <p className="text-xs text-gray-600 mt-1.5 leading-relaxed">
+                      {exp.description}
+                    </p>
                   )}
                 </div>
               ))}
@@ -133,20 +201,48 @@ export default function CreativeResume({ data, editable, onEdit }: ResumeProps) 
         {/* Projects */}
         {data.projects?.length > 0 && (
           <div>
-            <h2 className="text-lg font-bold text-indigo-900 border-b-2 border-indigo-200 pb-1 mb-3">Projects</h2>
+            <h2 className="text-lg font-bold text-indigo-900 border-b-2 border-indigo-200 pb-1 mb-3">
+              Projects
+            </h2>
             <div className="space-y-3">
               {data.projects.map((proj: any) => (
                 <div key={proj.id}>
-                  <div className="flex justify-between items-baseline">
+                  <div className="flex justify-between items-start">
                     <h3 className="text-sm font-bold">{proj.title}</h3>
-                    <div className="flex gap-2 text-[11px] text-indigo-600">
-                      {proj.githubUrl && <a href={proj.githubUrl} className="hover:underline">GitHub</a>}
-                      {proj.liveUrl && <a href={proj.liveUrl} className="hover:underline">Live</a>}
+                    <div className="flex flex-col gap-1 text-[11px] text-right">
+                      {proj.githubUrl && (
+                        <div className="text-indigo-600">
+                          <span className="text-gray-600">GitHub: </span>
+                          <a
+                            href={proj.githubUrl}
+                            className="hover:underline break-all"
+                          >
+                            {proj.githubUrl}
+                          </a>
+                        </div>
+                      )}
+                      {proj.liveUrl && (
+                        <div className="text-indigo-600">
+                          <span className="text-gray-600">Live: </span>
+                          <a
+                            href={proj.liveUrl}
+                            className="hover:underline break-all"
+                          >
+                            {proj.liveUrl}
+                          </a>
+                        </div>
+                      )}
                     </div>
                   </div>
-                  {proj.description && <p className="text-xs text-gray-600 mt-1 leading-relaxed">{proj.description}</p>}
+                  {proj.description && (
+                    <p className="text-xs text-gray-600 mt-1 leading-relaxed">
+                      {proj.description}
+                    </p>
+                  )}
                   {proj.techStack?.length > 0 && (
-                    <p className="text-xs text-indigo-600 mt-0.5">{proj.techStack.join(" · ")}</p>
+                    <p className="text-xs text-indigo-600 mt-0.5">
+                      {proj.techStack.join(" · ")}
+                    </p>
                   )}
                 </div>
               ))}
@@ -157,17 +253,30 @@ export default function CreativeResume({ data, editable, onEdit }: ResumeProps) 
         {/* Education */}
         {data.educations?.length > 0 && (
           <div>
-            <h2 className="text-lg font-bold text-indigo-900 border-b-2 border-indigo-200 pb-1 mb-3">Education</h2>
+            <h2 className="text-lg font-bold text-indigo-900 border-b-2 border-indigo-200 pb-1 mb-3">
+              Education
+            </h2>
             <div className="space-y-3">
               {data.educations.map((edu: any) => (
                 <div key={edu.id}>
                   <div className="flex justify-between items-baseline">
-                    <h3 className="text-sm font-bold">{edu.degree}{edu.field ? ` in ${edu.field}` : ""}</h3>
+                    <h3 className="text-sm font-bold">
+                      {edu.degree}
+                      {edu.field ? ` in ${edu.field}` : ""}
+                    </h3>
                     <span className="text-[11px] text-gray-400">
-                      {formatDate(edu.startDate)} — {edu.current ? "Present" : edu.endDate ? formatDate(edu.endDate) : ""}
+                      {formatDate(edu.startDate)} —{" "}
+                      {edu.current
+                        ? "Present"
+                        : edu.endDate
+                          ? formatDate(edu.endDate)
+                          : ""}
                     </span>
                   </div>
-                  <p className="text-xs text-indigo-600">{edu.institution}{edu.grade ? ` — GPA: ${edu.grade}` : ""}</p>
+                  <p className="text-xs text-indigo-600">
+                    {edu.institution}
+                    {edu.grade ? ` — GPA: ${edu.grade}` : ""}
+                  </p>
                 </div>
               ))}
             </div>

@@ -61,25 +61,27 @@ export async function POST(req: Request) {
       );
     }
     console.error("Register error:", error);
-    if (error instanceof PrismaClientInitializationError) {
-      return NextResponse.json(
-        {
-          error:
-            "Database connection failed. Ensure DATABASE_URL is set and reachable (Neon: use pooled URL with -pooler, add ?connect_timeout=15).",
-        },
-        { status: 503 }
-      );
-    }
     const err = error as { code?: string; message?: string };
+    const isConnectionError =
+      error instanceof PrismaClientInitializationError ||
+      err.code?.startsWith("P10") ||
+      (typeof err.message === "string" &&
+        /connect|connection|econnrefused|p1001|can't reach|timed out/i.test(err.message));
+
+    if (error instanceof PrismaClientInitializationError || isConnectionError) {
+      const body: Record<string, string> = {
+        error:
+          "Database connection failed. Ensure DATABASE_URL is set and reachable (Neon: use pooled URL with -pooler, add ?connect_timeout=15).",
+      };
+      if (process.env.NODE_ENV !== "production") {
+        const code = err.code ?? (error as { errorCode?: string }).errorCode;
+        const msg = (err.message ?? (error instanceof Error ? error.message : "")).slice(0, 200);
+        body.debug = code ? `Prisma ${code}: ${msg}` : msg || "Unknown connection error";
+      }
+      return NextResponse.json(body, { status: 503 });
+    }
     if (err.code === "P2002") {
       return NextResponse.json({ error: "Email or username already exists" }, { status: 409 });
-    }
-    const message = err.message ?? (error instanceof Error ? error.message : "Internal server error");
-    if (message.toLowerCase().includes("connect") || message.toLowerCase().includes("connection") || message.toLowerCase().includes("econnrefused") || message.toLowerCase().includes("p1001") || message.toLowerCase().includes("can't reach")) {
-      return NextResponse.json(
-        { error: "Database connection failed. Check DATABASE_URL and ensure the database is running (Neon may need a moment to wake from sleep)." },
-        { status: 503 }
-      );
     }
     return NextResponse.json({ error: "Internal server error" }, { status: 500 });
   }

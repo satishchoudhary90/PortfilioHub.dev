@@ -8,10 +8,20 @@ interface ResumeProps {
   onEdit?: (field: string, value: string) => void;
 }
 
-function EditableText({ value, field, editable, onEdit, className, tag: Tag = "span" }: {
-  value: string; field: string; editable?: boolean;
+function EditableText({
+  value,
+  field,
+  editable,
+  onEdit,
+  className,
+  tag: Tag = "span",
+}: {
+  value: string;
+  field: string;
+  editable?: boolean;
   onEdit?: (field: string, value: string) => void;
-  className?: string; tag?: any;
+  className?: string;
+  tag?: any;
 }) {
   if (!value && !editable) return null;
   return (
@@ -19,14 +29,20 @@ function EditableText({ value, field, editable, onEdit, className, tag: Tag = "s
       className={`${className || ""} ${editable ? "outline-none ring-1 ring-transparent hover:ring-indigo-400/50 focus:ring-indigo-500 rounded px-0.5 cursor-text" : ""}`}
       contentEditable={editable}
       suppressContentEditableWarning
-      onBlur={(e: any) => editable && onEdit?.(field, e.currentTarget.textContent || "")}
+      onBlur={(e: any) =>
+        editable && onEdit?.(field, e.currentTarget.textContent || "")
+      }
     >
       {value || (editable ? "Click to edit" : "")}
     </Tag>
   );
 }
 
-export default function ProfessionalResume({ data, editable, onEdit }: ResumeProps) {
+export default function ProfessionalResume({
+  data,
+  editable,
+  onEdit,
+}: ResumeProps) {
   if (!data) return null;
 
   return (
@@ -35,11 +51,29 @@ export default function ProfessionalResume({ data, editable, onEdit }: ResumePro
       <div className="border-b-2 border-gray-800 pb-4">
         <div className="flex items-center gap-4">
           {data.image && (
-            <img src={data.image} alt="" className="w-14 h-14 rounded-full object-cover border border-gray-200 shadow-sm shrink-0" />
+            <img
+              src={data.image}
+              alt=""
+              className="w-14 h-14 rounded-full object-cover border border-gray-200 shadow-sm shrink-0"
+            />
           )}
           <div>
-            <EditableText value={data.name} field="name" editable={editable} onEdit={onEdit} className="text-3xl font-bold tracking-tight" tag="h1" />
-            <EditableText value={data.headline} field="headline" editable={editable} onEdit={onEdit} className="text-lg text-gray-600 mt-1 block" tag="p" />
+            <EditableText
+              value={data.name}
+              field="name"
+              editable={editable}
+              onEdit={onEdit}
+              className="text-3xl font-bold tracking-tight"
+              tag="h1"
+            />
+            <EditableText
+              value={data.headline}
+              field="headline"
+              editable={editable}
+              onEdit={onEdit}
+              className="text-lg text-gray-600 mt-1 block"
+              tag="p"
+            />
             <div className="flex flex-wrap gap-4 mt-3 text-sm text-gray-500">
               {data.email && <span>{data.email}</span>}
               {data.phone && <span>|&nbsp; {data.phone}</span>}
@@ -56,7 +90,14 @@ export default function ProfessionalResume({ data, editable, onEdit }: ResumePro
           <h2 className="text-sm font-bold uppercase tracking-widest text-gray-800 border-b border-gray-300 pb-1 mb-3">
             Professional Summary
           </h2>
-          <EditableText value={data.bio} field="bio" editable={editable} onEdit={onEdit} className="text-sm text-gray-700 leading-relaxed block" tag="p" />
+          <EditableText
+            value={data.bio}
+            field="bio"
+            editable={editable}
+            onEdit={onEdit}
+            className="text-sm text-gray-700 leading-relaxed block"
+            tag="p"
+          />
         </div>
       )}
 
@@ -72,14 +113,24 @@ export default function ProfessionalResume({ data, editable, onEdit }: ResumePro
                 <div className="flex justify-between items-baseline">
                   <div>
                     <h3 className="font-bold text-sm">{exp.position}</h3>
-                    <p className="text-sm text-gray-600 italic">{exp.company}{exp.location ? `, ${exp.location}` : ""}</p>
+                    <p className="text-sm text-gray-600 italic">
+                      {exp.company}
+                      {exp.location ? `, ${exp.location}` : ""}
+                    </p>
                   </div>
                   <span className="text-xs text-gray-500 whitespace-nowrap">
-                    {formatDate(exp.startDate)} — {exp.current ? "Present" : exp.endDate ? formatDate(exp.endDate) : ""}
+                    {formatDate(exp.startDate)} —{" "}
+                    {exp.current
+                      ? "Present"
+                      : exp.endDate
+                        ? formatDate(exp.endDate)
+                        : ""}
                   </span>
                 </div>
                 {exp.description && (
-                  <p className="text-xs text-gray-600 mt-1.5 leading-relaxed">{exp.description}</p>
+                  <p className="text-xs text-gray-600 mt-1.5 leading-relaxed">
+                    {exp.description}
+                  </p>
                 )}
               </div>
             ))}
@@ -97,11 +148,22 @@ export default function ProfessionalResume({ data, editable, onEdit }: ResumePro
             {data.educations.map((edu: any) => (
               <div key={edu.id} className="flex justify-between items-baseline">
                 <div>
-                  <h3 className="font-bold text-sm">{edu.degree}{edu.field ? ` in ${edu.field}` : ""}</h3>
-                  <p className="text-sm text-gray-600 italic">{edu.institution}{edu.grade ? ` — GPA: ${edu.grade}` : ""}</p>
+                  <h3 className="font-bold text-sm">
+                    {edu.degree}
+                    {edu.field ? ` in ${edu.field}` : ""}
+                  </h3>
+                  <p className="text-sm text-gray-600 italic">
+                    {edu.institution}
+                    {edu.grade ? ` — GPA: ${edu.grade}` : ""}
+                  </p>
                 </div>
                 <span className="text-xs text-gray-500 whitespace-nowrap">
-                  {formatDate(edu.startDate)} — {edu.current ? "Present" : edu.endDate ? formatDate(edu.endDate) : ""}
+                  {formatDate(edu.startDate)} —{" "}
+                  {edu.current
+                    ? "Present"
+                    : edu.endDate
+                      ? formatDate(edu.endDate)
+                      : ""}
                 </span>
               </div>
             ))}
@@ -118,16 +180,42 @@ export default function ProfessionalResume({ data, editable, onEdit }: ResumePro
           <div className="space-y-3">
             {data.projects.map((proj: any) => (
               <div key={proj.id}>
-                <div className="flex justify-between items-baseline">
+                <div className="flex justify-between items-start">
                   <h3 className="font-bold text-sm">{proj.title}</h3>
-                  <div className="flex gap-2 text-xs text-blue-700">
-                    {proj.githubUrl && <a href={proj.githubUrl} className="hover:underline">GitHub</a>}
-                    {proj.liveUrl && <a href={proj.liveUrl} className="hover:underline">Live</a>}
+                  <div className="flex flex-col gap-1 text-xs text-right">
+                    {proj.githubUrl && (
+                      <div className="text-blue-700">
+                        <span className="text-gray-600">GitHub: </span>
+                        <a
+                          href={proj.githubUrl}
+                          className="hover:underline break-all"
+                        >
+                          {proj.githubUrl}
+                        </a>
+                      </div>
+                    )}
+                    {proj.liveUrl && (
+                      <div className="text-blue-700">
+                        <span className="text-gray-600">Live: </span>
+                        <a
+                          href={proj.liveUrl}
+                          className="hover:underline break-all"
+                        >
+                          {proj.liveUrl}
+                        </a>
+                      </div>
+                    )}
                   </div>
                 </div>
-                {proj.description && <p className="text-xs text-gray-600 mt-1 leading-relaxed">{proj.description}</p>}
+                {proj.description && (
+                  <p className="text-xs text-gray-600 mt-1 leading-relaxed">
+                    {proj.description}
+                  </p>
+                )}
                 {proj.techStack?.length > 0 && (
-                  <p className="text-xs text-gray-500 mt-1">{proj.techStack.join(" · ")}</p>
+                  <p className="text-xs text-gray-500 mt-1">
+                    {proj.techStack.join(" · ")}
+                  </p>
                 )}
               </div>
             ))}
@@ -155,7 +243,11 @@ export default function ProfessionalResume({ data, editable, onEdit }: ResumePro
           </h2>
           <div className="flex flex-wrap gap-4 text-sm text-blue-700">
             {data.socialLinks.map((link: any) => (
-              <a key={link.id} href={link.url} className="hover:underline capitalize">
+              <a
+                key={link.id}
+                href={link.url}
+                className="hover:underline capitalize"
+              >
                 {link.platform}
               </a>
             ))}

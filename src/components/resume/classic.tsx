@@ -29,7 +29,9 @@ function EditableText({
       className={`${className || ""} ${editable ? "outline-none ring-1 ring-transparent hover:ring-indigo-400/50 focus:ring-indigo-500 rounded px-0.5 cursor-text" : ""}`}
       contentEditable={editable}
       suppressContentEditableWarning
-      onBlur={(e: any) => editable && onEdit?.(field, e.currentTarget.textContent || "")}
+      onBlur={(e: any) =>
+        editable && onEdit?.(field, e.currentTarget.textContent || "")
+      }
     >
       {value || (editable ? "Click to edit" : "")}
     </Tag>
@@ -45,33 +47,57 @@ export default function ClassicResume({ data, editable, onEdit }: ResumeProps) {
       <div className="text-center">
         <div className="flex flex-col items-center gap-3">
           {data.image && (
-            <img src={data.image} alt="" className="w-14 h-14 rounded-full object-cover border border-black/20 shadow-sm" />
+            <img
+              src={data.image}
+              alt=""
+              className="w-14 h-14 rounded-full object-cover border border-black/20 shadow-sm"
+            />
           )}
-        <h1
-          className="text-2xl font-bold uppercase tracking-[0.3em]"
-          style={{ letterSpacing: "0.35em" }}
-        >
-          <EditableText value={data.name} field="name" editable={editable} onEdit={onEdit} tag="span" />
-        </h1>
-        {/* Double line under name */}
-        <div className="flex justify-center gap-2 mt-2">
-          <div className="w-16 h-px bg-black" />
-          <div className="w-16 h-px bg-black" />
-        </div>
-        <p className="text-sm mt-3 text-black/80">
-          <EditableText value={data.headline} field="headline" editable={editable} onEdit={onEdit} tag="span" />
-        </p>
+          <h1
+            className="text-2xl font-bold uppercase tracking-[0.3em]"
+            style={{ letterSpacing: "0.35em" }}
+          >
+            <EditableText
+              value={data.name}
+              field="name"
+              editable={editable}
+              onEdit={onEdit}
+              tag="span"
+            />
+          </h1>
+          {/* Double line under name */}
+          <div className="flex justify-center gap-2 mt-2">
+            <div className="w-16 h-px bg-black" />
+            <div className="w-16 h-px bg-black" />
+          </div>
+          <p className="text-sm mt-3 text-black/80">
+            <EditableText
+              value={data.headline}
+              field="headline"
+              editable={editable}
+              onEdit={onEdit}
+              tag="span"
+            />
+          </p>
         </div>
       </div>
 
       {/* Contact — centered below name */}
       <div className="text-center text-sm mt-4 mb-8 space-x-4">
-        {[data.email, data.phone, data.location, data.website].filter(Boolean).map((item, i) => (
-          <span key={i}>
-            {item}
-            {i < [data.email, data.phone, data.location, data.website].filter(Boolean).length - 1 ? " | " : ""}
-          </span>
-        ))}
+        {[data.email, data.phone, data.location, data.website]
+          .filter(Boolean)
+          .map((item, i) => (
+            <span key={i}>
+              {item}
+              {i <
+              [data.email, data.phone, data.location, data.website].filter(
+                Boolean,
+              ).length -
+                1
+                ? " | "
+                : ""}
+            </span>
+          ))}
       </div>
 
       <hr className="border-black border-t mb-6" />
@@ -79,10 +105,18 @@ export default function ClassicResume({ data, editable, onEdit }: ResumeProps) {
       {/* Bio */}
       {(data.bio || editable) && (
         <section className="mb-6">
-          <h2 className="text-xs font-bold uppercase tracking-[0.2em] mb-3">Summary</h2>
+          <h2 className="text-xs font-bold uppercase tracking-[0.2em] mb-3">
+            Summary
+          </h2>
           <hr className="border-black border-t mb-3" />
           <p className="text-sm leading-relaxed">
-            <EditableText value={data.bio} field="bio" editable={editable} onEdit={onEdit} tag="span" />
+            <EditableText
+              value={data.bio}
+              field="bio"
+              editable={editable}
+              onEdit={onEdit}
+              tag="span"
+            />
           </p>
           <hr className="border-black border-t mt-4" />
         </section>
@@ -91,7 +125,9 @@ export default function ClassicResume({ data, editable, onEdit }: ResumeProps) {
       {/* Experience */}
       {data.experiences?.length > 0 && (
         <section className="mb-6">
-          <h2 className="text-xs font-bold uppercase tracking-[0.2em] mb-3">Experience</h2>
+          <h2 className="text-xs font-bold uppercase tracking-[0.2em] mb-3">
+            Experience
+          </h2>
           <hr className="border-black border-t mb-3" />
           <div className="space-y-5">
             {data.experiences.map((exp: any) => (
@@ -99,12 +135,19 @@ export default function ClassicResume({ data, editable, onEdit }: ResumeProps) {
                 <div className="flex justify-between items-baseline">
                   <h3 className="font-semibold">{exp.position}</h3>
                   <span className="text-xs">
-                    {formatDate(exp.startDate)} — {exp.current ? "Present" : exp.endDate ? formatDate(exp.endDate) : ""}
+                    {formatDate(exp.startDate)} —{" "}
+                    {exp.current
+                      ? "Present"
+                      : exp.endDate
+                        ? formatDate(exp.endDate)
+                        : ""}
                   </span>
                 </div>
                 <p className="text-sm">{exp.company}</p>
                 {exp.description && (
-                  <p className="text-sm mt-2 leading-relaxed">{exp.description}</p>
+                  <p className="text-sm mt-2 leading-relaxed">
+                    {exp.description}
+                  </p>
                 )}
               </div>
             ))}
@@ -116,7 +159,9 @@ export default function ClassicResume({ data, editable, onEdit }: ResumeProps) {
       {/* Education */}
       {data.educations?.length > 0 && (
         <section className="mb-6">
-          <h2 className="text-xs font-bold uppercase tracking-[0.2em] mb-3">Education</h2>
+          <h2 className="text-xs font-bold uppercase tracking-[0.2em] mb-3">
+            Education
+          </h2>
           <hr className="border-black border-t mb-3" />
           <div className="space-y-5">
             {data.educations.map((edu: any) => (
@@ -127,7 +172,12 @@ export default function ClassicResume({ data, editable, onEdit }: ResumeProps) {
                     {edu.field ? `, ${edu.field}` : ""}
                   </h3>
                   <span className="text-xs">
-                    {formatDate(edu.startDate)} — {edu.current ? "Present" : edu.endDate ? formatDate(edu.endDate) : ""}
+                    {formatDate(edu.startDate)} —{" "}
+                    {edu.current
+                      ? "Present"
+                      : edu.endDate
+                        ? formatDate(edu.endDate)
+                        : ""}
                   </span>
                 </div>
                 <p className="text-sm">{edu.institution}</p>
@@ -141,7 +191,9 @@ export default function ClassicResume({ data, editable, onEdit }: ResumeProps) {
       {/* Projects */}
       {data.projects?.length > 0 && (
         <section>
-          <h2 className="text-xs font-bold uppercase tracking-[0.2em] mb-3">Projects</h2>
+          <h2 className="text-xs font-bold uppercase tracking-[0.2em] mb-3">
+            Projects
+          </h2>
           <hr className="border-black border-t mb-3" />
           <div className="space-y-4">
             {data.projects.map((proj: any) => (
@@ -149,11 +201,21 @@ export default function ClassicResume({ data, editable, onEdit }: ResumeProps) {
                 <div className="flex justify-between items-baseline">
                   <h3 className="font-semibold">{proj.title}</h3>
                   <div className="flex gap-2 text-xs">
-                    {proj.githubUrl && <a href={proj.githubUrl} className="hover:underline">GitHub</a>}
-                    {proj.liveUrl && <a href={proj.liveUrl} className="hover:underline">Live</a>}
+                    {proj.githubUrl && (
+                      <a href={proj.githubUrl} className="hover:underline">
+                        GitHub
+                      </a>
+                    )}
+                    {proj.liveUrl && (
+                      <a href={proj.liveUrl} className="hover:underline">
+                        Live
+                      </a>
+                    )}
                   </div>
                 </div>
-                {proj.description && <p className="text-sm mt-0.5">{proj.description}</p>}
+                {proj.description && (
+                  <p className="text-sm mt-0.5">{proj.description}</p>
+                )}
                 {proj.techStack?.length > 0 && (
                   <p className="text-xs mt-0.5">{proj.techStack.join(" · ")}</p>
                 )}
@@ -167,7 +229,9 @@ export default function ClassicResume({ data, editable, onEdit }: ResumeProps) {
       {/* Skills */}
       {data.skills?.length > 0 && (
         <section>
-          <h2 className="text-xs font-bold uppercase tracking-[0.2em] mb-3">Skills</h2>
+          <h2 className="text-xs font-bold uppercase tracking-[0.2em] mb-3">
+            Skills
+          </h2>
           <hr className="border-black border-t mb-3" />
           <p className="text-sm">
             {data.skills.map((skill: any, i: number) => (
