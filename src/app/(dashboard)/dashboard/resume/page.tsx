@@ -9,9 +9,22 @@ import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
 import { useToast } from "@/components/ui/toast";
 import { FadeIn } from "@/components/shared/motion-wrapper";
-import { Download, FileText, Check, Pencil, Save, Sparkles, Loader2, Camera, Upload, X, User } from "lucide-react";
+import {
+  Download,
+  FileText,
+  Check,
+  Pencil,
+  Save,
+  Sparkles,
+  Loader2,
+  Camera,
+  Upload,
+  X,
+  User,
+} from "lucide-react";
 import { formatDate, cn } from "@/lib/utils";
 import jsPDF from "jspdf";
+import html2canvas from "html2canvas";
 
 import ProfessionalResume from "@/components/resume/professional";
 import MinimalResume from "@/components/resume/minimal";
@@ -29,23 +42,114 @@ import InfographicResume from "@/components/resume/infographic";
 import ClassicResume from "@/components/resume/classic";
 
 const templates = [
-  { id: "professional", name: "Professional", description: "Classic corporate with serif fonts", preview: "bg-white border-b-4 border-gray-800", category: "classic" },
-  { id: "minimal", name: "Minimal", description: "Clean centered with whitespace", preview: "bg-white border-t border-gray-200", category: "clean" },
-  { id: "creative", name: "Creative", description: "Two-column with indigo sidebar", preview: "bg-gradient-to-r from-indigo-900 from-35% to-white to-35%", category: "creative" },
-  { id: "technical", name: "Technical", description: "Terminal-inspired dark theme", preview: "bg-gray-950 border border-green-500/30", category: "developer" },
-  { id: "executive", name: "Executive", description: "Luxury with gold accents", preview: "bg-slate-800 border-b-2 border-yellow-600", category: "classic" },
-  { id: "academic", name: "Academic", description: "Traditional academic CV style", preview: "bg-white border-b-2 border-blue-800", category: "classic" },
-  { id: "startup", name: "Startup", description: "Modern gradient & playful pills", preview: "bg-gradient-to-r from-violet-600 to-fuchsia-500", category: "creative" },
-  { id: "elegant", name: "Elegant", description: "Refined, magazine-inspired", preview: "bg-neutral-100 border border-neutral-200", category: "clean" },
-  { id: "bold", name: "Bold", description: "High contrast black & red", preview: "bg-gradient-to-r from-gray-900 from-30% to-white to-30%", category: "creative" },
-  { id: "compact", name: "Compact", description: "Maximum info, minimal space", preview: "bg-white border border-gray-300", category: "clean" },
-  { id: "modern-split", name: "Modern Split", description: "Teal sidebar with progress bars", preview: "bg-gradient-to-r from-teal-600 from-35% to-white to-35%", category: "creative" },
-  { id: "developer", name: "Developer", description: "Code editor Tokyo Night theme", preview: "bg-[#1a1b26] border border-[#7aa2f7]/30", category: "developer" },
-  { id: "infographic", name: "Infographic", description: "Visual with charts & timeline", preview: "bg-white border-l-4 border-emerald-500", category: "creative" },
-  { id: "classic", name: "Classic", description: "Timeless black & white ATS-friendly", preview: "bg-white border-t-2 border-b-2 border-black", category: "classic" },
+  {
+    id: "professional",
+    name: "Professional",
+    description: "Classic corporate with serif fonts",
+    preview: "bg-white border-b-4 border-gray-800",
+    category: "classic",
+  },
+  {
+    id: "minimal",
+    name: "Minimal",
+    description: "Clean centered with whitespace",
+    preview: "bg-white border-t border-gray-200",
+    category: "clean",
+  },
+  {
+    id: "creative",
+    name: "Creative",
+    description: "Two-column with indigo sidebar",
+    preview: "bg-gradient-to-r from-indigo-900 from-35% to-white to-35%",
+    category: "creative",
+  },
+  {
+    id: "technical",
+    name: "Technical",
+    description: "Terminal-inspired dark theme",
+    preview: "bg-gray-950 border border-green-500/30",
+    category: "developer",
+  },
+  {
+    id: "executive",
+    name: "Executive",
+    description: "Luxury with gold accents",
+    preview: "bg-slate-800 border-b-2 border-yellow-600",
+    category: "classic",
+  },
+  {
+    id: "academic",
+    name: "Academic",
+    description: "Traditional academic CV style",
+    preview: "bg-white border-b-2 border-blue-800",
+    category: "classic",
+  },
+  {
+    id: "startup",
+    name: "Startup",
+    description: "Modern gradient & playful pills",
+    preview: "bg-gradient-to-r from-violet-600 to-fuchsia-500",
+    category: "creative",
+  },
+  {
+    id: "elegant",
+    name: "Elegant",
+    description: "Refined, magazine-inspired",
+    preview: "bg-neutral-100 border border-neutral-200",
+    category: "clean",
+  },
+  {
+    id: "bold",
+    name: "Bold",
+    description: "High contrast black & red",
+    preview: "bg-gradient-to-r from-gray-900 from-30% to-white to-30%",
+    category: "creative",
+  },
+  {
+    id: "compact",
+    name: "Compact",
+    description: "Maximum info, minimal space",
+    preview: "bg-white border border-gray-300",
+    category: "clean",
+  },
+  {
+    id: "modern-split",
+    name: "Modern Split",
+    description: "Teal sidebar with progress bars",
+    preview: "bg-gradient-to-r from-teal-600 from-35% to-white to-35%",
+    category: "creative",
+  },
+  {
+    id: "developer",
+    name: "Developer",
+    description: "Code editor Tokyo Night theme",
+    preview: "bg-[#1a1b26] border border-[#7aa2f7]/30",
+    category: "developer",
+  },
+  {
+    id: "infographic",
+    name: "Infographic",
+    description: "Visual with charts & timeline",
+    preview: "bg-white border-l-4 border-emerald-500",
+    category: "creative",
+  },
+  {
+    id: "classic",
+    name: "Classic",
+    description: "Timeless black & white ATS-friendly",
+    preview: "bg-white border-t-2 border-b-2 border-black",
+    category: "classic",
+  },
 ];
 
-const templateComponents: Record<string, React.ComponentType<{ data: any; editable?: boolean; onEdit?: (field: string, value: string) => void }>> = {
+const templateComponents: Record<
+  string,
+  React.ComponentType<{
+    data: any;
+    editable?: boolean;
+    onEdit?: (field: string, value: string) => void;
+  }>
+> = {
   professional: ProfessionalResume,
   minimal: MinimalResume,
   creative: CreativeResume,
@@ -85,6 +189,7 @@ export default function ResumePage() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const streamRef = useRef<MediaStream | null>(null);
+  const resumeRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     fetch("/api/resume")
@@ -98,7 +203,7 @@ export default function ResumePage() {
 
   const stopCamera = useCallback(() => {
     if (streamRef.current) {
-      streamRef.current.getTracks().forEach(t => t.stop());
+      streamRef.current.getTracks().forEach((t) => t.stop());
       streamRef.current = null;
     }
     setCameraOpen(false);
@@ -107,7 +212,11 @@ export default function ResumePage() {
   async function startCamera() {
     try {
       const stream = await navigator.mediaDevices.getUserMedia({
-        video: { facingMode: "user", width: { ideal: 400 }, height: { ideal: 400 } },
+        video: {
+          facingMode: "user",
+          width: { ideal: 400 },
+          height: { ideal: 400 },
+        },
       });
       streamRef.current = stream;
       setCameraOpen(true);
@@ -118,7 +227,10 @@ export default function ResumePage() {
         }
       }, 100);
     } catch {
-      addToast({ title: "Could not access camera. Please check permissions.", variant: "error" });
+      addToast({
+        title: "Could not access camera. Please check permissions.",
+        variant: "error",
+      });
     }
   }
 
@@ -184,7 +296,10 @@ export default function ResumePage() {
         addToast({ title: "Photo saved!", variant: "success" });
       } else {
         const json = await res.json();
-        addToast({ title: json.error || "Failed to save photo", variant: "error" });
+        addToast({
+          title: json.error || "Failed to save photo",
+          variant: "error",
+        });
       }
     } catch {
       addToast({ title: "Failed to save photo", variant: "error" });
@@ -263,7 +378,10 @@ export default function ResumePage() {
       if (data.text) {
         setEditedData((prev: any) => ({ ...prev, bio: data.text }));
         if (!editMode) setEditMode(true);
-        addToast({ title: "Resume summary generated! Review and save.", variant: "success" });
+        addToast({
+          title: "Resume summary generated! Review and save.",
+          variant: "success",
+        });
       }
     } catch {
       addToast({ title: "Failed to generate summary", variant: "error" });
@@ -272,241 +390,120 @@ export default function ResumePage() {
   }
 
   const displayData = editMode ? editedData : userData;
-  const TemplateComponent = templateComponents[activeTemplate] || ProfessionalResume;
-  const filteredTemplates = activeCategory === "all" ? templates : templates.filter((t) => t.category === activeCategory);
-
-  function generateGenericPDF(doc: jsPDF, data: any, templateId: string) {
-    const isDark = ["technical", "developer"].includes(templateId);
-    const isCreative = ["creative", "modern-split", "bold"].includes(templateId);
-
-    if (isDark) {
-      doc.setFillColor(15, 15, 20);
-      doc.rect(0, 0, 210, 297, "F");
-    }
-
-    if (isCreative) {
-      const colors: Record<string, [number, number, number]> = {
-        creative: [49, 46, 129],
-        "modern-split": [13, 148, 136],
-        bold: [17, 17, 17],
-      };
-      const c = colors[templateId] || [49, 46, 129];
-      doc.setFillColor(c[0], c[1], c[2]);
-      doc.rect(0, 0, 70, 297, "F");
-    }
-
-    let y = 20;
-    const textX = isCreative ? 78 : 20;
-    const maxW = isCreative ? 110 : 170;
-
-    // Add photo to PDF if available
-    if (data.image && typeof data.image === "string" && data.image.startsWith("data:image")) {
-      try {
-        if (isCreative) {
-          doc.addImage(data.image, "JPEG", 15, 10, 20, 20);
-        } else {
-          doc.addImage(data.image, "JPEG", textX, y - 5, 18, 18);
-        }
-      } catch {}
-    }
-
-    const hasPhoto = data.image && typeof data.image === "string" && data.image.startsWith("data:image");
-    const nameX = !isCreative && hasPhoto ? textX + 22 : textX;
-
-    if (isCreative) {
-      let sy = hasPhoto ? 34 : 30;
-      doc.setTextColor(255, 255, 255);
-      doc.setFontSize(14);
-      doc.setFont("helvetica", "bold");
-      doc.text(data.name || "Developer", 35, sy, { align: "center" });
-      sy += 6;
-      if (data.headline) {
-        doc.setFontSize(8);
-        doc.setFont("helvetica", "normal");
-        doc.text(data.headline, 35, sy, { align: "center" });
-        sy += 8;
-      }
-      doc.setFontSize(7);
-      doc.setFont("helvetica", "bold");
-      doc.text("CONTACT", 10, sy);
-      sy += 5;
-      doc.setFont("helvetica", "normal");
-      doc.setFontSize(7);
-      [data.email, data.phone, data.location, data.website].filter(Boolean).forEach((item: string) => {
-        doc.text(item, 10, sy);
-        sy += 4;
-      });
-      sy += 4;
-      if (data.skills?.length) {
-        doc.setFont("helvetica", "bold");
-        doc.setFontSize(7);
-        doc.text("SKILLS", 10, sy);
-        sy += 5;
-        doc.setFont("helvetica", "normal");
-        data.skills.forEach((s: any) => {
-          doc.text(s.name, 10, sy);
-          sy += 4;
-        });
-      }
-    }
-
-    const nameColor: [number, number, number] = isDark ? [120, 170, 250] : [0, 0, 0];
-    const headlineColor: [number, number, number] = isDark ? [158, 206, 106] : [100, 100, 100];
-    const sectionColor: [number, number, number] = isDark ? [187, 154, 247] : [30, 30, 30];
-    const bodyColor: [number, number, number] = isDark ? [180, 180, 190] : [60, 60, 60];
-    const subColor: [number, number, number] = isDark ? [100, 100, 110] : [120, 120, 120];
-
-    if (!isCreative) {
-      const headerY = hasPhoto ? y + 2 : y;
-      doc.setTextColor(...nameColor);
-      doc.setFontSize(22);
-      doc.setFont(isDark ? "courier" : "helvetica", "bold");
-      doc.text(data.name || "Developer", nameX, headerY);
-
-      let hy = headerY + 7;
-      if (data.headline) {
-        doc.setFontSize(11);
-        doc.setFont(isDark ? "courier" : "helvetica", "normal");
-        doc.setTextColor(...headlineColor);
-        doc.text(data.headline, nameX, hy);
-        hy += 6;
-      }
-
-      doc.setFontSize(8);
-      doc.setTextColor(...subColor);
-      const contact = [data.email, data.phone, data.location, data.website].filter(Boolean).join("  |  ");
-      doc.text(contact, textX, hasPhoto ? Math.max(hy, y + 16) : hy);
-      y = (hasPhoto ? Math.max(hy, y + 16) : hy) + 8;
-
-      if (!isDark) {
-        doc.setDrawColor(200);
-        doc.line(textX, y, textX + maxW, y);
-        y += 6;
-      }
-    }
-
-    doc.setTextColor(...(isDark ? nameColor : [0, 0, 0] as [number, number, number]));
-
-    if (data.bio) {
-      doc.setFontSize(10);
-      doc.setFont(isDark ? "courier" : "helvetica", "bold");
-      doc.setTextColor(...sectionColor);
-      doc.text(isDark ? "# about" : "ABOUT", textX, y);
-      y += 6;
-      doc.setFontSize(8);
-      doc.setFont(isDark ? "courier" : "helvetica", "normal");
-      doc.setTextColor(...bodyColor);
-      const lines = doc.splitTextToSize(data.bio, maxW);
-      doc.text(lines, textX, y);
-      y += lines.length * 4 + 6;
-    }
-
-    if (!isCreative && data.skills?.length) {
-      doc.setFontSize(10);
-      doc.setFont(isDark ? "courier" : "helvetica", "bold");
-      doc.setTextColor(...sectionColor);
-      doc.text(isDark ? "# skills" : "SKILLS", textX, y);
-      y += 6;
-      doc.setFontSize(8);
-      doc.setFont(isDark ? "courier" : "helvetica", "normal");
-      doc.setTextColor(...bodyColor);
-      const skillStr = data.skills.map((s: any) => s.name).join(isDark ? "  |  " : "  •  ");
-      const sLines = doc.splitTextToSize(skillStr, maxW);
-      doc.text(sLines, textX, y);
-      y += sLines.length * 4 + 6;
-    }
-
-    if (data.projects?.length) {
-      doc.setFontSize(10);
-      doc.setFont(isDark ? "courier" : "helvetica", "bold");
-      doc.setTextColor(...sectionColor);
-      doc.text(isDark ? "# projects" : "PROJECTS", textX, y);
-      y += 6;
-      for (const proj of data.projects) {
-        if (y > 265) { doc.addPage(); if (isDark) { doc.setFillColor(15, 15, 20); doc.rect(0, 0, 210, 297, "F"); } if (isCreative) { const c: Record<string, [number, number, number]> = { creative: [49, 46, 129], "modern-split": [13, 148, 136], bold: [17, 17, 17] }; const clr = c[templateId] || [49, 46, 129]; doc.setFillColor(clr[0], clr[1], clr[2]); doc.rect(0, 0, 70, 297, "F"); } y = 20; }
-        doc.setFontSize(10);
-        doc.setFont(isDark ? "courier" : "helvetica", "bold");
-        doc.setTextColor(isDark ? 255 : 0, isDark ? 255 : 0, isDark ? 255 : 0);
-        doc.text(proj.title, textX, y);
-        y += 4.5;
-        if (proj.description) {
-          doc.setTextColor(...bodyColor);
-          doc.setFontSize(8);
-          doc.setFont(isDark ? "courier" : "helvetica", "normal");
-          const lines = doc.splitTextToSize(proj.description, maxW);
-          doc.text(lines, textX, y);
-          y += lines.length * 3.5 + 2;
-        }
-        if (proj.techStack?.length) {
-          doc.setFontSize(7);
-          doc.setTextColor(...subColor);
-          doc.text(proj.techStack.join(" · "), textX, y);
-          y += 4;
-        }
-        y += 3;
-      }
-    }
-
-    if (data.experiences?.length) {
-      doc.setFontSize(10);
-      doc.setFont(isDark ? "courier" : "helvetica", "bold");
-      doc.setTextColor(...sectionColor);
-      doc.text(isDark ? "# experience" : "EXPERIENCE", textX, y);
-      y += 6;
-      for (const exp of data.experiences) {
-        if (y > 265) { doc.addPage(); if (isDark) { doc.setFillColor(15, 15, 20); doc.rect(0, 0, 210, 297, "F"); } if (isCreative) { const c: Record<string, [number, number, number]> = { creative: [49, 46, 129], "modern-split": [13, 148, 136], bold: [17, 17, 17] }; const clr = c[templateId] || [49, 46, 129]; doc.setFillColor(clr[0], clr[1], clr[2]); doc.rect(0, 0, 70, 297, "F"); } y = 20; }
-        doc.setFontSize(10);
-        doc.setFont(isDark ? "courier" : "helvetica", "bold");
-        doc.setTextColor(isDark ? 255 : 0, isDark ? 255 : 0, isDark ? 255 : 0);
-        doc.text(exp.position, textX, y);
-        y += 4.5;
-        doc.setFontSize(8);
-        doc.setFont(isDark ? "courier" : "helvetica", "normal");
-        doc.setTextColor(...subColor);
-        doc.text(`${exp.company}  ·  ${formatDate(exp.startDate)} — ${exp.current ? "Present" : exp.endDate ? formatDate(exp.endDate) : ""}`, textX, y);
-        y += 5;
-        if (exp.description) {
-          doc.setTextColor(...bodyColor);
-          doc.setFontSize(8);
-          const lines = doc.splitTextToSize(exp.description, maxW);
-          doc.text(lines, textX, y);
-          y += lines.length * 3.5 + 3;
-        }
-        y += 3;
-      }
-    }
-
-    if (data.educations?.length) {
-      if (y > 250) { doc.addPage(); if (isDark) { doc.setFillColor(15, 15, 20); doc.rect(0, 0, 210, 297, "F"); } y = 20; }
-      doc.setFontSize(10);
-      doc.setFont(isDark ? "courier" : "helvetica", "bold");
-      doc.setTextColor(...sectionColor);
-      doc.text(isDark ? "# education" : "EDUCATION", textX, y);
-      y += 6;
-      for (const edu of data.educations) {
-        doc.setFontSize(10);
-        doc.setFont(isDark ? "courier" : "helvetica", "bold");
-        doc.setTextColor(isDark ? 255 : 0, isDark ? 255 : 0, isDark ? 255 : 0);
-        doc.text(`${edu.degree}${edu.field ? ` in ${edu.field}` : ""}`, textX, y);
-        y += 4.5;
-        doc.setFontSize(8);
-        doc.setFont(isDark ? "courier" : "helvetica", "normal");
-        doc.setTextColor(...subColor);
-        doc.text(`${edu.institution}  ·  ${formatDate(edu.startDate)} — ${edu.current ? "Present" : edu.endDate ? formatDate(edu.endDate) : ""}`, textX, y);
-        y += 7;
-      }
-    }
-  }
+  const TemplateComponent =
+    templateComponents[activeTemplate] || ProfessionalResume;
+  const filteredTemplates =
+    activeCategory === "all"
+      ? templates
+      : templates.filter((t) => t.category === activeCategory);
 
   async function generatePDF() {
-    if (!displayData) return;
+    if (!displayData || !resumeRef.current) return;
     setIsGenerating(true);
     try {
-      const doc = new jsPDF();
-      generateGenericPDF(doc, displayData, activeTemplate);
-      doc.save(`${displayData.name || "resume"}-${activeTemplate}.pdf`);
+      // Temporarily remove any overflow restrictions for capture
+      const originalOverflow = resumeRef.current.style.overflow;
+      const originalMaxHeight = resumeRef.current.style.maxHeight;
+      const originalWidth = resumeRef.current.style.width;
+      const originalMinHeight = resumeRef.current.style.minHeight;
+
+      // Set A4 dimensions for capture (794x1123px = A4 at 96 DPI)
+      resumeRef.current.style.overflow = "visible";
+      resumeRef.current.style.maxHeight = "none";
+      resumeRef.current.style.width = "794px";
+      resumeRef.current.style.minHeight = "1123px";
+
+      // Wait for layout to settle
+      await new Promise((resolve) => setTimeout(resolve, 100));
+
+      // Capture the resume component as canvas with A4 dimensions
+      const canvas = await html2canvas(resumeRef.current, {
+        scale: 2, // High quality for crisp text
+        useCORS: true,
+        allowTaint: true,
+        backgroundColor: "#ffffff",
+        logging: false,
+        width: 794, // A4 width in pixels
+        height: 1123, // A4 height in pixels
+        scrollX: 0,
+        scrollY: 0,
+      });
+
+      // Restore original styles
+      resumeRef.current.style.overflow = originalOverflow;
+      resumeRef.current.style.maxHeight = originalMaxHeight;
+      resumeRef.current.style.width = originalWidth;
+      resumeRef.current.style.minHeight = originalMinHeight;
+
+      // Create PDF with exact A4 dimensions
+      const imgData = canvas.toDataURL("image/png");
+      const pdf = new jsPDF({
+        orientation: "portrait",
+        unit: "mm",
+        format: "a4",
+      });
+
+      // A4 dimensions in mm
+      const a4Width = 210;
+      const a4Height = 297;
+
+      // Add small margins (5mm on each side)
+      const margin = 5;
+      const contentWidth = a4Width - margin * 2;
+      const contentHeight = a4Height - margin * 2;
+
+      // Calculate scaling to fit content within margins
+      const scaleX = contentWidth / (canvas.width / (canvas.width / a4Width));
+      const scaleY =
+        contentHeight / (canvas.height / (canvas.height / a4Height));
+      const scale = Math.min(scaleX, scaleY);
+
+      const scaledWidth = a4Width * scale;
+      const scaledHeight = (canvas.height * scaledWidth) / canvas.width;
+
+      if (scaledHeight <= a4Height) {
+        // Single page - center the content
+        const xOffset = (a4Width - scaledWidth) / 2;
+        const yOffset = (a4Height - scaledHeight) / 2;
+        pdf.addImage(
+          imgData,
+          "PNG",
+          xOffset,
+          yOffset,
+          scaledWidth,
+          scaledHeight,
+        );
+      } else {
+        // Multiple pages - fit to width with margins
+        const finalWidth = contentWidth;
+        const finalHeight = (canvas.height * finalWidth) / canvas.width;
+        let position = margin;
+        let heightLeft = finalHeight;
+
+        // Add first page
+        pdf.addImage(imgData, "PNG", margin, position, finalWidth, finalHeight);
+        heightLeft -= a4Height - margin;
+
+        // Add additional pages if needed
+        while (heightLeft >= margin) {
+          position = heightLeft - finalHeight;
+          pdf.addPage();
+          pdf.addImage(
+            imgData,
+            "PNG",
+            margin,
+            position,
+            finalWidth,
+            finalHeight,
+          );
+          heightLeft -= a4Height;
+        }
+      }
+
+      pdf.save(`${displayData.name || "resume"}-${activeTemplate}.pdf`);
       addToast({ title: "Resume downloaded!", variant: "success" });
-    } catch {
+    } catch (error) {
+      console.error("PDF generation failed:", error);
       addToast({ title: "Failed to generate PDF", variant: "error" });
     }
     setIsGenerating(false);
@@ -517,7 +514,9 @@ export default function ResumePage() {
       <FadeIn>
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-3xl font-bold text-theme-text">Resume Generator</h1>
+            <h1 className="text-3xl font-bold text-theme-text">
+              Resume Generator
+            </h1>
             <p className="text-theme-text-secondary mt-1">
               {templates.length} templates · Choose, edit, and download as PDF
             </p>
@@ -529,7 +528,11 @@ export default function ResumePage() {
               disabled={aiSummaryLoading || !userData}
               className="text-theme-accent hover:text-theme-accent"
             >
-              {aiSummaryLoading ? <Loader2 className="h-4 w-4 mr-2 animate-spin" /> : <Sparkles className="h-4 w-4 mr-2" />}
+              {aiSummaryLoading ? (
+                <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+              ) : (
+                <Sparkles className="h-4 w-4 mr-2" />
+              )}
               AI Summary
             </Button>
             {editMode && (
@@ -543,7 +546,10 @@ export default function ResumePage() {
               <Label className="text-xs cursor-pointer">Edit Mode</Label>
               <Switch checked={editMode} onCheckedChange={setEditMode} />
             </div>
-            <Button onClick={generatePDF} disabled={isGenerating || !displayData}>
+            <Button
+              onClick={generatePDF}
+              disabled={isGenerating || !displayData}
+            >
               <Download className="h-4 w-4 mr-2" />
               {isGenerating ? "Generating..." : "Download PDF"}
             </Button>
@@ -562,7 +568,7 @@ export default function ResumePage() {
                 "px-3 py-1.5 rounded-lg text-sm font-medium transition-all",
                 activeCategory === cat.id
                   ? "bg-theme-accent text-theme-text"
-                  : "bg-theme-card text-theme-text-secondary hover:bg-theme-accent-soft hover:text-theme-text"
+                  : "bg-theme-card text-theme-text-secondary hover:bg-theme-accent-soft hover:text-theme-text",
               )}
             >
               {cat.label}
@@ -580,7 +586,11 @@ export default function ResumePage() {
               <div className="relative group shrink-0">
                 <div className="w-24 h-24 sm:w-28 sm:h-28 rounded-full overflow-hidden border-2 border-theme-border bg-theme-card flex items-center justify-center">
                   {displayData?.image ? (
-                    <img src={displayData.image} alt="Resume photo" className="w-full h-full object-cover" />
+                    <img
+                      src={displayData.image}
+                      alt="Resume photo"
+                      className="w-full h-full object-cover"
+                    />
                   ) : (
                     <User className="h-10 w-10 text-theme-muted" />
                   )}
@@ -599,9 +609,14 @@ export default function ResumePage() {
 
               {/* Camera / Upload controls */}
               <div className="flex-1 text-center sm:text-left">
-                <h3 className="text-sm font-medium text-theme-text mb-1">Resume Photo</h3>
-                <p className="text-xs text-theme-muted mb-3">Take a photo with your camera or upload one. It will appear on your resume.</p>
-                
+                <h3 className="text-sm font-medium text-theme-text mb-1">
+                  Resume Photo
+                </h3>
+                <p className="text-xs text-theme-muted mb-3">
+                  Take a photo with your camera or upload one. It will appear on
+                  your resume.
+                </p>
+
                 <AnimatePresence mode="wait">
                   {cameraOpen ? (
                     <motion.div
@@ -612,35 +627,77 @@ export default function ResumePage() {
                       className="space-y-3"
                     >
                       <div className="relative w-48 h-48 mx-auto sm:mx-0 rounded-xl overflow-hidden border border-theme-border bg-black">
-                        <video ref={videoRef} autoPlay playsInline muted className="w-full h-full object-cover mirror" style={{ transform: "scaleX(-1)" }} />
+                        <video
+                          ref={videoRef}
+                          autoPlay
+                          playsInline
+                          muted
+                          className="w-full h-full object-cover mirror"
+                          style={{ transform: "scaleX(-1)" }}
+                        />
                       </div>
                       <div className="flex gap-2 justify-center sm:justify-start">
                         <Button size="sm" onClick={capturePhoto}>
                           <Camera className="h-3.5 w-3.5 mr-1.5" />
                           Capture
                         </Button>
-                        <Button size="sm" variant="secondary" onClick={stopCamera}>
+                        <Button
+                          size="sm"
+                          variant="secondary"
+                          onClick={stopCamera}
+                        >
                           Cancel
                         </Button>
                       </div>
                     </motion.div>
                   ) : (
-                    <motion.div key="buttons" initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="flex gap-2 justify-center sm:justify-start flex-wrap">
-                      <Button size="sm" variant="secondary" onClick={startCamera} disabled={photoSaving}>
+                    <motion.div
+                      key="buttons"
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      className="flex gap-2 justify-center sm:justify-start flex-wrap"
+                    >
+                      <Button
+                        size="sm"
+                        variant="secondary"
+                        onClick={startCamera}
+                        disabled={photoSaving}
+                      >
                         <Camera className="h-3.5 w-3.5 mr-1.5" />
                         Camera
                       </Button>
-                      <Button size="sm" variant="secondary" onClick={() => fileInputRef.current?.click()} disabled={photoSaving}>
-                        {photoSaving ? <Loader2 className="h-3.5 w-3.5 mr-1.5 animate-spin" /> : <Upload className="h-3.5 w-3.5 mr-1.5" />}
+                      <Button
+                        size="sm"
+                        variant="secondary"
+                        onClick={() => fileInputRef.current?.click()}
+                        disabled={photoSaving}
+                      >
+                        {photoSaving ? (
+                          <Loader2 className="h-3.5 w-3.5 mr-1.5 animate-spin" />
+                        ) : (
+                          <Upload className="h-3.5 w-3.5 mr-1.5" />
+                        )}
                         Upload
                       </Button>
                       {displayData?.image && (
-                        <Button size="sm" variant="secondary" onClick={removePhoto} disabled={photoSaving} className="text-red-400 hover:text-red-300 hover:bg-red-500/10">
+                        <Button
+                          size="sm"
+                          variant="secondary"
+                          onClick={removePhoto}
+                          disabled={photoSaving}
+                          className="text-red-400 hover:text-red-300 hover:bg-red-500/10"
+                        >
                           <X className="h-3.5 w-3.5 mr-1.5" />
                           Remove
                         </Button>
                       )}
-                      <input ref={fileInputRef} type="file" accept="image/*" onChange={handleFileUpload} className="hidden" />
+                      <input
+                        ref={fileInputRef}
+                        type="file"
+                        accept="image/*"
+                        onChange={handleFileUpload}
+                        className="hidden"
+                      />
                     </motion.div>
                   )}
                 </AnimatePresence>
@@ -666,7 +723,7 @@ export default function ResumePage() {
                 "relative p-3 rounded-xl border-2 text-left transition-all",
                 activeTemplate === tmpl.id
                   ? "border-theme-accent bg-theme-accent-soft"
-                  : "border-theme-border bg-theme-card hover:border-theme-accent/50"
+                  : "border-theme-border bg-theme-card hover:border-theme-accent/50",
               )}
             >
               {activeTemplate === tmpl.id && (
@@ -674,9 +731,15 @@ export default function ResumePage() {
                   <Check className="h-2.5 w-2.5 text-theme-text" />
                 </div>
               )}
-              <div className={cn("w-full h-12 rounded-md mb-2", tmpl.preview)} />
-              <h3 className="font-medium text-theme-text text-xs">{tmpl.name}</h3>
-              <p className="text-[10px] text-theme-muted mt-0.5 line-clamp-1">{tmpl.description}</p>
+              <div
+                className={cn("w-full h-12 rounded-md mb-2", tmpl.preview)}
+              />
+              <h3 className="font-medium text-theme-text text-xs">
+                {tmpl.name}
+              </h3>
+              <p className="text-[10px] text-theme-muted mt-0.5 line-clamp-1">
+                {tmpl.description}
+              </p>
             </motion.button>
           ))}
         </div>
@@ -687,7 +750,9 @@ export default function ResumePage() {
           <div className="flex items-center gap-2 px-4 py-3 rounded-lg bg-theme-accent-soft border border-theme-accent/20">
             <Pencil className="h-4 w-4 text-theme-accent" />
             <p className="text-sm text-theme-accent">
-              <strong>Edit mode active</strong> — Click on the name, headline, or bio text in the preview below to edit directly. Click &quot;Save Edits&quot; to persist changes.
+              <strong>Edit mode active</strong> — Click on the name, headline,
+              or bio text in the preview below to edit directly. Click
+              &quot;Save Edits&quot; to persist changes.
             </p>
           </div>
         </FadeIn>
@@ -701,7 +766,9 @@ export default function ResumePage() {
               <CardTitle className="flex items-center gap-2">
                 <FileText className="h-5 w-5 text-theme-accent" />
                 {templates.find((t) => t.id === activeTemplate)?.name} Resume
-                <Badge variant="secondary" className="ml-2 text-[10px]">A4</Badge>
+                <Badge variant="secondary" className="ml-2 text-[10px]">
+                  A4
+                </Badge>
               </CardTitle>
             </div>
           </CardHeader>
@@ -710,6 +777,7 @@ export default function ResumePage() {
               <div className="overflow-x-auto pb-4">
                 <AnimatePresence mode="wait">
                   <motion.div
+                    ref={resumeRef}
                     key={activeTemplate}
                     initial={{ opacity: 0, y: 10 }}
                     animate={{ opacity: 1, y: 0 }}
@@ -726,7 +794,9 @@ export default function ResumePage() {
                 </AnimatePresence>
               </div>
             ) : (
-              <div className="text-center py-12 text-theme-text-secondary">Loading profile data...</div>
+              <div className="text-center py-12 text-theme-text-secondary">
+                Loading profile data...
+              </div>
             )}
           </CardContent>
         </Card>

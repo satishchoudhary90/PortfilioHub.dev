@@ -180,33 +180,7 @@ export default function ProfessionalResume({
           <div className="space-y-3">
             {data.projects.map((proj: any) => (
               <div key={proj.id}>
-                <div className="flex justify-between items-start">
-                  <h3 className="font-bold text-sm">{proj.title}</h3>
-                  <div className="flex flex-col gap-1 text-xs text-right">
-                    {proj.githubUrl && (
-                      <div className="text-blue-700">
-                        <span className="text-gray-600">GitHub: </span>
-                        <a
-                          href={proj.githubUrl}
-                          className="hover:underline break-all"
-                        >
-                          {proj.githubUrl}
-                        </a>
-                      </div>
-                    )}
-                    {proj.liveUrl && (
-                      <div className="text-blue-700">
-                        <span className="text-gray-600">Live: </span>
-                        <a
-                          href={proj.liveUrl}
-                          className="hover:underline break-all"
-                        >
-                          {proj.liveUrl}
-                        </a>
-                      </div>
-                    )}
-                  </div>
-                </div>
+                <h3 className="font-bold text-sm">{proj.title}</h3>
                 {proj.description && (
                   <p className="text-xs text-gray-600 mt-1 leading-relaxed">
                     {proj.description}
@@ -217,6 +191,30 @@ export default function ProfessionalResume({
                     {proj.techStack.join(" · ")}
                   </p>
                 )}
+                <div className="flex flex-col gap-1 text-xs mt-1">
+                  {proj.githubUrl && (
+                    <div className="text-blue-700">
+                      <span className="text-gray-600">GitHub: </span>
+                      <a
+                        href={proj.githubUrl}
+                        className="hover:underline break-all"
+                      >
+                        {proj.githubUrl}
+                      </a>
+                    </div>
+                  )}
+                  {proj.liveUrl && (
+                    <div className="text-blue-700">
+                      <span className="text-gray-600">Live: </span>
+                      <a
+                        href={proj.liveUrl}
+                        className="hover:underline break-all"
+                      >
+                        {proj.liveUrl}
+                      </a>
+                    </div>
+                  )}
+                </div>
               </div>
             ))}
           </div>

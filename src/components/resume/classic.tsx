@@ -198,27 +198,37 @@ export default function ClassicResume({ data, editable, onEdit }: ResumeProps) {
           <div className="space-y-4">
             {data.projects.map((proj: any) => (
               <div key={proj.id}>
-                <div className="flex justify-between items-baseline">
-                  <h3 className="font-semibold">{proj.title}</h3>
-                  <div className="flex gap-2 text-xs">
-                    {proj.githubUrl && (
-                      <a href={proj.githubUrl} className="hover:underline">
-                        GitHub
-                      </a>
-                    )}
-                    {proj.liveUrl && (
-                      <a href={proj.liveUrl} className="hover:underline">
-                        Live
-                      </a>
-                    )}
-                  </div>
-                </div>
+                <h3 className="font-semibold">{proj.title}</h3>
                 {proj.description && (
                   <p className="text-sm mt-0.5">{proj.description}</p>
                 )}
                 {proj.techStack?.length > 0 && (
                   <p className="text-xs mt-0.5">{proj.techStack.join(" · ")}</p>
                 )}
+                <div className="flex flex-col gap-1 text-xs mt-1">
+                  {proj.githubUrl && (
+                    <div>
+                      <span className="text-gray-600">GitHub: </span>
+                      <a
+                        href={proj.githubUrl}
+                        className="hover:underline break-all"
+                      >
+                        {proj.githubUrl}
+                      </a>
+                    </div>
+                  )}
+                  {proj.liveUrl && (
+                    <div>
+                      <span className="text-gray-600">Live: </span>
+                      <a
+                        href={proj.liveUrl}
+                        className="hover:underline break-all"
+                      >
+                        {proj.liveUrl}
+                      </a>
+                    </div>
+                  )}
+                </div>
               </div>
             ))}
           </div>
